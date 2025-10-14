@@ -1,0 +1,98 @@
+﻿:root {
+    /* Update font family variables */
+    --font-primary: 'Roboto', system-ui, -apple-system, 'Segoe UI', Inter, 'Helvetica Neue', sans-serif;
+
+/* Paleta ajustada - Azul, Naranja y Blanco */
+    --color-primary: #3e61fb;
+    /* Azul principal (mÃ¡s vibrante) */
+    --color-primary-dark: #002fff;
+    /* Azul oscuro */
+    --color-secondary: #ff993f;
+    /* Naranja principal (moderno) */
+    --color-secondary-dark: #ff6600;
+    /* Naranja oscuro (tono terroso) */
+    --color-accent: #4980ff;
+    /* Naranja claro (acento) */
+    --color-success: #27ae60;
+    /* Verde (para contraste en Ã©xito) */
+    --color-success-dark: #00ab47;
+    /* Verde oscuro */
+    --color-danger: #ff5542;
+    /* Rojo (para contraste en error) */
+    --color-danger-dark: #ff1900;
+    /* Blanco puro */
+    --color-white: #ffffff;
+    /* dark */
+    --color-text: #333;
+    /* Gris muy claro */
+    --color-muted: #d8ddfb;
+    /* Gris claro (neutral) */
+    --color-text-muted: #7f8c8d;
+
+    /* New design tokens */
+    --shadow-soft: 0 4px 12px rgba(0, 0, 0, 0.08);
+    --shadow-hard: 0 8px 24px rgba(0, 0, 0, 0.12);
+    --transition-fast: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-medium: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    --sidebar-transition-time: 0.3s;
+    --sidebar-transition-easing: cubic-bezier(0.4, 0, 0.2, 1);
+    --footer-height: 60px;
+    --border-radius-xl: 50px;
+    --border-radius-lg: 15px;
+    --border-radius-sm: 8px;
+    --sidebar-width: 280px;
+    --sidebar-collapsed-width: 70px;
+      --sidebar-orange: #FFA000;        /* Base */
+  --sidebar-orange-hover: #FF8F00;  /* Hover */
+  --sidebar-orange-active: #FFB300; /* Active */
+}
+
+a.navbar-brand {
+  white-space: normal;
+  text-align: center;
+  word-break: break-all;
+}
+
+a {
+  color: var(--color-secondary);
+}
+
+.nav-link {
+color: var(--color-secondary);
+}
+
+.btn-primary {
+  color:  var(--color-white);
+  background-color: var(--color-primary);
+  border-color: var(--color-primary);
+}
+
+.nav-pills .nav-link.active, .nav-pills .show > .nav-link {
+  color: #fff;
+  background-color: #1b6ec2;
+  border-color: #1861ac;
+}
+
+.border-top {
+  border-top: 1px solid #e5e5e5;
+}
+.border-bottom {
+  border-bottom: 1px solid #e5e5e5;
+}
+
+.box-shadow {
+  box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05);
+}
+
+button.accept-policy {
+  font-size: 1rem;
+  line-height: inherit;
+}
+
+.footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  white-space: nowrap;
+  line-height: 60px;
+}

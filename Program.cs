@@ -1,0 +1,276 @@
+using System.Reflection;
+using System.Text;
+using System.Text.Json;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using ventas.Context;
+using ventas.Middleware;
+using ventas.Models.ModelsBdCentral;
+using ventas.Services;
+
+namespace ventas;
+
+public class Program
+{
+    public static async Task Main(string[] args)
+    {
+        var builder = WebApplication.CreateBuilder(args);
+
+        // =======================
+        // 0) Configuración de logging
+        // =======================
+        builder.Logging.ClearProviders();
+        builder.Logging.AddConsole();
+        builder.Logging.AddDebug();
+
+        // =======================
+        // 1) CORS
+        // =======================
+        builder.Services.AddCors(options =>
+        {
+            options.AddPolicy("AllowAll", policy =>
+            {
+                policy.AllowAnyOrigin()
+                    .AllowAnyMethod()
+                    .AllowAnyHeader();
+            });
+        });
+
+        // =======================
+        // 2) DbContexts
+        // =======================
+        builder.Services.AddDbContext<CentralDbContext>(options =>
+            options.UseSqlServer(builder.Configuration.GetConnectionString("CentralDB")));
+        builder.Services.AddScoped<TenantDbContextService>();
+
+        // Crea el TenantDbContext por request usando el tenant del HttpContext
+        builder.Services.AddScoped<TenantDbContext>(sp =>
+        {
+            var factory = sp.GetRequiredService<TenantDbContextService>();
+            return factory.CreateContext(); // usa HttpContext.Items["TenantConnection"]
+        });
+
+        // =======================
+        // 3) Configuración Identity
+        // ======================
+        builder.Services.AddIdentity<IdentityUser, IdentityRole>(options =>
+            {
+                options.Password.RequireDigit = false;
+                options.Password.RequiredLength = 2;
+                options.Password.RequireNonAlphanumeric = false;
+                options.Password.RequireUppercase = false;
+                options.Password.RequireLowercase = false;
+
+                // Configuración del token de recuperación de contraseña
+                options.Tokens.PasswordResetTokenProvider = TokenOptions.DefaultProvider;
+            })
+            .AddEntityFrameworkStores<CentralDbContext>()
+            .AddDefaultUI()
+            .AddDefaultTokenProviders();
+
+        // ======================================
+        // 4) Configuración del tiempo de vida del token
+        // ======================================
+        builder.Services.Configure<DataProtectionTokenProviderOptions>(options =>
+        {
+            options.TokenLifespan = TimeSpan.FromHours(1); // 1 hora de duración
+        });
+
+        // ======================================
+        // 5) Configuración de autenticación dual (Cookies + JWT)
+        // ======================================
+
+        builder.Services.AddAuthentication(options =>
+            {
+                options.DefaultScheme = IdentityConstants.ApplicationScheme;
+                options.DefaultSignInScheme = IdentityConstants.ExternalScheme;
+            })
+            .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, options =>
+            {
+                var jwtSecretKey = builder.Configuration["Jwt:SecretKey"];
+                if (string.IsNullOrEmpty(jwtSecretKey))
+                    throw new InvalidOperationException("JWT Secret Key is not configured");
+
+                options.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(jwtSecretKey)),
+                    ValidateIssuer = false,
+                    ValidateAudience = false,
+                    ValidateLifetime = true,
+                    ClockSkew = TimeSpan.Zero
+                };
+
+                options.Events = new JwtBearerEvents
+                {
+                    OnMessageReceived = context =>
+                    {
+                        context.Token = context.Request.Query["access_token"];
+                        return Task.CompletedTask;
+                    },
+                    OnAuthenticationFailed = context =>
+                    {
+                        Console.WriteLine($"Authentication failed: {context.Exception.Message}");
+                        return Task.CompletedTask;
+                    }
+                };
+            });
+
+        // ======================================
+        // 6) Configuración de autorización
+        // ======================================
+
+        builder.Services.AddAuthorization(options =>
+        {
+            // Políticas basadas en permisos 
+            var permissions = typeof(Permissions).GetNestedTypes()
+                .SelectMany(t => t.GetFields(BindingFlags.Public |
+                                             BindingFlags.Static))
+                .Where(f => f.FieldType == typeof(string))
+                .Select(f => (string)f.GetValue(null));
+
+            foreach (var permission in permissions)
+                options.AddPolicy(permission, policy => policy.RequireClaim("Permission", permission));
+
+            // POLÍTICAS BASADAS EN ROLES - AGREGAR ESTO
+            options.AddPolicy("RequiereRolAdministrador", policy =>
+            {
+                policy.RequireRole(AppConstants.AdministratorRole);
+                policy.RequireAuthenticatedUser();
+            });
+
+            options.AddPolicy("RequiereRolUsuario", policy =>
+            {
+                policy.RequireRole(AppConstants.UserRole, AppConstants.AdministratorRole); // Usuario, Gerente o Admin
+                policy.RequireAuthenticatedUser();
+            });
+
+            // Política para cualquier usuario autenticado
+            options.AddPolicy("RequiereAutenticacion", policy => { policy.RequireAuthenticatedUser(); });
+
+            // Política para API (JWT)
+            options.AddPolicy("ApiPolicy", policy =>
+            {
+                policy.AddAuthenticationSchemes(JwtBearerDefaults.AuthenticationScheme);
+                policy.RequireAuthenticatedUser();
+            });
+
+            // Política para MVC (Cookies)
+            options.AddPolicy("MvcPolicy", policy =>
+            {
+                policy.AddAuthenticationSchemes(IdentityConstants.ApplicationScheme);
+                policy.RequireAuthenticatedUser();
+            });
+        });
+
+        // ======================================
+        // 7) Configuracion Antiforgery
+        // ======================================
+        builder.Services.AddAntiforgery(options => { options.HeaderName = "RequestVerificationToken"; });
+
+        // ======================================
+        //  Servicios personalizados
+        // ======================================
+        builder.Services.AddControllersWithViews();
+
+        builder.Services.AddControllersWithViews(options =>
+        {
+            options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute());
+        });
+
+        builder.Services.AddControllers()
+            .AddJsonOptions(options =>
+            {
+                options.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
+            });
+
+        var app = builder.Build();
+
+        // Configure the HTTP request pipeline.
+        if (!app.Environment.IsDevelopment())
+        {
+            app.UseExceptionHandler("/Home/Error");
+            // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
+            app.UseHsts();
+        }
+
+        app.UseStaticFiles(new StaticFileOptions
+        {
+            ServeUnknownFileTypes = true // Para servir el .js personalizado
+        });
+        app.UseHttpsRedirection();
+        app.UseRouting();
+        app.UseCors("AllowAll");
+
+        app.UseAuthentication();
+        app.UseMiddleware<TenantMiddleware>();
+        app.UseAuthorization();
+
+        // Middleware para redireccionar a login en errores 401 (solo para MVC)
+        app.Use(async (context, next) =>
+        {
+            await next();
+
+            // Solo manejar 401 para requests no-API
+            if (context.Response.StatusCode == 401 &&
+                !context.Request.Path.StartsWithSegments("/api"))
+            {
+                // Verificar si es una petición AJAX
+                if (context.Request.Headers["X-Requested-With"] == "XMLHttpRequest")
+                {
+                    // Para AJAX, devolver JSON con URL de redirección
+                    context.Response.ContentType = "application/json";
+                    await context.Response.WriteAsync(
+                        JsonSerializer.Serialize(new
+                        {
+                            redirectUrl =
+                                $"/Identity/Account/Login?ReturnUrl={Uri.EscapeDataString(context.Request.Path)}"
+                        })
+                    );
+                }
+                else
+                {
+                    // Para navegación normal, redirigir directamente
+                    context.Response.Redirect(
+                        $"/Identity/Account/Login?ReturnUrl={Uri.EscapeDataString(context.Request.Path)}");
+                }
+            }
+        });
+
+        app.MapStaticAssets();
+        app.MapControllers();
+        app.MapControllerRoute(
+                "default",
+                "{controller=Home}/{action=Index}/{id?}")
+            .WithStaticAssets();
+
+        // Inicialización de la base de datos
+        await InitializeDatabase(app);
+        await app.RunAsync();
+
+        async Task InitializeDatabase(WebApplication app)
+        {
+            using var scope = app.Services.CreateScope();
+            var services = scope.ServiceProvider;
+            try
+            {
+                var logger = services.GetRequiredService<ILogger<Program>>();
+                logger.LogInformation("Inicializando base de datos...");
+
+                var dbContext = services.GetRequiredService<CentralDbContext>();
+                await dbContext.Database.MigrateAsync();
+                await SeedData.InitializeAsync(services);
+
+                logger.LogInformation("Base de datos inicializada correctamente.");
+            }
+            catch (Exception ex)
+            {
+                var logger = services.GetRequiredService<ILogger<Program>>();
+                logger.LogError(ex, "Error al inicializar la base de datos");
+            }
+        }
+    }
+}

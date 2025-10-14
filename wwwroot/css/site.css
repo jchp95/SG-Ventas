@@ -1,0 +1,85 @@
+:root {
+    /* Update font family variables */
+    --font-primary: 'Roboto', system-ui, -apple-system, 'Segoe UI', Inter, 'Helvetica Neue', sans-serif;
+
+/* Paleta ajustada - Azul, Naranja y Blanco */
+    --color-primary: #3e61fb;
+    /* Azul principal (mÃ¡s vibrante) */
+    --color-primary-dark: #002fff;
+    /* Azul oscuro */
+    --color-secondary: #ff993f;
+    /* Naranja principal (moderno) */
+    --color-secondary-dark: #ff6600;
+    /* Naranja oscuro (tono terroso) */
+    --color-accent: #4980ff;
+    /* Naranja claro (acento) */
+    --color-success: #27ae60;
+    /* Verde (para contraste en Ã©xito) */
+    --color-success-dark: #00ab47;
+    /* Verde oscuro */
+    --color-danger: #ff5542;
+    /* Rojo (para contraste en error) */
+    --color-danger-dark: #ff1900;
+    /* Blanco puro */
+    --color-white: #ffffff;
+    /* dark */
+    --color-text: #333;
+    /* Gris muy claro */
+    --color-muted: #d8ddfb;
+    /* Gris claro (neutral) */
+    --color-text-muted: #7f8c8d;
+
+    /* New design tokens */
+    --shadow-soft: 0 4px 12px rgba(0, 0, 0, 0.08);
+    --shadow-hard: 0 8px 24px rgba(0, 0, 0, 0.12);
+    --transition-fast: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-medium: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    --sidebar-transition-time: 0.3s;
+    --sidebar-transition-easing: cubic-bezier(0.4, 0, 0.2, 1);
+    --footer-height: 60px;
+    --border-radius-xl: 50px;
+    --border-radius-lg: 15px;
+    --border-radius-sm: 8px;
+    --sidebar-width: 280px;
+    --sidebar-collapsed-width: 70px;
+      --sidebar-orange: #FFA000;        /* Base */
+  --sidebar-orange-hover: #FF8F00;  /* Hover */
+  --sidebar-orange-active: #FFB300; /* Active */
+}
+
+html {
+  font-size: 14px;
+  font-family:'Roboto', Tahoma, Geneva, Verdana, sans-serif
+}
+
+@media (min-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
+  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+}
+
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+body {
+  margin-bottom: 60px;
+}
+
+a {
+  color: var(--color-secondary);
+}
+
+.form-floating > .form-control-plaintext::placeholder, .form-floating > .form-control::placeholder {
+  color: var(--bs-secondary-color);
+  text-align: end;
+}
+
+.form-floating > .form-control-plaintext:focus::placeholder, .form-floating > .form-control:focus::placeholder {
+  text-align: start;
+}
