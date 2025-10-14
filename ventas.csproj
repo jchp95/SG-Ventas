@@ -1,10 +1,11 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
     <PropertyGroup>
         <TargetFramework>net9.0</TargetFramework>
         <Nullable>enable</Nullable>
         <ImplicitUsings>enable</ImplicitUsings>
-    </PropertyGroup>
+      <UserSecretsId>02e00b2d-fc9b-4011-a857-eaa775d665a7</UserSecretsId>
+  </PropertyGroup>
 
     <ItemGroup>
         <Folder Include="Interfaces\" />
