@@ -1,7 +1,6 @@
 using System.Security.Claims;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 using ventas.Context;
 using ventas.Models.ModelsBdCentral;
 
@@ -13,50 +12,9 @@ public static class SeedData
     {
         using var scope = services.CreateScope();
         var dbContext = scope.ServiceProvider.GetRequiredService<CentralDbContext>();
-        var configuration = scope.ServiceProvider.GetRequiredService<IConfiguration>();
         try
-        {
+        {   
             dbContext.IsSeeding = true;
-
-            // Inicializar tenants y empresas desde appsettings.json
-            var tenantsSection = configuration.GetSection("Tenants");
-            if (tenantsSection.Exists())
-            {
-                foreach (var tenant in tenantsSection.GetChildren())
-                {
-                    var dbName = tenant["DatabaseName"];
-                    var empresaSection = tenant.GetSection("Empresa");
-                    if (!string.IsNullOrEmpty(dbName) && empresaSection.Exists())
-                    {
-                        // Insertar en TbConexion si no existe
-                        var conexion = await dbContext.Set<TbConexion>().FirstOrDefaultAsync(c => c.FnombreBd == dbName);
-                        if (conexion == null)
-                        {
-                            conexion = new TbConexion { FnombreBd = dbName };
-                            dbContext.Set<TbConexion>().Add(conexion);
-                            await dbContext.SaveChangesAsync();
-                        }
-                        // Insertar en TbEmpresa si no existe
-                        var nombreEmpresa = empresaSection["Nombre"];
-                        var empresa = await dbContext.Set<TbEmpresa>().FirstOrDefaultAsync(e => e.FnombreEmpresa == nombreEmpresa);
-                        if (empresa == null)
-                        {
-                            empresa = new TbEmpresa
-                            {
-                                FnombreEmpresa = nombreEmpresa,
-                                Frnc = empresaSection["RNC"],
-                                Femail = empresaSection["Email"],
-                                Flogo = empresaSection["Logo"],
-                                Feslogan = empresaSection["Eslogan"],
-                                Factivo = empresaSection.GetValue<bool>("Activo"),
-                                FkidConexion = conexion.FidConexion
-                            };
-                            dbContext.Set<TbEmpresa>().Add(empresa);
-                            await dbContext.SaveChangesAsync();
-                        }
-                    }
-                }
-            }
 
             // First create roles without auditing
             var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
@@ -171,7 +129,8 @@ public static class SeedData
                 dbContext.Usuarios.Add(nuevoUsuario);
                 await dbContext.SaveChangesAsync(true);
             }
-            // ¡IMPORTANTE!: Si el usuario ya existe, verificar y signal el rol si no lo tiene
+
+            // ¡IMPORTANTE!: Si el usuario ya existe, verificar y asignar el rol si no lo tiene
             var userRoles = await userManager.GetRolesAsync(testAdmin);
             if (!userRoles.Contains(AppConstants.AdministratorRole))
             {

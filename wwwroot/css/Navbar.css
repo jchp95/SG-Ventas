@@ -1,0 +1,80 @@
+/* Estilos para el dropdown de administración en la navbar */
+#adminDropdown.admin-dropdown-toggle::after {
+    transition: transform 0.2s ease;
+    display: inline-block;
+    margin-left: 0.255em;
+    vertical-align: 0.255em;
+    content: "";
+    border-top: 0.3em solid;
+    border-right: 0.3em solid transparent;
+    border-bottom: 0;
+    border-left: 0.3em solid transparent;
+}
+
+#adminDropdown.show.admin-dropdown-toggle::after {
+    transform: rotate(180deg);
+}
+
+.admin-dropdown-menu {
+    min-width: 220px;
+    max-width: 90vw;
+    border: none;
+    box-shadow: 0 8px 30px rgba(36,37,38,0.10); /* Profundidad similar a los inputs */
+    border-radius: 6px;
+    padding: 5px;
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    opacity: 0;
+    display: block;
+    visibility: hidden;
+    transform: translateY(10px);
+    pointer-events: none;
+    position: absolute;
+    z-index: 1000;
+    background-color: white;
+    right: 0;
+    left: auto;
+    top: 100%;
+    margin-top: 8px;
+    box-sizing: border-box;
+    overflow-x: hidden; /* Elimina scroll horizontal */
+}
+
+.navbar-link {
+    text-decoration: none;
+    color: #33333399;
+    font-weight: 500;
+}
+
+.navbar-link:hover {
+    color: var(--text-dark)
+}
+
+.admin-dropdown-menu.show {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+    pointer-events: auto;
+}
+
+.admin-dropdown-menu .dropdown-item {
+    font-weight: 500;
+    padding: 5px;
+    border-radius: 6px;
+    transition: all 0.2s ease;
+    color: #33333399;
+    background: #ffffff;
+}
+
+.admin-dropdown-menu .dropdown-item:hover {
+    color: var(--text-muted);
+    box-shadow: inset 5px 5px 6px #dedede,
+    inset -5px -5px 6px #ffffff;
+}
+
+@media (max-width: 1200px) {
+    .admin-dropdown-menu {
+        right: 10px;
+        left: auto;
+        max-width: 98vw;
+    }
+}

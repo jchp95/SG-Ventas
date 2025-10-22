@@ -1,11 +1,14 @@
 using System.Reflection;
 using System.Text;
 using System.Text.Json;
+using JavaScriptEngineSwitcher.Extensions.MsDependencyInjection;
+using JavaScriptEngineSwitcher.V8;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using React.AspNet;
 using ventas.Context;
 using ventas.Middleware;
 using ventas.Models.ModelsBdCentral;
@@ -119,6 +122,13 @@ public class Program
                 };
             });
 
+        // =======================
+        // ReactJS.NET con V8
+        // =======================
+        builder.Services.AddReact();
+        builder.Services.AddJsEngineSwitcher(options => options.DefaultEngineName = V8JsEngine.EngineName)
+            .AddV8();
+
         // ======================================
         // 6) Configuración de autorización
         // ======================================
@@ -189,18 +199,54 @@ public class Program
 
         var app = builder.Build();
 
+        // =======================
+        // ReactJS.NET Middleware
+        // =======================
+        app.UseReact(config =>
+        {
+            config
+                .SetLoadBabel(false)
+                //////////////////
+                // COMPONENTES 
+                //////////////////
+                .AddScriptWithoutTransform("~/Scripts/Components/Navbar.js")
+                .AddScriptWithoutTransform("~/Scripts/Components/Footer.js")
+                .AddScriptWithoutTransform("~/Scripts/Components/Sidebar.js")
+                .AddScriptWithoutTransform("~/Scripts/Components/ChartHome.js")
+                .AddScriptWithoutTransform("~/Scripts/Components/ActividadesRecientes.js")
+
+                // Offcanvas
+                .AddScriptWithoutTransform("~/Scripts/Components/OffCanvas/OffCanvas.js")
+                .AddScriptWithoutTransform("~/Scripts/Components/OffCanvas/OffCanvasActRecientes.js")
+                .AddScriptWithoutTransform("~/Scripts/Components/OffCanvas/OffCanvasPermissions.js")
+                
+                //Tablas
+                .AddScriptWithoutTransform("~/Scripts/Components/TableUsers.js")
+
+                // Modales
+                .AddScriptWithoutTransform("~/Scripts/Components/Modal/Modal.js")
+                .AddScriptWithoutTransform("~/Scripts/Components/Modal/CreateUserModal.js")
+
+                // Pages
+                .AddScriptWithoutTransform("~/Scripts/Pages/Auth/Register.js")
+                .AddScriptWithoutTransform("~/Scripts/Pages/Home/Home.js")
+                .AddScriptWithoutTransform("~/Scripts/Pages/Users/UsersList.js")
+
+                // Main App
+                .AddScriptWithoutTransform("~/Scripts/App.js")
+                .AddScriptWithoutTransform("~/Scripts/AppRouter.js")
+                ;
+        });
+
         // Configure the HTTP request pipeline.
         if (!app.Environment.IsDevelopment())
         {
             app.UseExceptionHandler("/Home/Error");
-            // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
             app.UseHsts();
         }
 
-        app.UseStaticFiles(new StaticFileOptions
-        {
-            ServeUnknownFileTypes = true // Para servir el .js personalizado
-        });
+        app.UseStaticFiles();
+
         app.UseHttpsRedirection();
         app.UseRouting();
         app.UseCors("AllowAll");
@@ -213,15 +259,11 @@ public class Program
         app.Use(async (context, next) =>
         {
             await next();
-
-            // Solo manejar 401 para requests no-API
             if (context.Response.StatusCode == 401 &&
                 !context.Request.Path.StartsWithSegments("/api"))
             {
-                // Verificar si es una petición AJAX
                 if (context.Request.Headers["X-Requested-With"] == "XMLHttpRequest")
                 {
-                    // Para AJAX, devolver JSON con URL de redirección
                     context.Response.ContentType = "application/json";
                     await context.Response.WriteAsync(
                         JsonSerializer.Serialize(new
@@ -233,7 +275,6 @@ public class Program
                 }
                 else
                 {
-                    // Para navegación normal, redirigir directamente
                     context.Response.Redirect(
                         $"/Identity/Account/Login?ReturnUrl={Uri.EscapeDataString(context.Request.Path)}");
                 }
@@ -241,11 +282,9 @@ public class Program
         });
 
         app.MapStaticAssets();
-        app.MapControllers();
         app.MapControllerRoute(
-                "default",
-                "{controller=Home}/{action=Index}/{id?}")
-            .WithStaticAssets();
+            "default",
+            "{controller=Home}/{action=Index}/{id?}");
 
         // Inicialización de la base de datos
         await InitializeDatabase(app);

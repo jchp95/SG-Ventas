@@ -1,0 +1,52 @@
+/* Estilos para el offcanvas de actividades recientes */
+.offcanvas-actividad-reciente {
+    background: #fff;
+    border-radius: 16px 0 0 16px;
+    box-shadow: -2px 0 24px rgba(67,97,238,0.10);
+    padding: 28px 22px 18px 22px;
+    animation: scaleFadeIn 0.35s;
+    border-left: 6px solid var(--primary-light);
+}
+
+.offcanvas-actividad-reciente h5 {
+    color: var(--primary-dark);
+    font-weight: 700;
+    margin-bottom: 18px;
+}
+
+.offcanvas-actividad-reciente .badge.bg-danger {
+    background: var(--danger);
+    color: #fff;
+    font-size: 0.92rem;
+    font-weight: 500;
+    border-radius: 6px;
+    padding: 4px 10px;
+    margin-top: 8px;
+}
+
+.offcanvas-actividad-reciente .mb-2 {
+    margin-bottom: 0.7rem !important;
+}
+
+.offcanvas-actividad-reciente .text-muted {
+    color: var(--text-muted) !important;
+}
+
+
+.act-close-btn .bi {
+    font-size: 1.3rem;
+    color: #fff;
+}
+
+.btn-close {
+    opacity: 0.7;
+    transition: opacity .18s;
+}
+
+@media (max-width: 700px) {
+    .offcanvas-actividad-reciente {
+        width: 100vw !important;
+        border-radius: 0;
+        padding: 18px 8px 10px 8px;
+    }
+}

@@ -1,0 +1,351 @@
+/* 1) Transición solo del ancho de la sidebar */
+.sidebar {
+    transition: width var(--sidebar-transition-time) var(--sidebar-transition-easing);
+    background: 
+        /* Capa 1: Base azul oscuro con gradiente sutil */
+        linear-gradient(135deg, #1e3a8a 0%, #3730a3 30%, #1e40af 70%, #1d4ed8 100%),
+        
+        /* Capa 2: Círculo grande superior izquierdo - azul claro/cyan */
+        radial-gradient(circle at 10% 15%, 
+            rgba(96, 165, 250, 0.25) 0%, 
+            rgba(59, 130, 246, 0.15) 20%, 
+            transparent 50%),
+        
+        /* Capa 3: Círculo grande inferior derecho - azul medio */
+        radial-gradient(circle at 85% 85%, 
+            rgba(99, 102, 241, 0.3) 0%, 
+            rgba(79, 70, 229, 0.2) 25%, 
+            transparent 60%),
+        
+        /* Capa 4: Arco diagonal superior derecho - cyan brillante */
+        radial-gradient(circle at 95% 8%, 
+            rgba(34, 211, 238, 0.2) 0%, 
+            rgba(6, 182, 212, 0.15) 15%, 
+            transparent 40%),
+        
+        /* Capa 5: Arco medio izquierdo - azul violeta */
+        radial-gradient(circle at 15% 50%, 
+            rgba(139, 92, 246, 0.18) 0%, 
+            rgba(124, 58, 237, 0.12) 20%, 
+            transparent 45%),
+        
+        /* Capa 6: Círculo pequeño centro-derecho - azul eléctrico */
+        radial-gradient(circle at 70% 60%, 
+            rgba(59, 130, 246, 0.25) 0%, 
+            rgba(37, 99, 235, 0.15) 30%, 
+            transparent 55%),
+        
+        /* Capa 7: Efecto de luz ambiental superior */
+        radial-gradient(ellipse at 50% 0%, 
+            rgba(255, 255, 255, 0.08) 0%, 
+            rgba(255, 255, 255, 0.03) 40%, 
+            transparent 70%),
+        
+        /* Capa 8: Sombra sutil inferior para profundidad */
+        radial-gradient(ellipse at 50% 120%, 
+            rgba(0, 0, 0, 0.15) 0%, 
+            rgba(0, 0, 0, 0.08) 30%, 
+            transparent 70%);
+    
+    background-blend-mode: overlay, screen, screen, screen, screen, screen, overlay, overlay;
+    position: relative;
+    box-shadow: 
+        inset 1px 0 0 rgba(255, 255, 255, 0.1),
+        inset -1px 0 0 rgba(0, 0, 0, 0.1),
+        4px 0 20px rgba(0, 0, 0, 0.15);
+}
+
+/* Capa adicional de textura sutil */
+.sidebar::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: 
+        radial-gradient(circle at 20% 80%, rgba(255, 255, 255, 0.03) 0%, transparent 50%),
+        radial-gradient(circle at 80% 20%, rgba(255, 255, 255, 0.02) 0%, transparent 50%);
+    pointer-events: none;
+}
+
+/* Efecto de borde luminoso sutil en el borde derecho */
+.sidebar::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 1px;
+    background: linear-gradient(
+        to bottom,
+        transparent,
+        rgba(255, 255, 255, 0.2),
+        rgba(255, 255, 255, 0.3),
+        rgba(255, 255, 255, 0.2),
+        transparent
+    );
+    pointer-events: none;
+}
+
+/* 2) Icono: celda fija y centrado sin márgenes ni justify-content */
+.sidebar .nav-link {
+    display: grid;
+    grid-template-columns: 48px 1fr;
+    align-items: center;
+    color: rgba(255, 255, 255, 0.9);
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(0.5px);
+}
+
+.sidebar .nav-link:hover,
+.sidebar .nav-link:focus {
+    background: rgba(255, 255, 255, 0.12);
+    color: #fff;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+    box-shadow: 
+        inset 0 0 0 1px rgba(255, 255, 255, 0.1),
+        0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.sidebar .nav-link.active {
+    background: rgba(255, 255, 255, 0.18);
+    color: #fff;
+    box-shadow: 
+        inset 0 0 0 1px rgba(255, 255, 255, 0.2),
+        0 4px 12px rgba(0, 0, 0, 0.2);
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+}
+
+/* Colapsado: texto se “cierra” sin empujar el icono */
+.sidebar.sidebar-collapsed .nav-link {
+    grid-template-columns: 48px 0;
+}
+
+/* 3) El <i> ocupa un cuadro fijo y no anima márgenes */
+.sidebar .nav-link i {
+    width: 48px;
+    height: 48px;
+    line-height: 48px; /* evita saltos verticales del glyph */
+    display: grid;
+    place-items: center; /* centra el glyph dentro del cuadro */
+    margin: 0 !important;
+    transition: font-size 0.3s; /* sin margin-left/right en transición */
+    justify-self: center;
+    align-self: center;
+
+    /* mitiga jitter del font durante el cambio de ancho */
+    -webkit-font-smoothing: antialiased;
+    text-rendering: geometricPrecision;
+    backface-visibility: hidden;
+    transform: translateZ(0);
+}
+
+/* 4) Nunca centres la nav-link en colapsado (nada de justify-content:center) */
+.sidebar.sidebar-collapsed .nav-link {
+    justify-content: flex-start;
+}
+
+/* 5) El texto se oculta sin empujar: usa max-width/opacity */
+.sidebar-text {
+    max-width: 240px;
+    transition: opacity 0.3s, max-width 0.7s var(--sidebar-transition-easing);
+}
+
+.sidebar.sidebar-collapsed .sidebar-text {
+    opacity: 0;
+    max-width: 0;
+    margin-left: 0;
+    pointer-events: none;
+    overflow: hidden;
+}
+
+
+/* Header con grid: icono fijo + título colapsable */
+.sidebar-header {
+    display: grid;
+    grid-template-columns: 48px 1fr; /* toggle | "Menú" */
+    align-items: center;
+    padding: .75rem .5rem .75rem 0; /* el ícono ya ocupa 48px */
+}
+
+/* Botón toggle redondo con sombra sutil */
+.sidebar-toggle-icon {
+    width: 36px;
+    height: 36px;
+    line-height: 36px;
+    display: grid;
+    place-items: center;
+    background: #fff;
+    color: var(--sidebar-orange);
+    border-radius: 50%;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, .15);
+    transition: transform .2s, box-shadow .2s, background .2s, color .2s;
+    margin-left: 6px;
+}
+
+.sidebar-toggle-icon:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, .2);
+}
+
+/* "Menú" animado como los labels */
+.sidebar-menu-title {
+    margin: 0 1rem 0 .25rem;
+    white-space: nowrap;
+    font-size: 1.05rem;
+    font-weight: 600;
+    opacity: 1;
+    max-width: 200px;
+    overflow: hidden;
+    transition: opacity .3s, max-width var(--sidebar-transition-time) var(--sidebar-transition-easing), margin .3s;
+    color: #fff;
+}
+
+/* En colapsado: solo la columna del icono */
+.sidebar.sidebar-collapsed .sidebar-header {
+    grid-template-columns: 48px 0;
+}
+
+.sidebar.sidebar-collapsed .sidebar-menu-title {
+    opacity: 0;
+    max-width: 0;
+    margin: 0;
+    pointer-events: none;
+}
+
+/* Separador sutil entre header y lista */
+.sidebar-content {
+    position: relative;
+    padding-top: .25rem;
+}
+
+.sidebar-content::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 12px;
+    right: 12px;
+    height: 1px;
+    background: rgba(255, 255, 255, .25);
+    border-radius: 1px;
+}
+
+/* Nav: estados bonitos */
+.sidebar .nav-link {
+    color: rgba(255, 255, 255, .9);
+    border-radius: 8px;
+    padding: 2px; /* sin empujar el grid interno */
+    transition: background .2s, color .2s;
+}
+
+.sidebar .nav-link:hover,
+.sidebar .nav-link:focus {
+    background: rgba(255, 255, 255, .12);
+    color: #fff;
+}
+
+.sidebar .nav-link.active {
+    background: rgba(255, 255, 255, .18);
+    color: #fff;
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .15);
+}
+
+/* Icono dentro del grid ya lo tienes fijo (48x48). Opcional: tamaño ligero al hover */
+.sidebar .nav-link:hover i {
+    transform: translateZ(0) scale(1.02);
+}
+
+/* ===========================
+   OVERRIDES: ancho 250px + animación moderna
+   =========================== */
+
+/* 0) Variables/easings para la animación moderna */
+:root {
+    --sidebar-width: 250px; /* ancho abierto deseado */
+    --easing-spring: cubic-bezier(.2, .8, .2, 1); /* resorte suave */
+    --stagger-step: 0.03s; /* escalonado entre items */
+}
+
+/* 2) Forzar dimensiones en expanded (por si algo anterior pisa) */
+.sidebar.sidebar-expanded {
+    width: var(--sidebar-width) !important;
+    min-width: var(--sidebar-width) !important;
+    max-width: var(--sidebar-width) !important;
+}
+
+/* 3) Estados que sí cambian propiedades (para que haya animación) */
+.sidebar.sidebar-collapsed .nav-link {
+    opacity: .85;
+    transform: translateX(-6px) scale(.985);
+}
+
+.sidebar.sidebar-expanded .nav-link {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+}
+
+/* 4) Transiciones y stagger de los items */
+.sidebar .nav-link {
+    will-change: transform, opacity;
+    transition: transform .45s var(--easing-spring),
+    opacity .28s ease,
+    background .2s,
+    color .2s;
+    contain: layout paint;
+}
+
+/* Stagger simple por posición (ajusta si tienes más items) */
+.sidebar .nav li:nth-child(1) .nav-link {
+    transition-delay: calc(var(--stagger-step) * 1);
+}
+
+.sidebar .nav li:nth-child(2) .nav-link {
+    transition-delay: calc(var(--stagger-step) * 2);
+}
+
+.sidebar .nav li:nth-child(3) .nav-link {
+    transition-delay: calc(var(--stagger-step) * 3);
+}
+
+.sidebar .nav li:nth-child(4) .nav-link {
+    transition-delay: calc(var(--stagger-step) * 4);
+}
+
+/* 5) Toggle: feedback visual al abrir/cerrar */
+.sidebar-toggle-icon {
+    transition: transform .35s var(--easing-spring), box-shadow .2s, background .2s, color .2s;
+}
+
+.sidebar.sidebar-expanded .sidebar-toggle-icon {
+    transform: rotate(180deg);
+}
+
+/* 6) Respeto a usuarios con reduce motion */
+@media (prefers-reduced-motion: reduce) {
+    .sidebar,
+    .sidebar .nav-link,
+    .sidebar-menu-title,
+    .sidebar-text,
+    .sidebar-toggle-icon {
+        transition: none !important;
+    }
+}
+
+/* --- FIX: no muevas la fila; el ícono queda centrado --- */
+.sidebar.sidebar-collapsed .nav-link,
+.sidebar.sidebar-expanded .nav-link {
+    transform: none !important;
+}
+
+/* La “animación moderna” la aplicamos SOLO al texto */
+.sidebar-text {
+    transition: opacity .3s,
+    max-width 0.7s var(--easing-spring),
+    transform .45s var(--easing-spring) !important;
+}
+
+.sidebar.sidebar-collapsed .sidebar-text {
+    transform: translateX(-6px) scale(.98);
+}
+
+.sidebar.sidebar-expanded .sidebar-text {
+    transform: translateX(0) scale(1);
+}

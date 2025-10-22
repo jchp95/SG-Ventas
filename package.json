@@ -1,0 +1,32 @@
+{
+  "name": "ventas",
+  "version": "1.0.0",
+  "description": "Sistema de gestión de ventas multi-tenant con ASP.NET Core 9 y Entity Framework Core.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build-js": "babel wwwroot/Scripts --out-dir wwwroot/Scripts --extensions \".jsx,.js\"",
+    "watch-js": "chokidar 'wwwroot/Scripts/**/*.jsx' -c 'npm run build-js'"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jchp95/SG-Ventas.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jchp95/SG-Ventas/issues"
+  },
+  "homepage": "https://github.com/jchp95/SG-Ventas#readme",
+  "devDependencies": {
+    "@babel/cli": "^7.28.3",
+    "@babel/core": "^7.28.4",
+    "@babel/preset-env": "^7.28.3",
+    "@babel/preset-react": "^7.27.1",
+    "chokidar-cli": "^3.0.0"
+  },
+  "dependencies": {
+    "chart.js": "4.5.1"
+  }
+}

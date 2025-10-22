@@ -1,31 +1,76 @@
-﻿<!DOCTYPE html>
-<html lang="en">
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="es">
 <head>
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>@ViewData["Title"] - Ventas</title>
-    <script type="importmap"></script>
+    <title>@ViewData["Title"]Ventas</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css"/>
-    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true"/>
+    <link rel="stylesheet" href="~/lib/bootstrap-icons/bootstrap-icons.css"/>
+    <link rel="stylesheet" href="~/css/site.css"/>
+    <link rel="stylesheet" href="~/css/Navbar.css"/>
+    <link rel="stylesheet" href="~/css/Sidebar.css"/>
+    <link rel="stylesheet" href="~/css/Register.css"/>
+    <link rel="stylesheet" href="~/css/Home.css"/>
+    <link rel="stylesheet" href="~/css/ActividadesRecientes.css"/>
+    <link rel="stylesheet" href="~/css/OffCanvasActRecientes.css"/>
+    <link rel="stylesheet" href="~/css/UserList.css"/>
 
+    <link rel="stylesheet" href="~/css/Modal.css"/>
 </head>
 <body>
 
-<!-- NAVBAR -->
-@await Html.PartialAsync("_Navbar")
-
-<div class="container">
-    <main role="main" class="pb-3">
-        @RenderBody()
-    </main>
-</div>
-
-<!-- FOOTER -->
-@await Html.PartialAsync("_Footer")
+<div id="root"></div>
+@RenderBody()
 
 <script src="~/lib/jquery/dist/jquery.min.js"></script>
 <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-<script src="~/js/site.js" asp-append-version="true"></script>
-@await RenderSectionAsync("Scripts", false)
+<script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
+<script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://unpkg.com/react-table@7.8.0/dist/react-table.development.js"></script>
+<script src="https://unpkg.com/react-router-dom@5.3.4/umd/react-router-dom.min.js"></script>
+
+<!-- Components -->
+<script src="~/Scripts/Components/Navbar.js"></script>
+<script src="~/Scripts/Components/Footer.js"></script>
+<script src="~/Scripts/Components/Sidebar.js"></script>
+<script src="~/Scripts/Components/ChartHome.js"></script>
+<script src="~/Scripts/Components/ActividadesRecientes.js"></script>
+
+<script src="~/Scripts/Components/OffCanvas/OffCanvas.js"></script>
+<script src="~/Scripts/Components/OffCanvas/OffCanvasActRecientes.js"></script>
+<script src="~/Scripts/Components/OffCanvas/OffCanvasPermissions.js"></script>
+<script src="~/Scripts/Components/TableUsers.js"></script>
+<script src="~/Scripts/Components/Modal/Modal.js"></script>
+<script src="~/Scripts/Components/Modal/CreateUserModal.js"></script>
+
+<!-- Pages  -->
+<script src="~/Scripts/Pages/Auth/Register.js"></script>
+<script src="~/Scripts/Pages/Home/Home.js"></script>
+<script src="~/Scripts/Pages/Users/UsersList.js"></script>
+
+<!-- Main App -->
+<script src="~/Scripts/App.js"></script>
+<script src="~/Scripts/AppRouter.js"></script>
+
+<script>
+    // Monta Register como vista inicial
+    (function () {
+        if (typeof ReactDOM !== 'undefined' && typeof window.AppRouter !== 'undefined') {
+            const rootEl = document.getElementById('root');
+            if (rootEl) {
+                if (!window.__APP_ROOT) {
+                    window.__APP_ROOT = ReactDOM.createRoot(rootEl);
+                }
+                window.__APP_ROOT.render(React.createElement(window.AppRouter, {}));
+            }
+        }
+    })();
+</script>
+
+@RenderSection("Scripts", false)
 </body>
 </html>

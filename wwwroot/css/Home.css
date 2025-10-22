@@ -1,0 +1,444 @@
+:root {
+    /* Reutilizamos las variables de color */
+    --primary: #4361ee;
+    --primary-light: #7c93ff;
+    --primary-dark: #1f3ab9;
+    --secondary: #b3a9ff;
+    --secondary-light: #d7ceff;
+    --secondary-dark: #907ef9;
+    --success: #28a745;
+    --success-dark: #1e7e34;
+    --danger: #dc3545;
+    --danger-dark: #a71d2a;
+    --warning: #ffc107;
+    --bg: #f7f9fc;
+    --text-dark: rgba(51, 51, 51, 0.74);
+    --text-muted: #b6b6b6;
+    --accent: #ff8a00;
+    --accent-dark: #df7700;
+}
+
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+/* Fondo general igual al registro */
+.home-page {
+    min-height: 100vh;
+    background-color: var(--bg);
+    background-image: radial-gradient(circle at 10% 18%, rgba(67, 97, 238, .28) 0%, rgba(67, 97, 238, .06) 22%, transparent 36%),
+    radial-gradient(circle at 90% 80%, rgba(72, 149, 239, .2) 0%, transparent 22%),
+    linear-gradient(180deg, rgba(255, 255, 255, .65), rgba(250, 250, 252, .6));
+}
+
+/* Estructura Principal */
+.home-content {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr;
+    min-height: 100vh;
+    width: 100%;
+}
+
+.div1 { 
+    grid-area: 1 / 1 / 6 / 6; 
+}
+
+/* CONTENEDOR PRINCIPAL CON SCROLL */
+.main-container {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    padding: 20px;
+    gap: 20px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding-bottom: 40px;
+}
+
+/* Eliminar heights fijos de las secciones y usar auto */
+.div2.welcome-section {
+    padding: 10px 0;
+    flex-shrink: 0;
+}
+
+.welcome-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+.welcome-text {
+    flex: 1;
+}
+
+.home-title {
+    font-size: 2.2rem;
+    font-weight: 700;
+    background: linear-gradient(90deg, var(--primary-dark), var(--primary-light));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    margin-bottom: 0.5rem;
+}
+
+.home-subtitle {
+    color: var(--text-dark);
+    font-size: 1.1rem;
+    margin-bottom: 0;
+}
+
+/* DIV3: Métricas - Cards Grandes y Pequeñas */
+.div3.metrics-section {
+    flex-shrink: 0;
+    min-height: 200px;
+}
+
+.metrics-container {
+    display: grid;
+    grid-template-columns: 3fr 2fr;
+    gap: 18px;
+    height: 100%;
+}
+
+/* Cards Grandes - Izquierda */
+.large-cards-container {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: stretch;
+}
+
+.large-cards-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 18px;
+    height: 100%;
+    align-items: stretch;
+}
+
+/* Cards Pequeñas - Derecha */
+.small-cards-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(2, 1fr);
+    gap: 18px;
+}
+
+/* ===== ESTILOS DE CARDS ===== */
+.metric-card {
+    border-radius: 12px;
+    box-shadow: 0 4px 18px rgba(36,37,38,.06);
+    padding: 18px 14px;
+    position: relative;
+    overflow: hidden;
+    transition: box-shadow .2s, transform .2s;
+    display: flex;
+    flex-direction: row;
+    align-items: stretch;
+    justify-content: space-between;
+}
+
+.metric-card.large {
+    min-height: 180px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: stretch;
+}
+
+.metric-card.small {
+    min-height: 140px;
+}
+
+.metric-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(36,37,38,.1);
+}
+
+/* Iconos de las cards - COLORES MEJORADOS PARA CONTRASTE ÓPTIMO */
+.metric-card .home-metric-icon {
+    position: absolute;
+    top: 50%;
+    right: 8%;
+    transform: scale(3.2);
+    opacity: 0.22;
+    z-index: 1;
+    transition: transform .35s cubic-bezier(.4,0,.2,1), opacity .25s, top .25s, right .25s;
+    pointer-events: none;
+    color: rgba(255, 255, 255, 0.95) !important; /* Color base para todos los iconos */
+}
+
+.metric-card.large .home-metric-icon {
+    top: 65%;
+    right: 25%;
+    transform: scale(9.2);
+    opacity: 0.25;
+}
+
+.metric-card.small .home-metric-icon {
+    right: 10%;
+    top: 55%;
+    transform: scale(3.2);
+    opacity: 0.22;
+}
+
+.metric-card.large:hover .home-metric-icon {
+    transform: scale(5.2) rotate(-8deg);
+    opacity: 0.3;
+    top: 18%;
+    right: 15%;
+}
+
+.metric-card.small:hover .home-metric-icon {
+    transform: scale(5.6) rotate(-8deg);
+    opacity: 0.3;
+    top: 30%;
+    right: 10%;
+}
+
+/* Contenido de las cards */
+.home-metric-content {
+    position: absolute;
+    left: 24px;
+    top: 24px;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    height: auto;
+}
+
+.metric-card.small .home-metric-content {
+    left: 18px;
+    top: 18px;
+}
+
+.home-metric-value {
+    font-size: 2.2rem;
+    font-weight: 500;
+    color: var(--bs-white);
+    margin-bottom: 2px;
+}
+
+.metric-card.small .home-metric-value {
+    font-size: 1.8rem;
+}
+
+.home-metric-label {
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: var(--bs-white);
+}
+
+/* ===== NUEVOS GRADIENTES BASADOS EN TU OTRO PROYECTO ===== */
+
+/* Cards grandes - usando la misma paleta de colores */
+.large-cards-grid .metric-card.large:nth-child(1) {
+    background: linear-gradient(135deg, #3f37c9, #4361ee); /* secondary */
+}
+
+.large-cards-grid .metric-card.large:nth-child(2) {
+    background: linear-gradient(135deg, #4cc9f0, #3ab5db); /* success */
+}
+
+.large-cards-grid .metric-card.large:nth-child(3) {
+    background: linear-gradient(135deg, #f94144, #dc2f02); /* danger */
+}
+
+/* Cards pequeñas - usando la misma paleta de colores */
+.small-cards-grid .metric-card.small:nth-child(1) {
+    background: linear-gradient(135deg, #f8961e, #f77f00); /* warning */
+}
+
+.small-cards-grid .metric-card.small:nth-child(2) {
+    background: linear-gradient(135deg, #11998e, #38ef7d); /* tertiary */
+}
+
+.small-cards-grid .metric-card.small:nth-child(3) {
+    background: linear-gradient(135deg, #3f37c9, #4361ee); /* secondary */
+}
+
+.small-cards-grid .metric-card.small:nth-child(4) {
+    background: linear-gradient(135deg, #4cc9f0, #3ab5db); /* success */
+}
+
+/* ===== COLORES DE ICONOS OPTIMIZADOS PARA CADA FONDO ===== */
+
+/* Iconos para cards azules (secondary) - fondo oscuro */
+.large-cards-grid .metric-card.large:nth-child(1) .home-metric-icon,
+.small-cards-grid .metric-card.small:nth-child(3) .home-metric-icon {
+    color: rgba(255, 255, 255, 0.95) !important; /* Blanco puro para máximo contraste */
+    opacity: 0.25 !important;
+}
+
+/* Iconos para cards cyan (success) - fondo medio */
+.large-cards-grid .metric-card.large:nth-child(2) .home-metric-icon,
+.small-cards-grid .metric-card.small:nth-child(4) .home-metric-icon {
+    color: rgba(255, 255, 255, 0.95) !important; /* Blanco puro */
+    opacity: 0.28 !important;
+}
+
+/* Iconos para cards rojas (danger) - fondo oscuro */
+.large-cards-grid .metric-card.large:nth-child(3) .home-metric-icon {
+    color: rgba(255, 255, 255, 0.95) !important; /* Blanco puro */
+    opacity: 0.25 !important;
+}
+
+/* Iconos para cards naranjas (warning) - fondo medio-claro */
+.small-cards-grid .metric-card.small:nth-child(1) .home-metric-icon {
+    color: rgba(255, 255, 255, 0.95) !important; /* Blanco puro */
+    opacity: 0.3 !important;
+}
+
+/* Iconos para cards verde azulado (tertiary) - fondo medio */
+.small-cards-grid .metric-card.small:nth-child(2) .home-metric-icon {
+    color: rgba(255, 255, 255, 0.95) !important; /* Blanco puro */
+    opacity: 0.28 !important;
+}
+
+/* Ajustes específicos para hover states */
+.large-cards-grid .metric-card.large:nth-child(1):hover .home-metric-icon,
+.small-cards-grid .metric-card.small:nth-child(3):hover .home-metric-icon {
+    opacity: 0.35 !important;
+}
+
+.large-cards-grid .metric-card.large:nth-child(2):hover .home-metric-icon,
+.small-cards-grid .metric-card.small:nth-child(4):hover .home-metric-icon {
+    opacity: 0.38 !important;
+}
+
+.large-cards-grid .metric-card.large:nth-child(3):hover .home-metric-icon {
+    opacity: 0.35 !important;
+}
+
+.small-cards-grid .metric-card.small:nth-child(1):hover .home-metric-icon {
+    opacity: 0.4 !important;
+}
+
+.small-cards-grid .metric-card.small:nth-child(2):hover .home-metric-icon {
+    opacity: 0.38 !important;
+}
+
+/* DIV4: Gráficos */
+.div4.graphs-section {
+    flex-shrink: 0;
+}
+
+.graphs-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 18px;
+}
+
+.graph-card {
+    background: rgba(255,255,255,0.85);
+    border-radius: 10px;
+    padding: 18px;
+    min-height: 250px;
+    box-shadow: 0 4px 18px rgba(36,37,38,.06);
+}
+
+.home-graph-title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: var(--primary-dark);
+}
+
+/* DIV5: Actividades */
+.div5.activities-section {
+    flex-shrink: 0;
+    min-height: 200px;
+}
+
+.activities-container {
+    height: 100%;
+}
+
+/* ===== BOTONES ===== */
+.home-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 14px;
+}
+
+.home-button {
+    padding: 10px 18px;
+    font-weight: 500;
+    color: #33333399;
+    border: none;
+    border-radius: 8px;
+    background: #ffffff;
+    box-shadow: 5px 5px 6px #dedede,
+    -5px -5px 6px #ffffff;
+    transition: transform .25s cubic-bezier(0.16, -0.04, 0.77, 1), box-shadow .18s cubic-bezier(0.26, 0, 0.8, 1.02);
+}
+
+.home-button:hover {
+    border-radius: 8px;
+    background: #ffffff;
+    box-shadow: 5px 5px 6px #dedede,
+    -5px -5px 6px #ffffff;
+    transform: translateY(-3px);
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 1200px) {
+    .metrics-container {
+        grid-template-columns: 1fr;
+        grid-template-rows: auto auto;
+    }
+    
+    .graphs-container {
+        grid-template-columns: 1fr;
+        grid-template-rows: repeat(3, auto);
+    }
+}
+
+@media (max-width: 900px) {
+    .main-container {
+        padding: 15px;
+        gap: 18px;
+    }
+    
+    .welcome-content {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+    }
+    
+    .home-actions {
+        flex-wrap: wrap;
+        justify-content: flex-start;
+    }
+    
+    .large-cards-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .small-cards-grid {
+        grid-template-columns: 1fr;
+        grid-template-rows: auto;
+    }
+}
+
+/* Animación de entrada */
+@keyframes scaleFadeIn {
+    from {
+        opacity: 0;
+        transform: scale(0.96);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+.home-content > div {
+    animation: scaleFadeIn 0.5s ease-out;
+}

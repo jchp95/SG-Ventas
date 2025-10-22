@@ -1,0 +1,284 @@
+/* ===== Variables de color reutilizadas del Home ===== */
+:root {
+    --primary: #4361ee;
+    --primary-light: #7c93ff;
+    --primary-dark: #1f3ab9;
+    --secondary: #b3a9ff;
+    --secondary-light: #d7ceff;
+    --secondary-dark: #907ef9;
+    --success: #28a745;
+    --danger: #dc3545;
+    --warning: #ffc107;
+    --bg: #f7f9fc;
+    --text-dark: rgba(51, 51, 51, 0.74);
+    --text-muted: #b6b6b6;
+    --accent: #ff8a00;
+}
+
+/* ===== Fondo general ===== */
+.users-page {
+    min-height: 100vh;
+    background-color: var(--bg);
+    background-image: radial-gradient(circle at 10% 18%, rgba(67, 97, 238, .18) 0%, rgba(67, 97, 238, .06) 22%, transparent 36%),
+    radial-gradient(circle at 90% 80%, rgba(72, 149, 239, .13) 0%, transparent 22%),
+    linear-gradient(180deg, rgba(255, 255, 255, .65), rgba(250, 250, 252, .6));
+}
+
+.users-content {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr;
+    min-height: 100vh;
+    width: 100%;
+}
+
+.main-container {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    padding: 20px;
+    gap: 24px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding-bottom: 40px;
+}
+
+/* ===== Header ===== */
+.users-header-section {
+    padding: 10px;
+    flex-shrink: 0;
+}
+
+.users-header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+.users-title {
+    font-size: 2.2rem;
+    font-weight: 700;
+    background: linear-gradient(90deg, var(--primary-dark), var(--primary-light));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    margin-bottom: 0.5rem;
+}
+
+/* ===== Acciones ===== */
+.users-actions {
+    display: flex;
+    gap: 12px;
+}
+
+.input-light {
+    background: #fff;
+    border: 1px solid var(--secondary-light);
+    border-radius: 8px;
+    color: var(--text-dark);
+    font-size: 1rem;
+    padding: 8px 14px;
+    transition: border 0.2s;
+}
+.input-light:focus {
+    border-color: var(--primary);
+    outline: none;
+}
+
+.btn-primary {
+    background: linear-gradient(90deg, var(--primary), var(--primary-light));
+    border: none;
+    color: #fff;
+    font-weight: 600;
+    padding: 8px 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(67, 97, 238, 0.08);
+    transition: background 0.2s, box-shadow 0.2s;
+}
+.btn-primary:hover {
+    background: linear-gradient(90deg, var(--primary-dark), var(--primary));
+    box-shadow: 0 4px 16px rgba(67, 97, 238, 0.13);
+}
+
+/* ===== Tabla de usuarios ===== */
+.users-table-section {
+    margin-top: 18px;
+    background: #fff;
+    border-radius: 18px;
+    box-shadow: 0 2px 16px 0 rgba(67, 97, 238, 0.07), 0 1.5px 4px 0 rgba(67, 97, 238, 0.03);
+    padding: 24px 18px 18px 18px;
+    overflow-x: auto;
+}
+
+.react-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    font-size: 1rem;
+    color: var(--text-dark);
+}
+.react-table thead tr {
+    background: linear-gradient(90deg, var(--primary-light), var(--secondary-light));
+}
+.react-table th {
+    font-weight: 700;
+    padding: 12px 10px;
+    border-bottom: 2px solid var(--primary-light);
+    color: var(--primary-dark);
+    background: none;
+}
+.react-table td {
+    padding: 10px 10px;
+    border-bottom: 1px solid #f0f0f0;
+    background: none;
+}
+.react-table tbody tr {
+    transition: background 0.15s;
+}
+.react-table tbody tr:hover {
+    background: rgba(67, 97, 238, 0.07);
+}
+
+/* ===== Botón de acción en la tabla ===== */
+.table-action-btn {
+    background: var(--primary-light);
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    padding: 6px 14px;
+    font-size: 0.95rem;
+    font-weight: 500;
+    transition: background 0.2s;
+}
+.table-action-btn:hover {
+    background: var(--primary-dark);
+}
+
+.table-action-icon {
+    background: none;
+    border: none;
+    color: var(--primary-dark);
+    font-size: 1.3rem;
+    padding: 4px 8px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background 0.15s;
+}
+.table-action-icon:hover {
+    background: rgba(67, 97, 238, 0.08);
+}
+
+.table-action-menu {
+    border-radius: 12px;
+    padding: 8px 0;
+    min-width: 120px;
+    box-shadow: 0 2px 12px rgba(67,97,238,0.13);
+    background: #fff;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    z-index: 10;
+}
+.table-action-menu .dropdown-item {
+    background: none;
+    border: none;
+    text-align: left;
+    padding: 8px 18px;
+    font-size: 1rem;
+    color: var(--primary-dark);
+    cursor: pointer;
+    border-radius: 0;
+    transition: background 0.15s;
+}
+.table-action-menu .dropdown-item:hover {
+    background: var(--secondary-light);
+}
+.table-action-menu .dropdown-item.text-danger {
+    color: var(--danger);
+}
+
+/* ===== MODAL STYLES ===== */
+.modal-backdrop {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(67,97,238,0.13);
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.modal-content-card {
+    background: #fff;
+    border-radius: 18px;
+    box-shadow: 0 4px 32px rgba(67,97,238,0.18);
+    padding: 32px 28px 24px 28px;
+    min-width: 340px;
+    max-width: 95vw;
+    position: relative;
+}
+.modal-close-btn {
+    position: absolute;
+    top: 12px;
+    right: 18px;
+    background: none;
+    border: none;
+    font-size: 2rem;
+    color: var(--primary-dark);
+    cursor: pointer;
+    z-index: 10;
+}
+.create-user-form h4 {
+    font-weight: 700;
+    color: var(--primary-dark);
+    margin-bottom: 18px;
+}
+.create-user-form .form-control {
+    border-radius: 8px;
+}
+.create-user-form .form-check-input {
+    border-radius: 6px;
+}
+.create-user-form .btn {
+    min-width: 120px;
+}
+
+/* ===== Responsive ===== */
+@media (max-width: 900px) {
+    .main-container {
+        padding: 10px;
+    }
+    .users-header-content {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+    }
+    .users-table-section {
+        padding: 12px 4px 8px 4px;
+    }
+    .users-title {
+        font-size: 1.5rem;
+    }
+}
+
+@media (max-width: 600px) {
+    .users-title {
+        font-size: 1.1rem;
+    }
+    .users-header-content {
+        gap: 8px;
+    }
+    .users-table-section {
+        padding: 6px 0 4px 0;
+    }
+}
+
+/* ===== Animación de entrada ===== */
+.users-content > div {
+    animation: scaleFadeIn 0.7s cubic-bezier(.39,.575,.565,1.000);
+}
+
+@keyframes scaleFadeIn {
+    0% { opacity: 0; transform: scale(0.98) translateY(16px); }
+    100% { opacity: 1; transform: scale(1) translateY(0); }
+}

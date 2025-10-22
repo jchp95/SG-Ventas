@@ -1,0 +1,108 @@
+/* Estilos para la sección de actividades recientes */
+.actividades-recientes-section {
+    background: rgba(255,255,255,0.92);
+    border-radius: 14px;
+    box-shadow: 0 4px 18px rgba(36,37,38,.07);
+    padding: 20px;
+    animation: scaleFadeIn 0.4s;
+}
+
+.section-title {
+    font-size: 1.18rem;
+    font-weight: 600;
+    color: var(--primary-dark);
+    margin-bottom: 12px;
+}
+
+.actividades-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.activity-item {
+    background: linear-gradient(90deg, #f7f9fc 80%, #e9f0ff 100%);
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(67,97,238,0.04);
+    padding: 12px 14px 8px 14px;
+    transition: box-shadow .18s, transform .18s;
+    position: relative;
+}
+.activity-item.urgent {
+    background: linear-gradient(90deg, #fff0f3 80%, #ffe3e8 100%);
+}
+.activity-item:hover {
+    box-shadow: 0 4px 16px rgba(67,97,238,0.10);
+    transform: translateY(-2px) scale(1.01);
+}
+
+.activity-icon {
+    font-size: 1.7rem;
+    color: var(--primary-dark);
+    opacity: 0.85;
+    margin-right: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #e9f0ff 0%, #f7f9fc 100%);
+}
+.activity-item.urgent .activity-icon {
+    color: var(--danger-dark);
+    background: linear-gradient(135deg, #ffe3e8 0%, #fff0f3 100%);
+}
+
+.act-tipo {
+    font-weight: 500;
+    color: var(--text-dark);
+}
+
+.act-description {
+    color: #33333399;
+}
+
+.act-fecha {
+    color: var(--text-muted)
+}
+
+.show-more-link {
+    color: var(--text-muted);
+    font-weight: 500;
+    text-decoration: underline;
+    cursor: pointer;
+    font-size: 1rem;
+    margin-top: 8px;
+    transition: color .18s;
+    text-decoration: blink;
+}
+.show-more-link:hover {
+    color: var(--accent-dark);
+}
+
+.badge.bg-danger {
+    background: var(--danger);
+    color: #fff;
+    font-size: 0.85rem;
+    font-weight: 500;
+    border-radius: 6px;
+    padding: 3px 8px;
+}
+
+.text-muted {
+    color: var(--text-muted) !important;
+}
+
+.text-end {
+    text-align: right;
+}
+
+@media (max-width: 700px) {
+    .actividades-recientes-section {
+        padding: 15px;
+    }
+    .activity-item {
+        padding: 10px 7px 6px 7px;
+    }
+}

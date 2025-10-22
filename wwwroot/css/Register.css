@@ -1,0 +1,377 @@
+:root {
+    --primary: #4361ee;
+    --primary-light: #7c93ff;
+    --primary-dark: #1f3ab9;
+    --secondary: #b3a9ff;
+    --secondary-light: #d7ceff;
+    --secondary-dark: #907ef9;
+    --success: #28a745;
+    --success-dark: #1e7e34;
+    --danger: #dc3545;
+    --danger-dark: #a71d2a;
+    --warning: #ffc107;
+
+    --bg: #f7f9fc;
+    --card-bg: rgba(255, 255, 255, 0.95);
+    --glass-color: rgba(255, 255, 255, 0.85);
+    --glass-border: rgba(0, 0, 0, 0.06);
+
+    --text-dark: rgba(51, 51, 51, 0.74);
+    --text-muted: #b6b6b6;
+    --accent: #ff8a00;
+}
+
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+/* ====== LAYOUT ====== */
+.register-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    min-height: 100vh;
+    /* Permitimos scroll de página si el contenido crece */
+    background-color: var(--bg);
+    background-image: radial-gradient(circle at 10% 18%, rgba(67, 97, 238, .28) 0%, rgba(67, 97, 238, .06) 22%, transparent 36%),
+    radial-gradient(circle at 90% 80%, rgba(72, 149, 239, .2) 0%, transparent 22%),
+    linear-gradient(180deg, rgba(255, 255, 255, .65), rgba(250, 250, 252, .6));
+}
+
+/* Card principal */
+.register-card {
+    width: 100%;
+    max-width: 1000px;
+    margin: 0 auto;
+    border: none;
+    border-radius: 14px;
+    background: var(--card-bg);
+    box-shadow: 0 6px 30px rgba(56, 59, 68, .06);
+    transition: transform .35s ease, box-shadow .25s ease;
+}
+
+.glassmorphism-effect {
+    background: var(--glass-color) !important;
+    backdrop-filter: blur(8px) !important;
+    -webkit-backdrop-filter: blur(8px) !important;
+    border: 1px solid var(--glass-border) !important;
+    box-shadow: 0 6px 18px rgba(36, 37, 38, .06) !important;
+    color: var(--text-dark);
+    transition: all .25s ease;
+    width: 100%;
+}
+
+.register-card .card-body {
+    padding: 0;
+    flex: 1;
+    height: 100%; /* ✅ garantiza altura total constante */
+}
+
+/* Fila interna: 50/50 real y alturas automáticas */
+.register-card .card-body > .row {
+    height: 100%;
+    align-items: stretch;
+}
+
+
+.register-card .card-body > .row > .col-md-6 {
+    transition: none !important;
+}
+
+/* ====== COLUMNA IZQUIERDA (FORM) ====== */
+.register-card .card-body > .row > .col-md-6:first-child {
+    display: flex;
+    align-items: stretch;
+    padding-right: 0;
+}
+
+.form-inner-container {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 20px;
+    border-radius: 10px;
+    min-height: 100%;
+    background: transparent;
+
+    /* SIN scroll interno */
+}
+
+/* Título */
+.register-container .card-title.gradient-texts {
+    margin-left: .5rem;
+    background: linear-gradient(90deg, var(--primary-dark), var(--primary-light));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    font-weight: 600;
+}
+
+/* Inputs */
+.register-container .form-label {
+    color: var(--text-dark);
+    font-weight: 500;
+
+}
+
+.form-label {
+    margin-bottom: 0;
+}
+
+.input-light {
+    color: var(--text-dark);
+    transition: box-shadow .2s ease, border-color .2s ease;
+}
+
+.input-light:focus {
+    color: var(--text-dark);
+    border: none;
+    border-radius: 0;
+    background: #ffffff !important;
+    box-shadow: inset 5px 5px 6px #dedede,
+    inset -5px -5px 6px #ffffff;
+    outline: none;
+}
+
+.input-light::placeholder {
+    color: var(--text-muted);
+}
+
+
+/* Corrige el fondo azul del autocompletado y mantiene el borde del input */
+input:-webkit-autofill,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:active {
+    -webkit-box-shadow: 0 0 0 1000px #fff inset !important;
+    box-shadow: 0 0 0 1000px #fff inset !important;
+    -webkit-text-fill-color: var(--text-dark) !important;
+    color: var(--text-dark) !important;
+    border: var(--bs-border-width) solid var(--bs-border-color) !important;
+    border-radius: 8px !important;
+    font-size: .95rem !important;
+    padding: .56rem .75rem !important;
+    box-sizing: border-box !important;
+    transition: background-color 5000s ease-in-out 0s;
+}
+
+
+.form-control.input-light {
+    color: var(--text-dark);
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+    padding: .56rem .75rem;
+    border-radius: 4px;
+    height: 44px; /* cómodo */
+    font-size: .95rem;
+    line-height: 1.2;
+}
+
+.register-fields .form-text.text-danger {
+    min-height: 18px;
+    display: block;
+    font-size: .92em;
+    margin-top: 2px;
+    margin-bottom: 0;
+    line-height: 1.2;
+    transition: color .2s;
+}
+
+/* Botón principal */
+.register-button {
+    padding: 10px 18px;
+    font-weight: 500;
+    color: #33333399;
+    border: none;
+    border-radius: 8px;
+    background: #ffffff;
+    box-shadow: 5px 5px 6px #dedede,
+    -5px -5px 6px #ffffff;
+    transition: transform .25s cubic-bezier(0.16, -0.04, 0.77, 1), box-shadow .18s cubic-bezier(0.26, 0, 0.8, 1.02);
+    white-space: nowrap;
+}
+
+/* Botón atras */
+.atras-button {
+    padding: 10px 18px;
+    font-weight: 500;
+    color: #33333399;
+    border: none;
+    border-radius: 8px;
+    background: #ffffff;
+    box-shadow: 5px 5px 6px #dedede,
+    -5px -5px 6px #ffffff;
+    transition: transform .25s cubic-bezier(0.16, -0.04, 0.77, 1), box-shadow .18s cubic-bezier(0.26, 0, 0.8, 1.02);
+}
+
+.register-button:hover {
+    border-radius: 8px;
+    background: #ffffff;
+    box-shadow: 5px 5px 6px #dedede,
+    -5px -5px 6px #ffffff;
+    transform: translateY(-3px);
+}
+
+.atras-button:hover {
+    border-radius: 8px;
+    background: #ffffff;
+    box-shadow: 5px 5px 6px #dedede,
+    -5px -5px 6px #ffffff;
+    transform: translateY(-3px);
+}
+
+.register-button:active {
+    background: 'red';
+    transform: translateY(0);
+}
+
+.atras-button:active {
+    transform: translateY(0);
+}
+
+.register-button[disabled] {
+    opacity: .75;
+    cursor: not-allowed;
+}
+
+/* Contenedor del botón al final del form (sin sticky ni trucos) */
+.register-btn-container {
+    background: linear-gradient(0deg, #fff 90%, rgba(255, 255, 255, .7) 100%);
+    display: flex;
+    justify-content: end;
+    margin-top: auto; /* baja el botón si hay espacio */
+}
+
+/* Alertas */
+.register-container .alert-light,
+.register-container .register-alert {
+    border-radius: 8px;
+    background-color: rgba(255, 230, 230, .9);
+    border: 1px solid rgba(255, 200, 200, .8);
+    color: #7b1f2b;
+    padding: .65rem 1rem;
+    display: block;
+    width: 100%;
+    margin-bottom: 1rem;
+}
+
+/* ====== COLUMNA DERECHA (IMAGEN) ====== */
+.register-card .card-body > .row > .col-md-6:last-child {
+    position: relative;
+}
+
+.register-card .card-body > .row > .col-md-6:last-child img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.register-card .card-body > .row > .col-md-6:last-child > .d-flex {
+    /* wrapper normal, sin absolute */
+    width: 100%;
+}
+
+/* Imagen con transición suave */
+.register-card .card-body > .row > .col-md-6:last-child img.image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* cubre verticalmente igualando la altura del form */
+    object-position: center;
+    display: block;
+    border-radius: 0 12px 12px 0;
+    transition: opacity .45s cubic-bezier(.4, 0, .2, 1), transform .45s cubic-bezier(.4, 0, .2, 1), height .45s cubic-bezier(.4, 0, .2, 1), border-radius .45s cubic-bezier(.4, 0, .2, 1);
+}
+
+/* Permitir animaciones en la imagen */
+.register-card .card-body > .row > .col-md-6:last-child img.image.scale-fade-in {
+    animation: scaleFadeIn .45s cubic-bezier(.4, 0, .2, 1) both;
+}
+
+.register-card .card-body > .row > .col-md-6:last-child img.image.scale-fade-out {
+    animation: scaleFadeOut .45s cubic-bezier(.4, 0, .2, 1) both;
+}
+
+/* Utilitarios */
+.image {
+    border-radius: 0 12px 12px 0;
+}
+
+.register-container .text-muted.light {
+    color: var(--text-muted) !important;
+}
+
+.register-container .card-title.mb-3 {
+    margin-bottom: .75rem;
+}
+
+/* Altura mínima para evitar que la card cambie de tamaño al alternar formularios */
+.register-card-min-height {
+    min-height: 650px; /* Ajusta este valor según el formulario más grande */
+}
+
+/* ====== RESPONSIVE ====== */
+@media (max-width: 767px) {
+    .register-container {
+        padding: 20px;
+    }
+
+    .register-card {
+        padding: 1rem;
+    }
+
+    .form-inner-container {
+        padding: 18px 6px 80px 6px;
+    }
+
+    .register-btn-container {
+        padding: 12px 0 0 0;
+    }
+
+    /* En móvil la imagen pasa debajo con alto fijo bonito */
+    .register-card .card-body > .row > .col-md-6:last-child {
+        min-height: 260px;
+    }
+
+    .register-card .card-body > .row > .col-md-6:last-child img.image {
+        height: 260px;
+        border-radius: 0 0 12px 12px;
+    }
+}
+
+/* Transiciones modernas para pasos del registro */
+.scale-fade-in {
+    animation: scaleFadeIn .45s cubic-bezier(.4, 0, .2, 1) both;
+}
+
+.scale-fade-out {
+    animation: scaleFadeOut .45s cubic-bezier(.4, 0, .2, 1) both;
+}
+
+@keyframes scaleFadeIn {
+    from {
+        opacity: 0;
+        transform: scale(0.96);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+@keyframes scaleFadeOut {
+    from {
+        opacity: 1;
+        transform: scale(1);
+    }
+    to {
+        opacity: 0;
+        transform: scale(0.96);
+    }
+}
