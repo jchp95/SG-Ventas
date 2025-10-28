@@ -1,38 +1,55 @@
-class Navbar extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            adminDropdownOpen: false,
-        };
-        this.hideTimeout = null;
-    }
+const Navbar = () => {
+    // Estado local
+    const [adminDropdownOpen, setAdminDropdownOpen] = React.useState(false);
+    const hideTimeoutRef = React.useRef(null);
 
-    showDropdown = () => {
-        clearTimeout(this.hideTimeout);
-        this.setState({ adminDropdownOpen: true });
+    // Redux hooks
+    const { tema, setTema, usuario, agregarNotificacion } = window.ReduxProvider.useApp();
+
+    const Link = window.ReactRouterDOM.Link;
+
+    // Funciones para dropdown
+    const showDropdown = () => {
+        clearTimeout(hideTimeoutRef.current);
+        setAdminDropdownOpen(true);
     };
 
-    hideDropdown = (delay = 200) => {
-        clearTimeout(this.hideTimeout);
-        this.hideTimeout = setTimeout(() => {
-            this.setState({ adminDropdownOpen: false });
+    const hideDropdown = (delay = 200) => {
+        clearTimeout(hideTimeoutRef.current);
+        hideTimeoutRef.current = setTimeout(() => {
+            setAdminDropdownOpen(false);
         }, delay);
     };
 
-    clearHideTimeout = () => {
-        clearTimeout(this.hideTimeout);
+    const clearHideTimeout = () => {
+        clearTimeout(hideTimeoutRef.current);
     };
 
-    handleLogout = (e) => {
-        e.preventDefault();
-        alert('Sesión cerrada. Aquí va la lógica de logout.');
-    }
+    // Función para cambiar tema
+    const toggleTheme = () => {
+        const nuevoTema = tema === 'light' ? 'dark' : 'light';
+        setTema(nuevoTema);
+        
+        // Agregar clase de animación temporalmente
+        const btn = document.querySelector('.theme-toggle-btn');
+        if (btn) {
+            btn.classList.add('changing');
+            setTimeout(() => btn.classList.remove('changing'), 600);
+        }
+    };
 
-    render() {
-        const { adminDropdownOpen } = this.state;
-        const Link = window.ReactRouterDOM.Link;
-        return (
-            <nav className="navbar navbar-expand-lg navbar-light">
+    const handleLogout = (e) => {
+        e.preventDefault();
+        // Aquí iría la lógica de logout real
+        agregarNotificacion({
+            tipo: 'success',
+            mensaje: 'Sesión cerrada correctamente',
+            autoClose: true
+        });
+    };
+
+    return (
+            <nav className={`navbar navbar-expand-lg ${tema === 'dark' ? 'theme-dark' : 'navbar-light'}`}>
                 <div className="container-fluid justify-content-space-between align-items-center">
                     <div className="d-flex justify-content-start">
                         <Link className="navbar-brand" to="/">Ventas</Link>
@@ -44,63 +61,98 @@ class Navbar extends React.Component {
                     </div>
                     <div className="collapse navbar-collapse justify-content-end" id="navbarNav">
                         <ul className="navbar-nav">
+                            
+                            {/* Botón de cambio de tema */}
+                            <li className="nav-item me-3">
+                                <button 
+                                    className="theme-toggle-btn"
+                                    onClick={toggleTheme}
+                                    title={`Cambiar a tema ${tema === 'light' ? 'oscuro' : 'claro'}`}
+                                >
+                                    {tema === 'light' ? (
+                                        <i className="bi bi-moon-stars"></i>
+                                    ) : (
+                                        <i className="bi bi-sun"></i>
+                                    )}
+                                </button>
+                            </li>
+
                             {/* Dropdown solo visible en escritorio */}
                             <li className="navbar-link dropdown d-none d-lg-block me-4">
-                                <a
-                                    className={`navbar-link dropdown-toggle admin-dropdown-toggle${adminDropdownOpen ? ' show' : ''}`}
-                                    href="#"
+                                <button
+                                    className={`theme-toggle-btn dropdown-toggle admin-dropdown-toggle${adminDropdownOpen ? ' show' : ''}`}
                                     id="adminDropdown"
                                     role="button"
-                                    onMouseEnter={this.showDropdown}
-                                    onMouseLeave={() => this.hideDropdown(200)}
+                                    onMouseEnter={showDropdown}
+                                    onMouseLeave={() => hideDropdown(200)}
                                 >
-                                    <i className="fas fa-cog me-1"></i> Administración
-                                </a>
+                                    <i className="bi bi-gear me-1"></i>
+                                </button>
                                 <ul
                                     className={`dropdown-menu admin-dropdown-menu dropdown-menu-end${adminDropdownOpen ? ' show' : ''}`}
                                     aria-labelledby="adminDropdown"
-                                    onMouseEnter={this.clearHideTimeout}
-                                    onMouseLeave={() => this.hideDropdown(200)}
+                                    onMouseEnter={clearHideTimeout}
+                                    onMouseLeave={() => hideDropdown(200)}
                                 >
                                     <li>
-                                        <a className="dropdown-item mb-2" href="#"><i className="fas fa-clipboard-list me-2"></i> Auditoría</a>
+                                        <a className="dropdown-item mb-2" href="#"><i className="bi bi-clipboard-data me-2"></i> Auditoría</a>
                                     </li>
                                     <li>
-                                        <a className="dropdown-item mb-2" href="#"><i className="fas fa-building me-2"></i> Datos Empresa</a>
+                                        <Link className="dropdown-item mb-2" to="/settings"><i className="bi bi-building me-2"></i> Datos Empresa</Link>
                                     </li>
                                     <li>
-                                        <Link className="dropdown-item" to="/usuarios"><i className="fas fa-plus me-2"></i> Administrar usuarios</Link>
+                                        <Link className="dropdown-item" to="/usuarios"><i className="bi bi-person-plus me-2"></i> Administrar usuarios</Link>
                                     </li>
                                 </ul>
                             </li>
+        
                             <li>
-                                <a className="navbar-link" href="#" onClick={this.handleLogout}>
-                                   Cerrar Sesión
-                                </a>
+                                <button 
+                                    className="theme-toggle-btn" 
+                                    onClick={handleLogout}
+                                    title="Cerrar Sesión"
+                                >
+                                    <i className="bi bi-box-arrow-right"></i>
+                                </button>
                             </li>
                             {/* Versión móvil del menú */}
                             <div className="d-flex flex-column px-3 d-lg-none">
-                                <a className="nav-link text-dark d-flex align-items-center mb-3" href="#">
+                                {/* Botón de tema - versión móvil */}
+                                <button 
+                                    className={`nav-link d-flex align-items-center mb-3 btn ${tema === 'dark' ? 'text-white' : 'text-dark'}`}
+                                    onClick={toggleTheme}
+                                    style={{border: 'none', background: 'transparent', textAlign: 'left'}}
+                                >
                                     <div className="me-3" style={{width: '30px', textAlign: 'center'}}>
-                                        <i className="fas fa-clipboard-list"></i>
+                                        {tema === 'light' ? (
+                                            <i className="bi bi-moon-stars"></i>
+                                        ) : (
+                                            <i className="bi bi-sun"></i>
+                                        )}
+                                    </div>
+                                    <span>{tema === 'light' ? 'Tema Oscuro' : 'Tema Claro'}</span>
+                                </button>
+                                <a className={`nav-link d-flex align-items-center mb-3 ${tema === 'dark' ? 'text-white' : 'text-dark'}`} href="#">
+                                    <div className="me-3" style={{width: '30px', textAlign: 'center'}}>
+                                        <i className="bi bi-clipboard-data"></i>
                                     </div>
                                     <span>Auditoría</span>
                                 </a>
-                                <a className="nav-link text-dark d-flex align-items-center mb-3" href="#">
+                                <a className={`nav-link d-flex align-items-center mb-3 ${tema === 'dark' ? 'text-white' : 'text-dark'}`} href="#">
                                     <div className="me-3" style={{width: '30px', textAlign: 'center'}}>
-                                        <i className="fas fa-user-shield"></i>
+                                        <i className="bi bi-shield-check"></i>
                                     </div>
                                     <span>Permisos</span>
                                 </a>
-                                <a className="nav-link text-dark d-flex align-items-center mb-3" href="#">
+                                <a className={`nav-link d-flex align-items-center mb-3 ${tema === 'dark' ? 'text-white' : 'text-dark'}`} href="#">
                                     <div className="me-3" style={{width: '30px', textAlign: 'center'}}>
-                                        <i className="fas fa-building"></i>
+                                        <i className="bi bi-building"></i>
                                     </div>
                                     <span>Datos Empresa</span>
                                 </a>
-                                <Link className="nav-link text-dark d-flex align-items-center mb-3" to="/usuarios">
+                                <Link className={`nav-link d-flex align-items-center mb-3 ${tema === 'dark' ? 'text-white' : 'text-dark'}`} to="/usuarios">
                                     <div className="me-3" style={{width: '30px', textAlign: 'center'}}>
-                                        <i className="fas fa-user-plus"></i>
+                                        <i className="bi bi-person-plus"></i>
                                     </div>
                                     <span>Administrar usuarios</span>
                                 </Link>
@@ -110,8 +162,7 @@ class Navbar extends React.Component {
                 </div>
             </nav>
         );
-    }
-}
+};
 
 window.Navbar = Navbar;
 

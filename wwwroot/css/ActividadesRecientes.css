@@ -98,11 +98,108 @@
     text-align: right;
 }
 
+/* ===== ESTILOS TEMA OSCURO PARA ACTIVIDADES RECIENTES ===== */
+
+/* Contenedor principal en tema oscuro */
+.actividades-recientes-section.theme-dark {
+    background: rgba(15, 20, 35, 0.85) !important;
+    border: 1px solid rgba(67, 97, 238, 0.15) !important;
+    box-shadow: 0 2px 16px 0 rgba(0, 0, 0, 0.3), 0 1.5px 4px 0 rgba(67, 97, 238, 0.15) !important;
+}
+
+/* Título en tema oscuro */
+.actividades-recientes-section.theme-dark .section-title {
+    color: #b3a9ff !important;
+}
+
+/* Items de actividad en tema oscuro */
+.actividades-recientes-section.theme-dark .activity-item {
+    background: linear-gradient(90deg, rgba(20, 25, 40, 0.8) 80%, rgba(20, 25, 40, 0.9) 100%) !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2) !important;
+    border: 1px solid rgba(67, 97, 238, 0.2) !important;
+}
+
+.actividades-recientes-section.theme-dark .activity-item.urgent {
+    background: linear-gradient(90deg, rgba(40, 20, 25, 0.8) 80%, rgba(40, 20, 25, 0.9) 100%) !important;
+    border: 1px solid rgba(244, 67, 54, 0.3) !important;
+}
+
+.actividades-recientes-section.theme-dark .activity-item:hover {
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3) !important;
+    transform: translateY(-2px) scale(1.01);
+}
+
+/* Iconos en tema oscuro */
+.actividades-recientes-section.theme-dark .activity-icon {
+    color: #b3a9ff !important;
+    background: linear-gradient(135deg, rgba(67, 97, 238, 0.2) 0%, rgba(15, 20, 35, 0.8) 100%) !important;
+    border: 1px solid rgba(67, 97, 238, 0.3);
+}
+
+.actividades-recientes-section.theme-dark .activity-item.urgent .activity-icon {
+    color: #ff8a8a !important;
+    background: linear-gradient(135deg, rgba(244, 67, 54, 0.2) 0%, rgba(40, 20, 25, 0.8) 100%) !important;
+    border: 1px solid rgba(244, 67, 54, 0.4);
+}
+
+/* Texto en tema oscuro */
+.actividades-recientes-section.theme-dark .act-tipo {
+    color: #e8eaed !important;
+}
+
+.actividades-recientes-section.theme-dark .act-description {
+    color: #e8eaed !important;
+    opacity: 0.8;
+}
+
+.actividades-recientes-section.theme-dark .act-fecha {
+    color: #b3a9ff !important;
+    opacity: 0.7;
+}
+
+/* Separador en tema oscuro */
+.actividades-recientes-section.theme-dark hr {
+    border-color: rgba(67, 97, 238, 0.3) !important;
+    opacity: 0.6;
+}
+
+/* Enlace "Mostrar más" en tema oscuro */
+.actividades-recientes-section.theme-dark .show-more-link {
+    color: #b3a9ff !important;
+    opacity: 0.8;
+}
+
+.actividades-recientes-section.theme-dark .show-more-link:hover {
+    color: #d7ceff !important;
+    opacity: 1;
+}
+
+/* Badge en tema oscuro */
+.theme-dark .badge.bg-danger {
+    background: #dc3545 !important;
+    color: #ffffff !important;
+}
+
+/* Transiciones suaves para cambio de tema */
+.actividades-recientes-section,
+.activity-item,
+.activity-icon,
+.act-tipo,
+.act-description,
+.act-fecha,
+.show-more-link {
+    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease !important;
+}
+
+/* Responsive adjustments para tema oscuro */
 @media (max-width: 700px) {
-    .actividades-recientes-section {
+    .actividades-recientes-section.theme-dark {
         padding: 15px;
+        border: 1px solid rgba(67, 97, 238, 0.15);
     }
-    .activity-item {
+    
+    .activity-item.theme-dark {
         padding: 10px 7px 6px 7px;
+        border: 1px solid rgba(67, 97, 238, 0.2);
     }
 }

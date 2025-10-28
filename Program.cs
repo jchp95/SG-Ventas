@@ -212,27 +212,63 @@ public class Program
                 .AddScriptWithoutTransform("~/Scripts/Components/Navbar.js")
                 .AddScriptWithoutTransform("~/Scripts/Components/Footer.js")
                 .AddScriptWithoutTransform("~/Scripts/Components/Sidebar.js")
+                .AddScriptWithoutTransform("~/Scripts/Components/Toasts.js")
                 .AddScriptWithoutTransform("~/Scripts/Components/ChartHome.js")
                 .AddScriptWithoutTransform("~/Scripts/Components/ActividadesRecientes.js")
-
-                // Offcanvas
                 .AddScriptWithoutTransform("~/Scripts/Components/OffCanvas/OffCanvas.js")
                 .AddScriptWithoutTransform("~/Scripts/Components/OffCanvas/OffCanvasActRecientes.js")
                 .AddScriptWithoutTransform("~/Scripts/Components/OffCanvas/OffCanvasPermissions.js")
-                
-                //Tablas
                 .AddScriptWithoutTransform("~/Scripts/Components/TableUsers.js")
-
-                // Modales
                 .AddScriptWithoutTransform("~/Scripts/Components/Modal/Modal.js")
                 .AddScriptWithoutTransform("~/Scripts/Components/Modal/CreateUserModal.js")
 
-                // Pages
+                //////////////////
+                // REDUX - Nueva estructura modular
+                //////////////////
+                // Actions
+                .AddScriptWithoutTransform("~/Scripts/Redux/Actions/appActions.js")
+                .AddScriptWithoutTransform("~/Scripts/Redux/Actions/usuariosActions.js")
+                .AddScriptWithoutTransform("~/Scripts/Redux/Actions/ventasActions.js")
+                
+                // Reducers
+                .AddScriptWithoutTransform("~/Scripts/Redux/Reducers/appReducer.js")
+                .AddScriptWithoutTransform("~/Scripts/Redux/Reducers/usuariosReducer.js")
+                .AddScriptWithoutTransform("~/Scripts/Redux/Reducers/ventasReducer.js")
+                
+                // Selectors
+                .AddScriptWithoutTransform("~/Scripts/Redux/Selectors/index.js")
+                
+                // Store
+                .AddScriptWithoutTransform("~/Scripts/Redux/Store/index.js")
+                
+                // Hooks/Provider
+                .AddScriptWithoutTransform("~/Scripts/Redux/Hooks/index.js")
+
+                //////////////////
+                // UTILS
+                //////////////////
+                .AddScriptWithoutTransform("~/Scripts/Utils/Fecha/formatDate.js")
+                .AddScriptWithoutTransform("~/Scripts/Utils/Moneda/formatCurrency.js")
+                .AddScriptWithoutTransform("~/Scripts/Utils/Validacion/HookFormUtils.js")
+                .AddScriptWithoutTransform("~/Scripts/Utils/Numero/IntegerUtils.js")
+
+                //////////////////
+                // SERVICES
+                //////////////////
+                // Aquí se pueden agregar servicios futuros
+                
+                //////////////////
+                // PAGES
+                //////////////////
                 .AddScriptWithoutTransform("~/Scripts/Pages/Auth/Register.js")
                 .AddScriptWithoutTransform("~/Scripts/Pages/Home/Home.js")
                 .AddScriptWithoutTransform("~/Scripts/Pages/Users/UsersList.js")
+                .AddScriptWithoutTransform("~/Scripts/Pages/Settings/Settings.js")
+                .AddScriptWithoutTransform("~/Scripts/Pages/Redux/ExampleReduxPage.js")
 
-                // Main App
+                //////////////////
+                // MAIN APP
+                //////////////////
                 .AddScriptWithoutTransform("~/Scripts/App.js")
                 .AddScriptWithoutTransform("~/Scripts/AppRouter.js")
                 ;
@@ -285,6 +321,9 @@ public class Program
         app.MapControllerRoute(
             "default",
             "{controller=Home}/{action=Index}/{id?}");
+
+        // Fallback para SPA: cualquier ruta no encontrada carga la vista principal
+        app.MapFallbackToController("Index", "Home");
 
         // Inicialización de la base de datos
         await InitializeDatabase(app);

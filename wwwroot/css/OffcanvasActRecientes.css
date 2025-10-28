@@ -43,10 +43,166 @@
     transition: opacity .18s;
 }
 
+/* ===== ESTILOS TEMA OSCURO PARA OFFCANVAS ACTIVIDADES ===== */
+
+/* Offcanvas principal en tema oscuro */
+.offcanvas-actividad-reciente.theme-dark {
+    background: rgba(15, 20, 35, 0.95) !important;
+    box-shadow: -2px 0 24px rgba(0, 0, 0, 0.4) !important;
+    border-left: 6px solid #b3a9ff !important;
+    border-right: 1px solid rgba(67, 97, 238, 0.3);
+}
+
+/* Títulos en tema oscuro */
+.offcanvas-actividad-reciente.theme-dark h5 {
+    color: #b3a9ff !important;
+}
+
+/* Texto en tema oscuro */
+.offcanvas-actividad-reciente.theme-dark .text-muted {
+    color: #b3a9ff !important;
+    opacity: 0.7;
+}
+
+.offcanvas-actividad-reciente.theme-dark .act-description,
+.offcanvas-actividad-reciente.theme-dark .act-detalle,
+.offcanvas-actividad-reciente.theme-dark .act-tipo {
+    color: #e8eaed !important;
+}
+
+.offcanvas-actividad-reciente.theme-dark .act-fecha {
+    color: #b3a9ff !important;
+    opacity: 0.8;
+}
+
+/* Activity items dentro del offcanvas */
+.offcanvas-actividad-reciente.theme-dark .activity-item {
+    background: linear-gradient(90deg, rgba(20, 25, 40, 0.8) 80%, rgba(20, 25, 40, 0.9) 100%) !important;
+    border: 1px solid rgba(67, 97, 238, 0.2) !important;
+}
+
+.offcanvas-actividad-reciente.theme-dark .activity-item.urgent {
+    background: linear-gradient(90deg, rgba(40, 20, 25, 0.8) 80%, rgba(40, 20, 25, 0.9) 100%) !important;
+    border: 1px solid rgba(244, 67, 54, 0.3) !important;
+}
+
+.offcanvas-actividad-reciente.theme-dark .activity-icon {
+    color: #b3a9ff !important;
+    background: linear-gradient(135deg, rgba(67, 97, 238, 0.2) 0%, rgba(15, 20, 35, 0.8) 100%) !important;
+    border: 1px solid rgba(67, 97, 238, 0.3);
+}
+
+.offcanvas-actividad-reciente.theme-dark .activity-item.urgent .activity-icon {
+    color: #ff8a8a !important;
+    background: linear-gradient(135deg, rgba(244, 67, 54, 0.2) 0%, rgba(40, 20, 25, 0.8) 100%) !important;
+}
+
+/* Badge en tema oscuro */
+.offcanvas-actividad-reciente.theme-dark .badge.bg-danger {
+    background: #dc3545 !important;
+    color: #ffffff !important;
+}
+
+/* Botón de cerrar en tema oscuro */
+.offcanvas-actividad-reciente.theme-dark .btn-close {
+    filter: invert(1);
+    opacity: 0.8;
+        background-color: unset;
+}
+
+.offcanvas-actividad-reciente.theme-dark .btn-close:hover {
+    opacity: 1;
+}
+
+/* Separadores en offcanvas */
+.offcanvas-actividad-reciente.theme-dark hr {
+    border-color: #505050 !important;
+    opacity: 0.6;
+}
+
+/* Botón "Ver más" - estilo consistente con paginación de usuarios */
+.register-button {
+    background: linear-gradient(90deg, var(--primary), var(--primary-light)) !important;
+    border: none !important;
+    color: #fff !important;
+    font-weight: 600 !important;
+    padding: 8px 20px !important;
+    border-radius: 8px !important;
+    box-shadow: 0 2px 8px rgba(67, 97, 238, 0.08) !important;
+    transition: background 0.2s, box-shadow 0.2s !important;
+    font-size: 1rem !important;
+    min-width: 120px !important;
+    cursor: pointer !important;
+}
+
+.register-button:hover {
+    background: linear-gradient(90deg, var(--primary-dark), var(--primary)) !important;
+    box-shadow: 0 4px 16px rgba(67, 97, 238, 0.13) !important;
+    color: #fff !important;
+}
+
+.offcanvas-actividad-reciente.theme-dark .register-button {
+    background: linear-gradient(90deg, var(--primary), var(--primary-light)) !important;
+    border: none !important;
+    color: #ffffff !important;
+    box-shadow: 0 2px 8px rgba(67, 97, 238, 0.15) !important;
+}
+
+.offcanvas-actividad-reciente.theme-dark .register-button:hover {
+    background: linear-gradient(90deg, var(--primary-dark), var(--primary)) !important;
+    box-shadow: 0 4px 16px rgba(67, 97, 238, 0.25) !important;
+    color: #ffffff !important;
+}
+
+/* Iconos en tema oscuro */
+.offcanvas-actividad-reciente.theme-dark .act-close-btn .bi {
+    color: #ffffff !important;
+}
+
+/* Separadores y bordes en tema oscuro */
+.offcanvas-actividad-reciente.theme-dark hr {
+    border-color: rgba(67, 97, 238, 0.3) !important;
+    opacity: 0.6;
+}
+
+/* Scrollbar para tema oscuro */
+.offcanvas-actividad-reciente.theme-dark::-webkit-scrollbar {
+    width: 8px;
+}
+
+.offcanvas-actividad-reciente.theme-dark::-webkit-scrollbar-track {
+    background: rgba(15, 20, 35, 0.8);
+    border-radius: 4px;
+}
+
+.offcanvas-actividad-reciente.theme-dark::-webkit-scrollbar-thumb {
+    background: rgba(67, 97, 238, 0.3);
+    border-radius: 4px;
+}
+
+.offcanvas-actividad-reciente.theme-dark::-webkit-scrollbar-thumb:hover {
+    background: rgba(67, 97, 238, 0.5);
+}
+
+/* Transiciones suaves */
+.offcanvas-actividad-reciente {
+    transition: background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease !important;
+}
+
+.offcanvas-actividad-reciente h5,
+.offcanvas-actividad-reciente p,
+.offcanvas-actividad-reciente div,
+.offcanvas-actividad-reciente small {
+    transition: color 0.3s ease !important;
+}
+
+/* Responsive para tema oscuro */
 @media (max-width: 700px) {
-    .offcanvas-actividad-reciente {
+    .offcanvas-actividad-reciente.theme-dark {
         width: 100vw !important;
         border-radius: 0;
         padding: 18px 8px 10px 8px;
+        border-right: none;
+        border-left: 6px solid #b3a9ff;
     }
 }

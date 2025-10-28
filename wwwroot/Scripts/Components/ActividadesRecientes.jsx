@@ -2,13 +2,15 @@
 
 /* global React */
 
-class ActividadesRecientes extends React.Component {
-    constructor(props) {
-        super(props);
-        // Simulación de muchas actividades para paginación
-        const actividades = [];
+const ActividadesRecientes = () => {
+    // Redux hooks para tema
+    const { tema } = window.ReduxProvider.useApp();
+    
+    // Simulación de muchas actividades para paginación
+    const actividades = React.useMemo(() => {
+        const acts = [];
         for (let i = 1; i <= 50; i++) {
-            actividades.push({
+            acts.push({
                 id: i,
                 tipo: i % 3 === 0 ? 'Producto' : (i % 2 === 0 ? 'Cliente' : 'Venta'),
                 descripcion: `Actividad ${i} realizada`,
@@ -17,87 +19,96 @@ class ActividadesRecientes extends React.Component {
                 esUrgente: i % 7 === 0
             });
         }
-        this.state = {
-            actividades,
-            mostrarOffCanvas: false,
-            offCanvasPage: 0,
-            actividadSeleccionada: null
-        };
-    }
+        return acts;
+    }, []);
 
-    getIconClass(tipo) {
+    // Estados locales
+    const [mostrarOffCanvas, setMostrarOffCanvas] = React.useState(false);
+    const [offCanvasPage, setOffCanvasPage] = React.useState(0);
+    const [actividadSeleccionada, setActividadSeleccionada] = React.useState(null);
+
+    const getIconClass = (tipo) => {
         switch (tipo) {
             case 'Venta': return 'bi bi-bar-chart-line';
             case 'Cliente': return 'bi bi-person-plus';
             case 'Producto': return 'bi bi-box-seam';
             default: return 'bi bi-info-circle';
         }
-    }
+    };
 
-    abrirOffCanvasActividad = (actividad) => {
-        this.setState({ mostrarOffCanvas: true, actividadSeleccionada: actividad });
+    const abrirOffCanvasActividad = (actividad) => {
+        setMostrarOffCanvas(true);
+        setActividadSeleccionada(actividad);
         if (window.OffCanvasActRecientes && window.OffCanvasActRecientes.open) {
             window.OffCanvasActRecientes.open();
         }
-    }
-    abrirOffCanvasLista = () => {
-        this.setState({ mostrarOffCanvas: true, offCanvasPage: 0, actividadSeleccionada: null });
+    };
+
+    const abrirOffCanvasLista = () => {
+        setMostrarOffCanvas(true);
+        setOffCanvasPage(0);
+        setActividadSeleccionada(null);
         if (window.OffCanvasActRecientes && window.OffCanvasActRecientes.open) {
             window.OffCanvasActRecientes.open();
         }
-    }
-    cerrarOffCanvas = () => {
-        this.setState({ mostrarOffCanvas: false, actividadSeleccionada: null });
+    };
+
+    const cerrarOffCanvas = () => {
+        setMostrarOffCanvas(false);
+        setActividadSeleccionada(null);
         if (window.OffCanvasActRecientes && window.OffCanvasActRecientes.close) {
             window.OffCanvasActRecientes.close();
         }
-    }
-    verMasOffCanvas = () => {
-        this.setState(prev => ({ offCanvasPage: prev.offCanvasPage + 1 }));
-    }
+    };
 
-    render() {
-        const { actividades, mostrarOffCanvas, offCanvasPage, actividadSeleccionada } = this.state;
-        const ultimas5 = actividades.slice(-5).reverse();
-        // Para el offcanvas: 20 por página, paginación simple
-        const offCanvasActividades = actividades.slice().reverse().slice(0, 20 * (offCanvasPage + 1));
-        const hayMas = actividades.length > offCanvasActividades.length;
-        return (
-            <div className="actividades-recientes-section">
-                <div className="section-title mb-2">Actividades recientes</div>
-                <div className="actividades-list">
-                    {ultimas5.map(act => (
-                        <div key={act.id} className={`activity-item mb-3 ${act.esUrgente ? 'urgent' : ''}`}
-                             style={{cursor: 'pointer'}}
-                             onClick={() => this.abrirOffCanvasActividad(act)}>
-                            <div className="d-flex">
-                                <div className={`activity-icon me-3 ${act.tipo.toLowerCase()}`}> 
-                                    <i className={this.getIconClass(act.tipo)}></i>
-                                </div>
-                                <div>
-                                    <div className="act-tipo">{act.tipo}</div>
-                                    <div className="act-description">{act.descripcion}</div>
-                                    <small className="act-fecha">{act.fecha}</small>
-                                </div>
+    const verMasOffCanvas = () => {
+        setOffCanvasPage(prev => prev + 1);
+    };
+    const ultimas5 = actividades.slice(-5).reverse();
+    // Para el offcanvas: 20 por página, paginación simple
+    const offCanvasActividades = actividades.slice().reverse().slice(0, 20 * (offCanvasPage + 1));
+    const hayMas = actividades.length > offCanvasActividades.length;
+
+    return (
+        <div className={`actividades-recientes-section ${tema === 'dark' ? 'theme-dark' : ''}`}>
+            <div className="section-title mb-2">Actividades recientes</div>
+            <div className="actividades-list">
+                {ultimas5.map(act => (
+                    <div key={act.id} 
+                         className={`activity-item mb-3 ${act.esUrgente ? 'urgent' : ''}`}
+                         style={{cursor: 'pointer'}}
+                         onClick={() => abrirOffCanvasActividad(act)}>
+                        <div className="d-flex">
+                            <div className={`activity-icon me-3 ${act.tipo.toLowerCase()}`}> 
+                                <i className={getIconClass(act.tipo)}></i>
                             </div>
-                            <hr className="my-2" />
+                            <div>
+                                <div className="act-tipo">{act.tipo}</div>
+                                <div className="act-description">{act.descripcion}</div>
+                                <small className="act-fecha">{act.fecha}</small>
+                            </div>
                         </div>
-                    ))}
-                </div>
-                <div className="text-end">
-                    <a href="#" className="show-more-link" onClick={e => {e.preventDefault(); this.abrirOffCanvasLista();}}>Mostrar más</a>
-                </div>
-                <OffCanvasActRecientes 
-                    show={mostrarOffCanvas} 
-                    onClose={this.cerrarOffCanvas} 
-                    actividades={offCanvasActividades} 
-                    verMas={hayMas ? this.verMasOffCanvas : null}
-                    actividad={actividadSeleccionada}
-                />
+                        <hr className="my-2" />
+                    </div>
+                ))}
             </div>
-        );
-    }
-}
+            <div className="text-end">
+                <a href="#" 
+                   className="show-more-link" 
+                   onClick={e => {e.preventDefault(); abrirOffCanvasLista();}}>
+                   Mostrar más
+                </a>
+            </div>
+            <OffCanvasActRecientes 
+                show={mostrarOffCanvas} 
+                onClose={cerrarOffCanvas} 
+                actividades={offCanvasActividades} 
+                verMas={hayMas ? verMasOffCanvas : null}
+                actividad={actividadSeleccionada}
+            />
+        </div>
+    );
+};
 
 window.ActividadesRecientes = ActividadesRecientes;
 

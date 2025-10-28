@@ -86,4 +86,308 @@ a {
     overflow: auto;
 }
 
+/* === REDUX APP LAYOUT STYLES === */
 
+/* Transiciones suaves */
+.transition-all {
+    transition: var(--transition-medium);
+}
+
+/* Estados del sidebar */
+.sidebar-open {
+    margin-left: 0;
+    transition: var(--transition-medium);
+}
+
+.sidebar-closed {
+    margin-left: -250px;
+    transition: var(--transition-medium);
+}
+
+/* Tema oscuro */
+.theme-dark {
+    --color-primary: #4c7fff;
+    --color-secondary: #ffaa5f;
+    --color-white: #1a1a1a;
+    --color-text: #ffffff;
+    --color-muted: #2d2d2d;
+    --color-text-muted: #a0a0a0;
+    background-color: #1a1a1a;
+    color: #ffffff;
+}
+
+/* === ESTILOS PARA TEMA OSCURO COMPLETO === */
+
+/* Variables de tema oscuro */
+.theme-dark {
+    --bs-body-bg: #1a1a1a;
+    --bs-body-color: #ffffff;
+    --bs-border-color: #404040;
+    --bs-secondary-bg: #2d2d2d;
+}
+
+/* Navbar en tema oscuro */
+
+.theme-dark .navbar-brand,
+.theme-dark .navbar-nav .nav-link,
+.theme-dark .navbar-link {
+    color: #ffffff !important;
+}
+
+.theme-dark .navbar-toggler {
+    border-color: #404040;
+}
+
+.theme-dark .navbar-toggler-icon {
+    filter: invert(1);
+}
+
+/* Dropdown en tema oscuro */
+.theme-dark .dropdown-menu {
+    background-color: #2d2d2d !important;
+    border: 1px solid #404040 !important;
+}
+
+.theme-dark .dropdown-item {
+    color: #ffffff !important;
+}
+
+.theme-dark .dropdown-item:hover,
+.theme-dark .dropdown-item:focus {
+    background-color: #404040 !important;
+    color: #ffffff !important;
+}
+
+/* Sidebar en tema oscuro */
+.theme-dark .sidebar {
+    background-color: #2d2d2d !important;
+    border-right: 1px solid #404040;
+}
+
+.theme-dark .sidebar .nav-link {
+    color: #ffffff !important;
+}
+
+.theme-dark .sidebar .nav-link:hover {
+    background-color: #404040 !important;
+}
+
+.theme-dark .sidebar .nav-link.active {
+    background-color: var(--color-primary) !important;
+}
+
+/* Cards en tema oscuro */
+.theme-dark .card {
+    background-color: #2d2d2d !important;
+    border: 1px solid #404040 !important;
+    color: #ffffff !important;
+}
+
+.theme-dark .card-header {
+    background-color: #404040 !important;
+    border-bottom: 1px solid #505050 !important;
+    color: #ffffff !important;
+}
+
+/* Formularios en tema oscuro */
+.theme-dark .form-control {
+    background-color: #404040 !important;
+    border: 1px solid #505050 !important;
+    color: #ffffff !important;
+}
+
+.theme-dark .form-control:focus {
+    background-color: #404040 !important;
+    border-color: var(--color-primary) !important;
+    color: #ffffff !important;
+    box-shadow: 0 0 0 0.2rem rgba(79, 128, 255, 0.25) !important;
+}
+
+.theme-dark .form-control::placeholder {
+    color: #aaaaaa !important;
+}
+
+.theme-dark .form-label {
+    color: #ffffff !important;
+}
+
+/* Tablas en tema oscuro */
+.theme-dark .table {
+    color: #ffffff !important;
+}
+
+.theme-dark .table-striped > tbody > tr:nth-of-type(odd) > td {
+    background-color: rgba(255, 255, 255, 0.05) !important;
+}
+
+.theme-dark .table th {
+    border-color: #404040 !important;
+    background-color: #404040 !important;
+}
+
+.theme-dark .table td {
+    border-color: #404040 !important;
+}
+
+/* Botones en tema oscuro */
+.theme-dark .btn-primary {
+    background-color: var(--color-primary) !important;
+    border-color: var(--color-primary) !important;
+}
+
+.theme-dark .btn-secondary {
+    background-color: #6c757d !important;
+    border-color: #6c757d !important;
+}
+
+.theme-dark .btn-outline-primary {
+    color: var(--color-primary) !important;
+    border-color: var(--color-primary) !important;
+}
+
+.theme-dark .btn-outline-primary:hover {
+    background-color: var(--color-primary) !important;
+    border-color: var(--color-primary) !important;
+}
+
+/* Badges en tema oscuro */
+.theme-dark .badge {
+    color: #ffffff !important;
+}
+
+.theme-dark .bg-success {
+    background-color: #198754 !important;
+}
+
+.theme-dark .bg-secondary {
+    background-color: #6c757d !important;
+}
+
+/* Texto en tema oscuro */
+.theme-dark .text-muted {
+    color: #aaaaaa !important;
+}
+
+.theme-dark .text-dark {
+    color: #ffffff !important;
+}
+
+/* Bordes en tema oscuro */
+.theme-dark .border {
+    border-color: #404040 !important;
+}
+
+/* Contenedor principal */
+.theme-dark .container-fluid {
+   background: rgba(15, 20, 35, 0.8);
+    color: #ffffff;
+}
+
+/* Spinners y loading */
+.theme-dark .spinner-border {
+    color: var(--color-primary) !important;
+}
+
+/* Modal en tema oscuro */
+.theme-dark .modal-content {
+    background-color: #2d2d2d !important;
+    border: 1px solid #404040 !important;
+}
+
+.theme-dark .modal-header {
+    border-bottom: 1px solid #404040 !important;
+}
+
+.bg-dark-footer {
+       background: rgba(15, 20, 35, 0.8);
+    border-top: 1px solid #404040 !important;
+}
+
+.theme-dark .modal-title {
+    color: #ffffff !important;
+}
+
+/* Loading overlay */
+.loading-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+}
+
+/* Animaciones para componentes */
+.fade-in {
+    animation: fadeIn 0.3s ease-in;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.slide-down {
+    animation: slideDown 0.3s ease-out;
+}
+
+@keyframes slideDown {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* === BOTÓN DE TEMA EN NAVBAR === */
+.theme-toggle-btn {
+    border: none !important;
+    background: transparent !important;
+    color: var(--color-text) !important;
+    font-size: 18px;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.theme-toggle-btn:hover {
+    background: rgba(0, 0, 0, 0.1) !important;
+    transform: scale(1.1);
+}
+
+.theme-dark .theme-toggle-btn:hover {
+    background: rgba(255, 255, 255, 0.1) !important;
+}
+
+.theme-toggle-btn i {
+    transition: transform 0.3s ease;
+}
+
+.theme-toggle-btn:hover i {
+    transform: rotate(15deg);
+}
+
+/* Animación de rotación para el cambio de tema */
+@keyframes themeChange {
+    0% { transform: rotate(0deg) scale(1); }
+    50% { transform: rotate(180deg) scale(1.2); }
+    100% { transform: rotate(360deg) scale(1); }
+}
+
+.theme-toggle-btn.changing i {
+    animation: themeChange 0.6s ease-in-out;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .sidebar-closed {
+        margin-left: -280px;
+    }
+    
+    .sidebar-open {
+        margin-left: 0;
+    }
+}

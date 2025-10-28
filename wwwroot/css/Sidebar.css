@@ -105,6 +105,23 @@
         0 2px 8px rgba(0, 0, 0, 0.15);
 }
 
+/* Mejores efectos hover en tema oscuro */
+.sidebar.theme-dark .nav-link:hover,
+.sidebar.theme-dark .nav-link:focus {
+    background: rgba(255, 255, 255, 0.15); /* Fondo más visible */
+    color: #ffffff; /* Blanco puro */
+    text-shadow: 0 1px 4px rgba(0, 0, 0, 0.5); /* Sombra más fuerte */
+    box-shadow: 
+        inset 0 0 0 1px rgba(255, 255, 255, 0.2),
+        0 3px 12px rgba(0, 0, 0, 0.2);
+}
+
+.sidebar.theme-dark .nav-link.active {
+    background: rgba(255, 255, 255, 0.2); /* Fondo más visible para estado activo */
+    color: #ffffff;
+    text-shadow: 0 1px 4px rgba(0, 0, 0, 0.6);
+}
+
 .sidebar .nav-link.active {
     background: rgba(255, 255, 255, 0.18);
     color: #fff;
@@ -127,15 +144,31 @@
     display: grid;
     place-items: center; /* centra el glyph dentro del cuadro */
     margin: 0 !important;
-    transition: font-size 0.3s; /* sin margin-left/right en transición */
+    transition: font-size 0.3s, color 0.3s, filter 0.3s; /* transición para cambios de color */
     justify-self: center;
     align-self: center;
+    font-size: 1.1rem;
+    color: inherit; /* hereda el color del nav-link */
 
     /* mitiga jitter del font durante el cambio de ancho */
     -webkit-font-smoothing: antialiased;
     text-rendering: geometricPrecision;
     backface-visibility: hidden;
     transform: translateZ(0);
+}
+
+/* Mejor contraste para iconos en tema oscuro */
+.sidebar.theme-dark .nav-link i {
+    color: rgba(255, 255, 255, 0.95); /* Blanco más opaco para mejor contraste */
+}
+
+.sidebar.theme-dark .nav-link:hover i,
+.sidebar.theme-dark .nav-link:focus i {
+    color: #ffffff; /* Blanco puro en hover */
+}
+
+.sidebar.theme-dark .nav-link.active i {
+    color: #ffffff; /* Blanco puro en estado activo */
 }
 
 /* 4) Nunca centres la nav-link en colapsado (nada de justify-content:center) */
@@ -186,6 +219,19 @@
     box-shadow: 0 4px 12px rgba(0, 0, 0, .2);
 }
 
+/* Mejor contraste para el botón toggle en tema oscuro */
+.sidebar.theme-dark .sidebar-toggle-icon {
+    background: rgba(255, 255, 255, 0.95); /* Fondo casi blanco para mejor contraste */
+    color: #1e40af; /* Color azul que contraste bien */
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+.sidebar.theme-dark .sidebar-toggle-icon:hover {
+    background: #ffffff; /* Blanco puro en hover */
+    color: #1d4ed8; /* Azul más intenso */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+}
+
 /* "Menú" animado como los labels */
 .sidebar-menu-title {
     margin: 0 1rem 0 .25rem;
@@ -197,6 +243,12 @@
     overflow: hidden;
     transition: opacity .3s, max-width var(--sidebar-transition-time) var(--sidebar-transition-easing), margin .3s;
     color: #fff;
+}
+
+/* Mejor contraste para el título en tema oscuro */
+.sidebar.theme-dark .sidebar-menu-title {
+    color: rgba(255, 255, 255, 0.98); /* Casi blanco puro para mejor legibilidad */
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.4); /* Sombra más pronunciada */
 }
 
 /* En colapsado: solo la columna del icono */
@@ -234,6 +286,15 @@
     border-radius: 8px;
     padding: 2px; /* sin empujar el grid interno */
     transition: background .2s, color .2s;
+}
+
+/* Mejor contraste en tema oscuro */
+.sidebar.theme-dark .nav-link {
+    color: rgba(255, 255, 255, 0.95); /* Más opaco para mejor legibilidad */
+}
+
+.sidebar.theme-dark .sidebar-text {
+    color: rgba(255, 255, 255, 0.95); /* Consistente con los iconos */
 }
 
 .sidebar .nav-link:hover,
@@ -348,4 +409,62 @@
 
 .sidebar.sidebar-expanded .sidebar-text {
     transform: translateX(0) scale(1);
+}
+
+/* ===========================
+   MEJORAS DE CONTRASTE PARA TEMA OSCURO
+   =========================== */
+
+/* Asegurar que el tema oscuro global afecte la sidebar */
+
+body.theme-dark .sidebar .nav-link,
+body.theme-dark .sidebar .nav-link i,
+body.theme-dark .sidebar .sidebar-text {
+    color: rgba(255, 255, 255, 0.95) !important; /* Forzar mejor contraste */
+}
+
+body.theme-dark .sidebar .nav-link:hover,
+body.theme-dark .sidebar .nav-link:focus {
+    color: #ffffff !important; /* Blanco puro en hover */
+    background: rgba(255, 255, 255, 0.15) !important;
+}
+
+body.theme-dark .sidebar .nav-link.active {
+    color: #ffffff !important; /* Blanco puro en estado activo */
+    background: rgba(255, 255, 255, 0.2) !important;
+}
+
+body.theme-dark .sidebar .sidebar-menu-title {
+    color: rgba(255, 255, 255, 0.98) !important;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+}
+
+body.theme-dark .sidebar .sidebar-toggle-icon {
+    background: rgba(255, 255, 255, 0.95) !important;
+    color: #1e40af !important;
+}
+
+body.theme-dark .sidebar .sidebar-toggle-icon:hover {
+    background: #ffffff !important;
+    color: #1d4ed8 !important;
+}
+
+/* Animación suave para iconos al hacer hover */
+.sidebar .nav-link i {
+    transform: scale(1);
+    transition: transform 0.2s ease, color 0.3s ease, filter 0.3s ease;
+}
+
+.sidebar .nav-link:hover i {
+    transform: scale(1.05); /* Ligero aumento de tamaño */
+}
+
+/* Efecto de brillo sutil en iconos activos */
+body.theme-dark .sidebar .nav-link.active i {
+    filter: drop-shadow(0 0 2px rgba(255, 255, 255, 0.3));
+}
+
+/* Mejorar la legibilidad del separador en tema oscuro */
+body.theme-dark .sidebar .sidebar-content::before {
+    background: rgba(255, 255, 255, 0.3); /* Línea más visible */
 }

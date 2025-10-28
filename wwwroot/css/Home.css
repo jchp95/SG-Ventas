@@ -33,29 +33,26 @@ html, body {
     linear-gradient(180deg, rgba(255, 255, 255, .65), rgba(250, 250, 252, .6));
 }
 
-/* Estructura Principal */
-.home-content {
-    display: grid;
-    grid-template-columns: 1fr;
-    grid-template-rows: 1fr;
-    min-height: 100vh;
-    width: 100%;
+/* ===== TEMA OSCURO PARA HOME PAGE ===== */
+
+/* Fondo principal en tema oscuro */
+.home-page.theme-dark {
+    background-color: #0f1423;
+    background-image: radial-gradient(circle at 10% 18%, rgba(67, 97, 238, .18) 0%, rgba(67, 97, 238, .06) 22%, transparent 36%),
+    radial-gradient(circle at 90% 80%, rgba(72, 149, 239, .13) 0%, transparent 22%),
+    linear-gradient(180deg, rgba(15, 20, 35, .85), rgba(20, 25, 40, .8));
 }
 
-.div1 { 
-    grid-area: 1 / 1 / 6 / 6; 
+/* Títulos y texto en tema oscuro */
+.theme-dark .home-title {
+    background: linear-gradient(90deg, #b3a9ff, #d7ceff);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
 }
 
-/* CONTENEDOR PRINCIPAL CON SCROLL */
-.main-container {
-    display: flex;
-    flex-direction: column;
-    height: 100%;
-    padding: 20px;
-    gap: 20px;
-    overflow-y: auto;
-    overflow-x: hidden;
-    padding-bottom: 40px;
+.theme-dark .home-subtitle {
+    color: #e8eaed !important;
 }
 
 /* Eliminar heights fijos de las secciones y usar auto */
@@ -441,4 +438,181 @@ html, body {
 
 .home-content > div {
     animation: scaleFadeIn 0.5s ease-out;
+}
+
+/* Scrollbar personalizada para tema oscuro */
+.theme-dark .main-container::-webkit-scrollbar {
+    width: 8px;
+}
+
+.theme-dark .main-container::-webkit-scrollbar-track {
+    background: rgba(15, 20, 35, 0.8);
+    border-radius: 4px;
+}
+
+.theme-dark .main-container::-webkit-scrollbar-thumb {
+    background: rgba(67, 97, 238, 0.3);
+    border-radius: 4px;
+}
+
+.theme-dark .main-container::-webkit-scrollbar-thumb:hover {
+    background: rgba(67, 97, 238, 0.5);
+}
+
+/* Animaciones suaves para transición de tema */
+.home-page,
+.home-button,
+.metric-card,
+.graph-card {
+    transition: background-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease !important;
+}
+
+/* Excluir canvas de las transiciones para evitar interferencia con Chart.js */
+.graph-card canvas,
+.graph-card canvas * {
+    transition: none !important;
+}
+
+/* Contenedor de acciones en tema oscuro */
+.theme-dark .home-actions {
+    background: rgba(15, 20, 35, 0.6);
+    padding: 18px;
+    border-radius: 12px;
+    border: 1px solid rgba(67, 97, 238, 0.2);
+    backdrop-filter: blur(10px);
+}
+
+/* Responsive adjustments para tema oscuro */
+@media (max-width: 900px) {
+    .theme-dark .home-actions {
+        background: rgba(15, 20, 35, 0.7);
+        padding: 15px;
+        border-radius: 8px;
+        border: 1px solid rgba(67, 97, 238, 0.3);
+        backdrop-filter: blur(10px);
+    }
+}
+
+/* Estados focus para accesibilidad en tema oscuro */
+.theme-dark .home-button:focus {
+    outline: 2px solid #b3a9ff;
+    outline-offset: 2px;
+}
+
+.theme-dark .metric-card:focus-within {
+    outline: 2px solid #b3a9ff;
+    outline-offset: 2px;
+}
+
+/* Títulos y texto en tema oscuro */
+.theme-dark .home-title {
+    background: linear-gradient(90deg, #b3a9ff, #d7ceff);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
+
+.theme-dark .home-subtitle {
+    color: #e8eaed !important;
+}
+
+/* Botones en tema oscuro */
+.theme-dark .home-button {
+    color: #e8eaed !important;
+    background: rgba(20, 25, 40, 0.8) !important;
+    border: 1px solid rgba(67, 97, 238, 0.3) !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2) !important;
+}
+
+.theme-dark .home-button:hover {
+    background: rgba(20, 25, 40, 0.9) !important;
+    border-color: rgba(67, 97, 238, 0.5) !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3) !important;
+    color: #ffffff !important;
+    transform: translateY(-2px);
+}
+
+.theme-dark .home-button i {
+    color: #b3a9ff !important;
+}
+
+/* Cards de métricas en tema oscuro - mantener gradientes coloridos */
+.theme-dark .metric-card {
+    /* Mantener los gradientes originales, solo ajustar sombra */
+    box-shadow: 0 4px 18px rgba(0, 0, 0, .3) !important;
+}
+
+.theme-dark .metric-card:hover {
+    box-shadow: 0 8px 25px rgba(0, 0, 0, .4) !important;
+}
+
+/* Iconos en tema oscuro - mejor contraste */
+.theme-dark .metric-card .home-metric-icon {
+    color: rgba(255, 255, 255, 0.95) !important;
+}
+
+.theme-dark .large-cards-grid .metric-card.large:nth-child(1) .home-metric-icon,
+.theme-dark .small-cards-grid .metric-card.small:nth-child(3) .home-metric-icon {
+    opacity: 0.3 !important;
+}
+
+.theme-dark .large-cards-grid .metric-card.large:nth-child(2) .home-metric-icon,
+.theme-dark .small-cards-grid .metric-card.small:nth-child(4) .home-metric-icon {
+    opacity: 0.32 !important;
+}
+
+.theme-dark .large-cards-grid .metric-card.large:nth-child(3) .home-metric-icon {
+    opacity: 0.3 !important;
+}
+
+.theme-dark .small-cards-grid .metric-card.small:nth-child(1) .home-metric-icon {
+    opacity: 0.35 !important;
+}
+
+.theme-dark .small-cards-grid .metric-card.small:nth-child(2) .home-metric-icon {
+    opacity: 0.32 !important;
+}
+
+/* Hover states para iconos en tema oscuro */
+.theme-dark .large-cards-grid .metric-card.large:hover .home-metric-icon,
+.theme-dark .small-cards-grid .metric-card.small:hover .home-metric-icon {
+    opacity: 0.4 !important;
+}
+
+/* Cards de gráficos en tema oscuro */
+.theme-dark .graph-card {
+    background: rgba(15, 20, 35, 0.85) !important;
+    border: 1px solid rgba(67, 97, 238, 0.15) !important;
+    box-shadow: 0 2px 16px 0 rgba(0, 0, 0, 0.3), 0 1.5px 4px 0 rgba(67, 97, 238, 0.15) !important;
+}
+
+.theme-dark .home-graph-title {
+    color: #b3a9ff !important;
+}
+
+/* Asegurar que los canvas de gráficos no hereden estilos CSS */
+.graph-card canvas {
+    background: transparent !important;
+    color: initial !important;
+    font-family: initial !important;
+}
+
+/* Contenedor de actividades en tema oscuro */
+.theme-dark .activities-container {
+    background: rgba(15, 20, 35, 0.4);
+    border-radius: 12px;
+    padding: 20px;
+    border: 1px solid rgba(67, 97, 238, 0.15);
+}
+
+/* Main container ajustes para tema oscuro */
+.theme-dark .main-container {
+    background: transparent;
+}
+
+.theme-dark .welcome-section,
+.theme-dark .metrics-section,
+.theme-dark .graphs-section,
+.theme-dark .activities-section {
+    background: transparent;
 }

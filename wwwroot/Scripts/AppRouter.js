@@ -25,45 +25,34 @@ var AppRouter = /*#__PURE__*/function (_React$Component) {
       var Router = window.ReactRouterDOM.BrowserRouter;
       var Route = window.ReactRouterDOM.Route;
       var Switch = window.ReactRouterDOM.Switch;
-      // Importa los componentes globales
-      var Navbar = window.Navbar;
-      var Sidebar = window.Sidebar;
-      var Footer = window.Footer;
+      var App = window.App;
       var Home = window.Home;
       var UsersList = window.UsersList;
+      var Settings = window.Settings;
       var Register = window.Register;
-      // Puedes agregar más rutas aquí
-      return /*#__PURE__*/React.createElement(Router, null, /*#__PURE__*/React.createElement("div", {
-        className: "app-layout d-flex flex-column min-vh-100",
-        style: {
-          minHeight: '100vh'
-        }
-      }, /*#__PURE__*/React.createElement("div", {
-        className: "flex-shrink-0"
-      }, /*#__PURE__*/React.createElement(Navbar, null)), /*#__PURE__*/React.createElement("div", {
-        className: "flex-grow-1 d-flex main-row",
-        style: {
-          flex: 1,
-          minHeight: 0
-        }
-      }, /*#__PURE__*/React.createElement(Sidebar, null), /*#__PURE__*/React.createElement("main", {
-        className: "flex-grow-1",
-        style: {
-          overflowY: 'auto'
-        }
-      }, /*#__PURE__*/React.createElement(Switch, null, /*#__PURE__*/React.createElement(Route, {
+      var ExampleReduxPage = window.ExampleReduxPage;
+      var AppProvider = window.ReduxProvider.AppProvider;
+      return /*#__PURE__*/React.createElement(AppProvider, null, /*#__PURE__*/React.createElement(Router, null, /*#__PURE__*/React.createElement(Switch, null, /*#__PURE__*/React.createElement(Route, {
         exact: true,
         path: "/",
         component: Register
       }), /*#__PURE__*/React.createElement(Route, {
-        path: "/home",
-        component: Home
-      }), /*#__PURE__*/React.createElement(Route, {
-        path: "/usuarios",
-        component: UsersList
-      })))), /*#__PURE__*/React.createElement("div", {
-        className: "flex-shrink-0"
-      }, /*#__PURE__*/React.createElement(Footer, null))));
+        render: function render() {
+          return /*#__PURE__*/React.createElement(App, null, /*#__PURE__*/React.createElement(Switch, null, /*#__PURE__*/React.createElement(Route, {
+            path: "/home",
+            component: Home
+          }), /*#__PURE__*/React.createElement(Route, {
+            path: "/usuarios",
+            component: UsersList
+          }), /*#__PURE__*/React.createElement(Route, {
+            path: "/settings",
+            component: Settings
+          }), /*#__PURE__*/React.createElement(Route, {
+            path: "/redux-demo",
+            component: ExampleReduxPage
+          })));
+        }
+      }))));
     }
   }]);
 }(React.Component);

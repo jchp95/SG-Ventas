@@ -1,13 +1,16 @@
 window.Sidebar = function Sidebar() {
     const [expanded, setExpanded] = React.useState(false);
     const Link = window.ReactRouterDOM.Link;
+    
+    // Redux hooks para tema
+    const { tema, sidebarAbierto, toggleSidebar: toggleSidebarRedux } = window.ReduxProvider.useApp();
 
     const toggleSidebar = () => {
         setExpanded(prev => !prev);
     };
 
     return (
-        <div className={`sidebar${expanded ? ' sidebar-expanded' : ' sidebar-collapsed'}`}>
+        <div className={`sidebar ${expanded ? 'sidebar-expanded' : 'sidebar-collapsed'} ${tema === 'dark' ? 'theme-dark' : 'theme-light'}`}>
             <div className="sidebar-header">
                 <span
                     className={`sidebar-toggle-icon bi ${expanded ? 'bi-chevron-left' : 'bi-list'}`}
@@ -15,7 +18,7 @@ window.Sidebar = function Sidebar() {
                     role="button"
                     aria-label="Expandir/collapse sidebar"
                     onClick={toggleSidebar}
-                    onKeyPress={e => {
+                    onKeyDown={e => {
                         if (e.key === 'Enter' || e.key === ' ') toggleSidebar();
                     }}
                 ></span>
@@ -24,7 +27,7 @@ window.Sidebar = function Sidebar() {
             <div className="sidebar-content">
                 <ul className="nav flex-column">
                     <li className="sidebar-nav-item nav-item">
-                        <Link className="nav-link" to="/">
+                        <Link className="nav-link" to="/home">
                             <i className="bi bi-house"></i>
                             <span className="sidebar-text">Inicio</span>
                         </Link>

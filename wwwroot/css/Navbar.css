@@ -1,3 +1,7 @@
+.navbar.navbar-expand-lg.theme-dark {
+    background: rgba(15, 20, 35, 0.8);
+}
+
 /* Estilos para el dropdown de administración en la navbar */
 #adminDropdown.admin-dropdown-toggle::after {
     transition: transform 0.2s ease;
@@ -77,4 +81,54 @@
         left: auto;
         max-width: 98vw;
     }
+}
+
+/* ===== ESTILOS TEMA OSCURO PARA DROPDOWN ===== */
+
+/* Dropdown menu principal en tema oscuro */
+.theme-dark .admin-dropdown-menu {
+    background-color: #2d2d2d !important;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4) !important;
+    border: 1px solid #404040 !important;
+}
+
+/* Items del dropdown en tema oscuro */
+.theme-dark .admin-dropdown-menu .dropdown-item {
+    color: #ffffff !important;
+    background: #2d2d2d !important;
+}
+
+.theme-dark .admin-dropdown-menu .dropdown-item:hover {
+    color: #ffffff !important;
+    background: #404040 !important;
+    box-shadow: inset 5px 5px 10px #1a1a1a, inset -5px -5px 10px #505050 !important;
+}
+
+/* Navbar links en tema oscuro */
+.theme-dark .navbar-link {
+    color: #ffffff !important;
+}
+
+.theme-dark .navbar-link:hover {
+    color: #4c7fff !important;
+}
+
+/* Botón de dropdown toggle en tema oscuro */
+.theme-dark #adminDropdown.admin-dropdown-toggle::after {
+    border-top-color: #ffffff;
+}
+
+/* Iconos del dropdown en tema oscuro */
+.theme-dark .admin-dropdown-menu .dropdown-item i {
+    color: #4c7fff !important;
+}
+
+.theme-dark .admin-dropdown-menu .dropdown-item:hover i {
+    color: #ffffff !important;
+}
+
+/* Transiciones suaves para tema oscuro */
+.theme-dark .admin-dropdown-menu,
+.theme-dark .admin-dropdown-menu .dropdown-item {
+    transition: all 0.3s ease !important;
 }

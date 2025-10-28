@@ -12,13 +12,19 @@ window.Sidebar = function Sidebar() {
     expanded = _React$useState2[0],
     setExpanded = _React$useState2[1];
   var Link = window.ReactRouterDOM.Link;
+
+  // Redux hooks para tema
+  var _window$ReduxProvider = window.ReduxProvider.useApp(),
+    tema = _window$ReduxProvider.tema,
+    sidebarAbierto = _window$ReduxProvider.sidebarAbierto,
+    toggleSidebarRedux = _window$ReduxProvider.toggleSidebar;
   var toggleSidebar = function toggleSidebar() {
     setExpanded(function (prev) {
       return !prev;
     });
   };
   return /*#__PURE__*/React.createElement("div", {
-    className: "sidebar".concat(expanded ? ' sidebar-expanded' : ' sidebar-collapsed')
+    className: "sidebar ".concat(expanded ? 'sidebar-expanded' : 'sidebar-collapsed', " ").concat(tema === 'dark' ? 'theme-dark' : 'theme-light')
   }, /*#__PURE__*/React.createElement("div", {
     className: "sidebar-header"
   }, /*#__PURE__*/React.createElement("span", {
@@ -27,7 +33,7 @@ window.Sidebar = function Sidebar() {
     role: "button",
     "aria-label": "Expandir/collapse sidebar",
     onClick: toggleSidebar,
-    onKeyPress: function onKeyPress(e) {
+    onKeyDown: function onKeyDown(e) {
       if (e.key === 'Enter' || e.key === ' ') toggleSidebar();
     }
   }), /*#__PURE__*/React.createElement("span", {
@@ -40,7 +46,7 @@ window.Sidebar = function Sidebar() {
     className: "sidebar-nav-item nav-item"
   }, /*#__PURE__*/React.createElement(Link, {
     className: "nav-link",
-    to: "/"
+    to: "/home"
   }, /*#__PURE__*/React.createElement("i", {
     className: "bi bi-house"
   }), /*#__PURE__*/React.createElement("span", {

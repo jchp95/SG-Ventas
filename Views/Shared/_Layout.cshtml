@@ -17,6 +17,7 @@
     <link rel="stylesheet" href="~/css/ActividadesRecientes.css"/>
     <link rel="stylesheet" href="~/css/OffCanvasActRecientes.css"/>
     <link rel="stylesheet" href="~/css/UserList.css"/>
+    <link rel="stylesheet" href="~/css/Settings.css"/>
 
     <link rel="stylesheet" href="~/css/Modal.css"/>
 </head>
@@ -29,14 +30,29 @@
 <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
 <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
+
+<!-- Babel para transpilación JSX -->
+<script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+
+<!-- Redux Simple (sin Redux Toolkit por simplicidad) -->
+<script src="https://unpkg.com/redux@4.2.1/dist/redux.min.js"></script>
+<script src="https://unpkg.com/react-redux@8.1.3/dist/react-redux.min.js"></script>
+
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="https://unpkg.com/react-table@7.8.0/dist/react-table.development.js"></script>
 <script src="https://unpkg.com/react-router-dom@5.3.4/umd/react-router-dom.min.js"></script>
+
+<!-- Sweetalert2 Form CDN -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<!-- React Hook Form CDN -->
+<script src="https://unpkg.com/react-hook-form@7.48.2/dist/index.umd.js"></script>
 
 <!-- Components -->
 <script src="~/Scripts/Components/Navbar.js"></script>
 <script src="~/Scripts/Components/Footer.js"></script>
 <script src="~/Scripts/Components/Sidebar.js"></script>
+<script src="~/Scripts/Components/Toasts.js"></script>
 <script src="~/Scripts/Components/ChartHome.js"></script>
 <script src="~/Scripts/Components/ActividadesRecientes.js"></script>
 
@@ -47,10 +63,36 @@
 <script src="~/Scripts/Components/Modal/Modal.js"></script>
 <script src="~/Scripts/Components/Modal/CreateUserModal.js"></script>
 
+<!-- 
+<!-- Redux - Actions -->
+<script src="~/Scripts/Redux/Actions/usuariosActions.js"></script>
+<script src="~/Scripts/Redux/Actions/ventasActions.js"></script>
+<script src="~/Scripts/Redux/Actions/appActions.js"></script>
+
+<!-- Redux - Reducers -->
+<script src="~/Scripts/Redux/Reducers/usuariosReducer.js"></script>
+<script src="~/Scripts/Redux/Reducers/ventasReducer.js"></script>
+<script src="~/Scripts/Redux/Reducers/appReducer.js"></script>
+
+<!-- Redux - Selectores -->
+<script src="~/Scripts/Redux/Selectors/index.js"></script>
+
+<!-- Redux - Store y Hooks -->
+<script src="~/Scripts/Redux/Store/index.js"></script>
+<script src="~/Scripts/Redux/Hooks/index.js"></script>
+
+<!-- Utils  -->
+<script src="~/Scripts/Utils/Fecha/formatDate.js"></script>
+<script src="~/Scripts/Utils/Moneda/formatCurrency.js"></script>
+<script src="~/Scripts/Utils/Validacion/HookFormUtils.js"></script>
+<script src="~/Scripts/Utils/Numero/IntegerUtils.js"></script>
+
 <!-- Pages  -->
 <script src="~/Scripts/Pages/Auth/Register.js"></script>
 <script src="~/Scripts/Pages/Home/Home.js"></script>
 <script src="~/Scripts/Pages/Users/UsersList.js"></script>
+<script src="~/Scripts/Pages/Settings/Settings.js"></script>
+<script src="~/Scripts/Pages/Redux/ExampleReduxPage.js"></script>
 
 <!-- Main App -->
 <script src="~/Scripts/App.js"></script>

@@ -3,36 +3,35 @@ class AppRouter extends React.Component {
         const Router = window.ReactRouterDOM.BrowserRouter;
         const Route = window.ReactRouterDOM.Route;
         const Switch = window.ReactRouterDOM.Switch;
-        // Importa los componentes globales
-        const Navbar = window.Navbar;
-        const Sidebar = window.Sidebar;
-        const Footer = window.Footer;
+        const App = window.App; 
         const Home = window.Home;
         const UsersList = window.UsersList;
+        const Settings = window.Settings;
         const Register = window.Register;
-        // Puedes agregar más rutas aquí
+        const ExampleReduxPage = window.ExampleReduxPage;
+        const AppProvider = window.ReduxProvider.AppProvider;
+        
         return (
-            <Router>
-                <div className="app-layout d-flex flex-column min-vh-100" style={{minHeight: '100vh'}}>
-                    <div className="flex-shrink-0">
-                        <Navbar/>
-                    </div>
-                    <div className="flex-grow-1 d-flex main-row" style={{flex: 1, minHeight: 0}}>
-                        <Sidebar/>
-                        <main className="flex-grow-1" style={{overflowY: 'auto'}}>
-                            <Switch>
-                                <Route exact path="/" component={Register} />
-                                <Route path="/home" component={Home} />
-                                <Route path="/usuarios" component={UsersList} />
-                                {/* Agrega más rutas aquí si lo necesitas */}
-                            </Switch>
-                        </main>
-                    </div>
-                    <div className="flex-shrink-0">
-                        <Footer/>
-                    </div>
-                </div>
-            </Router>
+            <AppProvider>
+                <Router>
+                    <Switch>
+                        {/* Ruta sin layout */}
+                        <Route exact path="/" component={Register} />
+                        {/* Rutas con layout */}
+                        <Route render={() => (
+                            <App>
+                                <Switch>
+                                    <Route path="/home" component={Home} />
+                                    <Route path="/usuarios" component={UsersList} />
+                                    <Route path="/settings" component={Settings} />
+                                    <Route path="/redux-demo" component={ExampleReduxPage} />
+                                    {/* Agrega más rutas aquí */}
+                                </Switch>
+                            </App>
+                        )} />
+                    </Switch>
+                </Router>
+            </AppProvider>
         );
     }
 }

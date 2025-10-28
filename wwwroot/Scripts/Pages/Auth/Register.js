@@ -1,11 +1,16 @@
 "use strict";
 
 function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, _typeof(o); }
+function _extends() { return _extends = Object.assign ? Object.assign.bind() : function (n) { for (var e = 1; e < arguments.length; e++) { var t = arguments[e]; for (var r in t) ({}).hasOwnProperty.call(t, r) && (n[r] = t[r]); } return n; }, _extends.apply(null, arguments); }
+function _regenerator() { /*! regenerator-runtime -- Copyright (c) 2014-present, Facebook, Inc. -- license (MIT): https://github.com/babel/babel/blob/main/packages/babel-helpers/LICENSE */ var e, t, r = "function" == typeof Symbol ? Symbol : {}, n = r.iterator || "@@iterator", o = r.toStringTag || "@@toStringTag"; function i(r, n, o, i) { var c = n && n.prototype instanceof Generator ? n : Generator, u = Object.create(c.prototype); return _regeneratorDefine2(u, "_invoke", function (r, n, o) { var i, c, u, f = 0, p = o || [], y = !1, G = { p: 0, n: 0, v: e, a: d, f: d.bind(e, 4), d: function d(t, r) { return i = t, c = 0, u = e, G.n = r, a; } }; function d(r, n) { for (c = r, u = n, t = 0; !y && f && !o && t < p.length; t++) { var o, i = p[t], d = G.p, l = i[2]; r > 3 ? (o = l === n) && (u = i[(c = i[4]) ? 5 : (c = 3, 3)], i[4] = i[5] = e) : i[0] <= d && ((o = r < 2 && d < i[1]) ? (c = 0, G.v = n, G.n = i[1]) : d < l && (o = r < 3 || i[0] > n || n > l) && (i[4] = r, i[5] = n, G.n = l, c = 0)); } if (o || r > 1) return a; throw y = !0, n; } return function (o, p, l) { if (f > 1) throw TypeError("Generator is already running"); for (y && 1 === p && d(p, l), c = p, u = l; (t = c < 2 ? e : u) || !y;) { i || (c ? c < 3 ? (c > 1 && (G.n = -1), d(c, u)) : G.n = u : G.v = u); try { if (f = 2, i) { if (c || (o = "next"), t = i[o]) { if (!(t = t.call(i, u))) throw TypeError("iterator result is not an object"); if (!t.done) return t; u = t.value, c < 2 && (c = 0); } else 1 === c && (t = i["return"]) && t.call(i), c < 2 && (u = TypeError("The iterator does not provide a '" + o + "' method"), c = 1); i = e; } else if ((t = (y = G.n < 0) ? u : r.call(n, G)) !== a) break; } catch (t) { i = e, c = 1, u = t; } finally { f = 1; } } return { value: t, done: y }; }; }(r, o, i), !0), u; } var a = {}; function Generator() {} function GeneratorFunction() {} function GeneratorFunctionPrototype() {} t = Object.getPrototypeOf; var c = [][n] ? t(t([][n]())) : (_regeneratorDefine2(t = {}, n, function () { return this; }), t), u = GeneratorFunctionPrototype.prototype = Generator.prototype = Object.create(c); function f(e) { return Object.setPrototypeOf ? Object.setPrototypeOf(e, GeneratorFunctionPrototype) : (e.__proto__ = GeneratorFunctionPrototype, _regeneratorDefine2(e, o, "GeneratorFunction")), e.prototype = Object.create(u), e; } return GeneratorFunction.prototype = GeneratorFunctionPrototype, _regeneratorDefine2(u, "constructor", GeneratorFunctionPrototype), _regeneratorDefine2(GeneratorFunctionPrototype, "constructor", GeneratorFunction), GeneratorFunction.displayName = "GeneratorFunction", _regeneratorDefine2(GeneratorFunctionPrototype, o, "GeneratorFunction"), _regeneratorDefine2(u), _regeneratorDefine2(u, o, "Generator"), _regeneratorDefine2(u, n, function () { return this; }), _regeneratorDefine2(u, "toString", function () { return "[object Generator]"; }), (_regenerator = function _regenerator() { return { w: i, m: f }; })(); }
+function _regeneratorDefine2(e, r, n, t) { var i = Object.defineProperty; try { i({}, "", {}); } catch (e) { i = 0; } _regeneratorDefine2 = function _regeneratorDefine(e, r, n, t) { function o(r, n) { _regeneratorDefine2(e, r, function (e) { return this._invoke(r, n, e); }); } r ? i ? i(e, r, { value: n, enumerable: !t, configurable: !t, writable: !t }) : e[r] = n : (o("next", 0), o("throw", 1), o("return", 2)); }, _regeneratorDefine2(e, r, n, t); }
 function ownKeys(e, r) { var t = Object.keys(e); if (Object.getOwnPropertySymbols) { var o = Object.getOwnPropertySymbols(e); r && (o = o.filter(function (r) { return Object.getOwnPropertyDescriptor(e, r).enumerable; })), t.push.apply(t, o); } return t; }
 function _objectSpread(e) { for (var r = 1; r < arguments.length; r++) { var t = null != arguments[r] ? arguments[r] : {}; r % 2 ? ownKeys(Object(t), !0).forEach(function (r) { _defineProperty(e, r, t[r]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys(Object(t)).forEach(function (r) { Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r)); }); } return e; }
 function _defineProperty(e, r, t) { return (r = _toPropertyKey(r)) in e ? Object.defineProperty(e, r, { value: t, enumerable: !0, configurable: !0, writable: !0 }) : e[r] = t, e; }
 function _toPropertyKey(t) { var i = _toPrimitive(t, "string"); return "symbol" == _typeof(i) ? i : i + ""; }
 function _toPrimitive(t, r) { if ("object" != _typeof(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != _typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
+function asyncGeneratorStep(n, t, e, r, o, a, c) { try { var i = n[a](c), u = i.value; } catch (n) { return void e(n); } i.done ? t(u) : Promise.resolve(u).then(r, o); }
+function _asyncToGenerator(n) { return function () { var t = this, e = arguments; return new Promise(function (r, o) { var a = n.apply(t, e); function _next(n) { asyncGeneratorStep(a, r, o, _next, _throw, "next", n); } function _throw(n) { asyncGeneratorStep(a, r, o, _next, _throw, "throw", n); } _next(void 0); }); }; }
 function _slicedToArray(r, e) { return _arrayWithHoles(r) || _iterableToArrayLimit(r, e) || _unsupportedIterableToArray(r, e) || _nonIterableRest(); }
 function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
 function _unsupportedIterableToArray(r, a) { if (r) { if ("string" == typeof r) return _arrayLikeToArray(r, a); var t = {}.toString.call(r).slice(8, -1); return "Object" === t && r.constructor && (t = r.constructor.name), "Map" === t || "Set" === t ? Array.from(r) : "Arguments" === t || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(t) ? _arrayLikeToArray(r, a) : void 0; } }
@@ -19,181 +24,162 @@ function _arrayWithHoles(r) { if (Array.isArray(r)) return r; }
 function Register() {
   var _React = React,
     useState = _React.useState;
-  var _useState = useState({
-      // Usuario
-      name: '',
-      username: '',
-      email: '',
-      password: '',
-      confirm: '',
-      // Empresa
-      companyRnc: '',
-      companyName: '',
-      companyRazonSocial: '',
-      companyAddress: '',
-      companyPhone: '',
-      companyEmail: ''
+  var useHistory = window.ReactRouterDOM.useHistory;
+  var history = useHistory();
+
+  // React Hook Form SEPARADO para cada step
+  var _window$HookFormUtils = window.HookFormUtils.useForm({
+      mode: 'onChange'
     }),
+    userRegister = _window$HookFormUtils.register,
+    handleUserSubmit = _window$HookFormUtils.handleSubmit,
+    userErrors = _window$HookFormUtils.formState.errors,
+    triggerUser = _window$HookFormUtils.trigger,
+    watchUser = _window$HookFormUtils.watch;
+  var _window$HookFormUtils2 = window.HookFormUtils.useForm({
+      mode: 'onChange'
+    }),
+    companyRegister = _window$HookFormUtils2.register,
+    handleCompanySubmit = _window$HookFormUtils2.handleSubmit,
+    companyErrors = _window$HookFormUtils2.formState.errors,
+    triggerCompany = _window$HookFormUtils2.trigger;
+
+  // React Hook Form para login
+  var _window$HookFormUtils3 = window.HookFormUtils.useForm({
+      mode: 'onChange'
+    }),
+    loginRegister = _window$HookFormUtils3.register,
+    handleLoginSubmit = _window$HookFormUtils3.handleSubmit,
+    loginErrors = _window$HookFormUtils3.formState.errors;
+  var _useState = useState(1),
     _useState2 = _slicedToArray(_useState, 2),
-    form = _useState2[0],
-    setForm = _useState2[1];
-  var _useState3 = useState(1),
+    step = _useState2[0],
+    setStep = _useState2[1];
+  var _useState3 = useState(false),
     _useState4 = _slicedToArray(_useState3, 2),
-    step = _useState4[0],
-    setStep = _useState4[1]; // 1 = usuario, 2 = empresa
-  var _useState5 = useState(false),
+    submitting = _useState4[0],
+    setSubmitting = _useState4[1];
+  var _useState5 = useState(null),
     _useState6 = _slicedToArray(_useState5, 2),
-    submitting = _useState6[0],
-    setSubmitting = _useState6[1];
-  var _useState7 = useState(null),
+    message = _useState6[0],
+    setMessage = _useState6[1];
+  var _useState7 = useState(false),
     _useState8 = _slicedToArray(_useState7, 2),
-    message = _useState8[0],
-    setMessage = _useState8[1];
+    fading = _useState8[0],
+    setFading = _useState8[1];
   var _useState9 = useState(false),
     _useState0 = _slicedToArray(_useState9, 2),
-    fading = _useState0[0],
-    setFading = _useState0[1]; // controla la animación de fade entre pasos
-  var _useState1 = useState(false),
+    exiting = _useState0[0],
+    setExiting = _useState0[1];
+  var _useState1 = useState(true),
     _useState10 = _slicedToArray(_useState1, 2),
-    exiting = _useState10[0],
-    setExiting = _useState10[1]; // controla la animación de salida global
-  var _useState11 = useState({}),
+    loginMode = _useState10[0],
+    setLoginMode = _useState10[1];
+  var _useState11 = useState(false),
     _useState12 = _slicedToArray(_useState11, 2),
-    errors = _useState12[0],
-    setErrors = _useState12[1];
-  var _useState13 = useState(true),
+    loginFading = _useState12[0],
+    setLoginFading = _useState12[1];
+  var _useState13 = useState('scale-fade-in'),
     _useState14 = _slicedToArray(_useState13, 2),
-    loginMode = _useState14[0],
-    setLoginMode = _useState14[1]; // controla si se muestra el login
-  var _useState15 = useState(false),
+    loginTransition = _useState14[0],
+    setLoginTransition = _useState14[1];
+  var _useState15 = useState('scale-fade-in'),
     _useState16 = _slicedToArray(_useState15, 2),
-    loginFading = _useState16[0],
-    setLoginFading = _useState16[1]; // animación de fade para login
-  var _useState17 = useState({
-      username: '',
-      password: ''
-    }),
+    imageTransition = _useState16[0],
+    setImageTransition = _useState16[1];
+  var _useState17 = useState('scale-fade-in'),
     _useState18 = _slicedToArray(_useState17, 2),
-    loginForm = _useState18[0],
-    setLoginForm = _useState18[1];
-  var _useState19 = useState({}),
+    stepTransition = _useState18[0],
+    setStepTransition = _useState18[1];
+
+  // Watch para validación de confirmación de password (del step 1)
+  var watchPassword = watchUser("password");
+
+  // Datos combinados para enviar al servidor
+  var _useState19 = useState({
+      user: {},
+      company: {}
+    }),
     _useState20 = _slicedToArray(_useState19, 2),
-    loginErrors = _useState20[0],
-    setLoginErrors = _useState20[1];
-  var _useState21 = useState('scale-fade-in'),
-    _useState22 = _slicedToArray(_useState21, 2),
-    loginTransition = _useState22[0],
-    setLoginTransition = _useState22[1];
-  var _useState23 = useState('scale-fade-in'),
-    _useState24 = _slicedToArray(_useState23, 2),
-    imageTransition = _useState24[0],
-    setImageTransition = _useState24[1];
+    formData = _useState20[0],
+    setFormData = _useState20[1];
 
-  // Estado para animación entre pasos
-  var _useState25 = useState('scale-fade-in'),
-    _useState26 = _slicedToArray(_useState25, 2),
-    stepTransition = _useState26[0],
-    setStepTransition = _useState26[1];
-  function handleInput(e) {
-    var name = e.target.name;
-    var value = e.target.value;
-    setForm(function (prev) {
-      return _objectSpread(_objectSpread({}, prev), {}, _defineProperty({}, name, value));
-    });
-  }
-  function handleLoginInput(e) {
-    var name = e.target.name;
-    var value = e.target.value;
-    setLoginForm(function (prev) {
-      return _objectSpread(_objectSpread({}, prev), {}, _defineProperty({}, name, value));
-    });
-  }
-  function validateUser() {
-    var newErrors = {};
-    if (!form.name) newErrors.name = 'El nombre es obligatorio.';
-    if (!form.username) newErrors.username = 'El nombre de usuario es obligatorio.';
-    if (!form.email) newErrors.email = 'El email es obligatorio.';
-    if (!form.password) newErrors.password = 'La contraseña es obligatoria.';
-    if (form.password !== form.confirm) newErrors.confirm = 'Las contraseñas no coinciden.';
-    return newErrors;
-  }
-  function validateCompany() {
-    var newErrors = {};
-    if (!form.companyRnc) newErrors.companyRnc = 'El RNC de la empresa es obligatorio.';
-    if (!form.companyName) newErrors.companyName = 'El nombre comercial de la empresa es obligatorio.';
-    // ...puedes agregar más validaciones si lo deseas...
-    return newErrors;
-  }
-  function handleContinue(e) {
-    e.preventDefault();
-    var fieldErrors = validateUser();
-    setErrors(fieldErrors);
-    if (Object.keys(fieldErrors).length > 0) return;
-    setMessage(null);
-    setStepTransition('scale-fade-out');
-    setTimeout(function () {
-      setStep(2);
-      setStepTransition('slide-fade-in');
-    }, 450);
-  }
-  function handleSubmit(e) {
-    e.preventDefault();
-    if (step === 1) {
-      return handleContinue(e);
-    }
-    var fieldErrors = validateCompany();
-    setErrors(fieldErrors);
-    if (Object.keys(fieldErrors).length > 0) return;
-    setSubmitting(true);
-    setMessage(null);
-
-    // Simula llamada al servidor. Reemplaza por fetch real a tu API cuando exista.
-    setTimeout(function () {
-      setSubmitting(false);
-
-      // Animación de fade out global antes de cambiar a App
-      setExiting(true);
-      setTimeout(function () {
-        if (typeof App !== 'undefined') {
-          try {
-            var rootEl = document.getElementById('root');
-            if (window.__APP_ROOT && typeof window.__APP_ROOT.render === 'function') {
-              window.__APP_ROOT.render(React.createElement(App, {
-                animateIn: true
-              }));
-            } else if (rootEl && typeof ReactDOM !== 'undefined' && typeof ReactDOM.createRoot === 'function') {
-              window.__APP_ROOT = ReactDOM.createRoot(rootEl);
-              window.__APP_ROOT.render(React.createElement(App, {
-                animateIn: true
-              }));
-            } else {
-              window.location.reload();
+  // Continuar al step 2 - Guardar datos del usuario y avanzar
+  var onUserSubmit = /*#__PURE__*/function () {
+    var _ref = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee(userData) {
+      var isValid;
+      return _regenerator().w(function (_context) {
+        while (1) switch (_context.n) {
+          case 0:
+            _context.n = 1;
+            return triggerUser(['name', 'username', 'email', 'password', 'confirm']);
+          case 1:
+            isValid = _context.v;
+            if (isValid) {
+              setFormData(function (prev) {
+                return _objectSpread(_objectSpread({}, prev), {}, {
+                  user: userData
+                });
+              });
+              setMessage(null);
+              setStepTransition('scale-fade-out');
+              setTimeout(function () {
+                setStep(2);
+                setStepTransition('slide-fade-in');
+              }, 450);
             }
-          } catch (ex) {
-            window.location.reload();
-          }
-        } else {
-          window.location.reload();
+          case 2:
+            return _context.a(2);
         }
-      }, 400); // Espera a que termine el fade out
-    }, 900);
-  }
+      }, _callee);
+    }));
+    return function onUserSubmit(_x) {
+      return _ref.apply(this, arguments);
+    };
+  }();
+
+  // Enviar formulario completo - Combinar datos de usuario y empresa
+  var onCompanySubmit = /*#__PURE__*/function () {
+    var _ref2 = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee2(companyData) {
+      var isValid, completeData;
+      return _regenerator().w(function (_context2) {
+        while (1) switch (_context2.n) {
+          case 0:
+            _context2.n = 1;
+            return triggerCompany(['companyRnc', 'companyName']);
+          case 1:
+            isValid = _context2.v;
+            if (isValid) {
+              setSubmitting(true);
+              setMessage(null);
+              completeData = _objectSpread(_objectSpread({}, formData.user), companyData);
+              console.log('Datos completos para enviar:', completeData);
+              setTimeout(function () {
+                setSubmitting(false);
+                history.push('/home');
+              }, 1200);
+            }
+          case 2:
+            return _context2.a(2);
+        }
+      }, _callee2);
+    }));
+    return function onCompanySubmit(_x2) {
+      return _ref2.apply(this, arguments);
+    };
+  }();
   function formatPhone(value) {
-    // Solo números
     var v = value.replace(/\D/g, '').slice(0, 10);
     if (v.length >= 1) v = '(' + v;
     if (v.length >= 4) v = v.slice(0, 4) + ')-' + v.slice(4);
     if (v.length >= 9) v = v.slice(0, 9) + '-' + v.slice(9);
     return v;
   }
-  function handlePhoneInput(e) {
+  var handlePhoneInput = function handlePhoneInput(e) {
     var value = e.target.value;
-    setForm(function (prev) {
-      return _objectSpread(_objectSpread({}, prev), {}, {
-        companyPhone: formatPhone(value)
-      });
-    });
-  }
+    var formatted = formatPhone(value);
+    e.target.value = formatted;
+  };
   function showLogin() {
     setStepTransition('scale-fade-out');
     setLoginTransition('scale-fade-out');
@@ -216,26 +202,28 @@ function Register() {
       setImageTransition('scale-fade-in');
     }, 450);
   }
-  function handleLoginSubmit(e) {
-    e.preventDefault();
-    var errors = {};
-    if (!loginForm.username) errors.username = 'El usuario es obligatorio.';
-    if (!loginForm.password) errors.password = 'La contraseña es obligatoria.';
-    setLoginErrors(errors);
-    if (Object.keys(errors).length > 0) return;
-    // Aquí iría la lógica de autenticación
-    // Simulación de éxito
-    setSubmitting(true);
-    setTimeout(function () {
-      setSubmitting(false);
-      // Aquí podrías redirigir o mostrar mensaje de éxito
-    }, 900);
-  }
 
-  // clase de transición moderna
+  // Login submit con React Hook Form
+  var onLoginSubmit = /*#__PURE__*/function () {
+    var _ref3 = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee3(data) {
+      return _regenerator().w(function (_context3) {
+        while (1) switch (_context3.n) {
+          case 0:
+            setSubmitting(true);
+            console.log('Datos de login:', data);
+            setTimeout(function () {
+              setSubmitting(false);
+            }, 900);
+          case 1:
+            return _context3.a(2);
+        }
+      }, _callee3);
+    }));
+    return function onLoginSubmit(_x3) {
+      return _ref3.apply(this, arguments);
+    };
+  }();
   var transitionClass = "".concat(fading ? 'fade-out' : 'fade-in', " fade-slide");
-
-  // Estilo para fade out global
   var containerStyle = {
     transition: 'opacity .4s ease',
     opacity: exiting ? 0 : 1
@@ -270,183 +258,146 @@ function Register() {
     className: "form-inner-container w-100"
   }, /*#__PURE__*/React.createElement("h4", {
     className: "card-title d-flex justify-content-center"
-  }, stepTitle), /*#__PURE__*/React.createElement("form", {
+  }, stepTitle), step === 1 && /*#__PURE__*/React.createElement("form", {
     className: "mt-2",
-    onSubmit: step === 1 ? handleContinue : handleSubmit
+    onSubmit: handleUserSubmit(onUserSubmit)
   }, /*#__PURE__*/React.createElement("div", {
     className: "register-fields"
-  }, step === 1 ? /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
-    className: "mb-3"
-  }, /*#__PURE__*/React.createElement("label", {
-    className: "form-label"
-  }, "Nombre"), /*#__PURE__*/React.createElement("input", {
-    type: "text",
+  }, /*#__PURE__*/React.createElement(window.HookFormUtils.InputField, {
+    label: "Nombre",
     name: "name",
-    value: form.name,
-    onChange: handleInput,
-    className: "form-control input-light",
+    type: "text",
+    register: userRegister,
+    errors: userErrors,
+    validation: {
+      required: 'El nombre es obligatorio',
+      minLength: {
+        value: 2,
+        message: 'Mínimo 2 caracteres'
+      }
+    },
     placeholder: "Nombre completo"
-  }), errors.name !== undefined ? /*#__PURE__*/React.createElement("div", {
-    className: "form-text text-danger small"
-  }, errors.name) : /*#__PURE__*/React.createElement("div", {
-    className: "form-text text-danger small",
-    style: {
-      visibility: 'hidden'
-    }
-  }, "\xA0")), /*#__PURE__*/React.createElement("div", {
-    className: "mb-3"
-  }, /*#__PURE__*/React.createElement("label", {
-    className: "form-label"
-  }, "Nombre de usuario"), /*#__PURE__*/React.createElement("input", {
-    type: "text",
+  }), /*#__PURE__*/React.createElement(window.HookFormUtils.InputField, {
+    label: "Nombre de usuario",
     name: "username",
-    value: form.username,
-    onChange: handleInput,
-    className: "form-control input-light",
+    type: "text",
+    register: userRegister,
+    errors: userErrors,
+    validation: {
+      required: 'El nombre de usuario es obligatorio',
+      pattern: {
+        value: /^[a-zA-Z0-9_]+$/,
+        message: 'Solo letras, números y guiones bajos'
+      }
+    },
     placeholder: "usuario123"
-  }), errors.username !== undefined ? /*#__PURE__*/React.createElement("div", {
-    className: "form-text text-danger small"
-  }, errors.username) : /*#__PURE__*/React.createElement("div", {
-    className: "form-text text-danger small",
-    style: {
-      visibility: 'hidden'
-    }
-  }, "\xA0")), /*#__PURE__*/React.createElement("div", {
-    className: "mb-3"
-  }, /*#__PURE__*/React.createElement("label", {
-    className: "form-label"
-  }, "Email"), /*#__PURE__*/React.createElement("input", {
-    type: "email",
+  }), /*#__PURE__*/React.createElement(window.HookFormUtils.InputField, {
+    label: "Email",
     name: "email",
-    value: form.email,
-    onChange: handleInput,
-    className: "form-control input-light",
+    type: "email",
+    register: userRegister,
+    errors: userErrors,
+    validation: {
+      required: 'El email es obligatorio',
+      pattern: {
+        value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+        message: 'Ingrese un email válido'
+      }
+    },
     placeholder: "mail@ejemplo.com"
-  }), errors.email !== undefined ? /*#__PURE__*/React.createElement("div", {
-    className: "form-text text-danger small"
-  }, errors.email) : /*#__PURE__*/React.createElement("div", {
-    className: "form-text text-danger small",
-    style: {
-      visibility: 'hidden'
-    }
-  }, "\xA0")), /*#__PURE__*/React.createElement("div", {
-    className: "mb-3"
-  }, /*#__PURE__*/React.createElement("label", {
-    className: "form-label"
-  }, "Contrase\xF1a"), /*#__PURE__*/React.createElement("input", {
-    type: "password",
+  }), /*#__PURE__*/React.createElement(window.HookFormUtils.InputField, {
+    label: "Contrase\xF1a",
     name: "password",
-    value: form.password,
-    onChange: handleInput,
-    className: "form-control input-light",
-    placeholder: "*******"
-  }), errors.password !== undefined ? /*#__PURE__*/React.createElement("div", {
-    className: "form-text text-danger small"
-  }, errors.password) : /*#__PURE__*/React.createElement("div", {
-    className: "form-text text-danger small",
-    style: {
-      visibility: 'hidden'
-    }
-  }, "\xA0")), /*#__PURE__*/React.createElement("div", {
-    className: "mb-3"
-  }, /*#__PURE__*/React.createElement("label", {
-    className: "form-label"
-  }, "Confirmar contrase\xF1a"), /*#__PURE__*/React.createElement("input", {
     type: "password",
-    name: "confirm",
-    value: form.confirm,
-    onChange: handleInput,
-    className: "form-control input-light",
+    register: userRegister,
+    errors: userErrors,
+    validation: {
+      required: 'La contraseña es obligatoria',
+      minLength: {
+        value: 6,
+        message: 'Mínimo 6 caracteres'
+      }
+    },
     placeholder: "*******"
-  }), errors.confirm !== undefined ? /*#__PURE__*/React.createElement("div", {
-    className: "form-text text-danger small"
-  }, errors.confirm) : /*#__PURE__*/React.createElement("div", {
-    className: "form-text text-danger small",
-    style: {
-      visibility: 'hidden'
-    }
-  }, "\xA0"))) : /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
-    className: "mb-3"
-  }, /*#__PURE__*/React.createElement("label", {
-    className: "form-label"
-  }, "RNC"), /*#__PURE__*/React.createElement("input", {
-    type: "text",
+  }), /*#__PURE__*/React.createElement(window.HookFormUtils.InputField, {
+    label: "Confirmar contrase\xF1a",
+    name: "confirm",
+    type: "password",
+    register: userRegister,
+    errors: userErrors,
+    validation: {
+      required: 'Confirme la contraseña',
+      validate: function validate(value) {
+        return value === watchPassword || 'Las contraseñas no coinciden';
+      }
+    },
+    placeholder: "*******"
+  }))), step === 2 && /*#__PURE__*/React.createElement("form", {
+    className: "mt-2",
+    onSubmit: handleCompanySubmit(onCompanySubmit)
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "register-fields"
+  }, /*#__PURE__*/React.createElement(window.HookFormUtils.InputField, {
+    label: "RNC",
     name: "companyRnc",
-    value: form.companyRnc,
-    onChange: handleInput,
-    className: "form-control input-light",
+    type: "text",
+    register: companyRegister,
+    errors: companyErrors,
+    validation: {
+      required: 'El RNC es requerido',
+      pattern: {
+        value: /^\d{9}$|^\d{11}$/,
+        message: 'El RNC debe tener 9 o 11 dígitos'
+      }
+    },
     placeholder: "RNC de la empresa"
-  }), errors.companyRnc !== undefined ? /*#__PURE__*/React.createElement("div", {
-    className: "form-text text-danger small"
-  }, errors.companyRnc) : /*#__PURE__*/React.createElement("div", {
-    className: "form-text text-danger small",
-    style: {
-      visibility: 'hidden'
-    }
-  }, "\xA0")), /*#__PURE__*/React.createElement("div", {
-    className: "mb-3"
-  }, /*#__PURE__*/React.createElement("label", {
-    className: "form-label"
-  }, "Nombre comercial"), /*#__PURE__*/React.createElement("input", {
-    type: "text",
+  }), /*#__PURE__*/React.createElement(window.HookFormUtils.InputField, {
+    label: "Nombre comercial",
     name: "companyName",
-    value: form.companyName,
-    onChange: handleInput,
-    className: "form-control input-light",
+    type: "text",
+    register: companyRegister,
+    errors: companyErrors,
+    validation: {
+      required: 'El nombre comercial de la empresa es obligatorio'
+    },
     placeholder: "Nombre comercial"
-  }), errors.companyName !== undefined ? /*#__PURE__*/React.createElement("div", {
-    className: "form-text text-danger small"
-  }, errors.companyName) : /*#__PURE__*/React.createElement("div", {
-    className: "form-text text-danger small",
-    style: {
-      visibility: 'hidden'
-    }
-  }, "\xA0")), /*#__PURE__*/React.createElement("div", {
-    className: "mb-3"
-  }, /*#__PURE__*/React.createElement("label", {
-    className: "form-label"
-  }, "Raz\xF3n social"), /*#__PURE__*/React.createElement("input", {
-    type: "text",
+  }), /*#__PURE__*/React.createElement(window.HookFormUtils.OptionalField, {
+    label: "Raz\xF3n social",
     name: "companyRazonSocial",
-    value: form.companyRazonSocial,
-    onChange: handleInput,
-    className: "form-control input-light",
+    type: "text",
+    register: companyRegister,
     placeholder: "Raz\xF3n social (opcional)"
-  })), /*#__PURE__*/React.createElement("div", {
-    className: "mb-3"
-  }, /*#__PURE__*/React.createElement("label", {
-    className: "form-label"
-  }, "Direcci\xF3n"), /*#__PURE__*/React.createElement("input", {
-    type: "text",
+  }), /*#__PURE__*/React.createElement(window.HookFormUtils.OptionalField, {
+    label: "Direcci\xF3n",
     name: "companyAddress",
-    value: form.companyAddress,
-    onChange: handleInput,
-    className: "form-control input-light",
+    type: "text",
+    register: companyRegister,
     placeholder: "Direcci\xF3n"
-  })), /*#__PURE__*/React.createElement("div", {
+  }), /*#__PURE__*/React.createElement("div", {
     className: "mb-3"
   }, /*#__PURE__*/React.createElement("label", {
     className: "form-label"
-  }, "Tel\xE9fono"), /*#__PURE__*/React.createElement("input", {
+  }, "Tel\xE9fono"), /*#__PURE__*/React.createElement("input", _extends({
     type: "text",
-    name: "companyPhone",
-    value: form.companyPhone,
-    onChange: handlePhoneInput,
     className: "form-control input-light",
     placeholder: "(000)-000-0000",
-    maxLength: 14
-  })), /*#__PURE__*/React.createElement("div", {
-    className: "mb-3"
-  }, /*#__PURE__*/React.createElement("label", {
-    className: "form-label"
-  }, "Email de la empresa"), /*#__PURE__*/React.createElement("input", {
-    type: "email",
+    maxLength: 14,
+    onInput: handlePhoneInput
+  }, companyRegister("companyPhone")))), /*#__PURE__*/React.createElement(window.HookFormUtils.InputField, {
+    label: "Email de la empresa",
     name: "companyEmail",
-    value: form.companyEmail,
-    onChange: handleInput,
-    className: "form-control input-light",
+    type: "email",
+    register: companyRegister,
+    errors: companyErrors,
+    validation: {
+      required: false,
+      pattern: {
+        value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+        message: 'Ingrese un email válido'
+      }
+    },
     placeholder: "empresa@ejemplo.com"
-  }))))), /*#__PURE__*/React.createElement("div", {
+  }))), /*#__PURE__*/React.createElement("div", {
     className: "register-btn-container d-flex gap-2"
   }, step === 2 && /*#__PURE__*/React.createElement("button", {
     type: "button",
@@ -463,7 +414,7 @@ function Register() {
     type: "button",
     className: "register-button",
     disabled: submitting,
-    onClick: step === 1 ? handleContinue : handleSubmit
+    onClick: step === 1 ? handleUserSubmit(onUserSubmit) : handleCompanySubmit(onCompanySubmit)
   }, step === 1 ? 'Continuar' : submitting ? 'Registrando...' : 'Registrar')))), /*#__PURE__*/React.createElement("div", {
     className: "col-md-6 d-flex align-items-center justify-content-center"
   }, /*#__PURE__*/React.createElement("img", {
@@ -482,46 +433,30 @@ function Register() {
     className: "card-title d-flex justify-content-center"
   }, "Iniciar sesi\xF3n"), /*#__PURE__*/React.createElement("form", {
     className: "mt-2",
-    onSubmit: handleLoginSubmit
+    onSubmit: handleLoginSubmit(onLoginSubmit)
   }, /*#__PURE__*/React.createElement("div", {
     className: "register-fields"
-  }, /*#__PURE__*/React.createElement("div", {
-    className: "mb-3"
-  }, /*#__PURE__*/React.createElement("label", {
-    className: "form-label"
-  }, "Usuario"), /*#__PURE__*/React.createElement("input", {
-    type: "text",
+  }, /*#__PURE__*/React.createElement(window.HookFormUtils.InputField, {
+    label: "Usuario",
     name: "username",
-    value: loginForm.username,
-    onChange: handleLoginInput,
-    className: "form-control input-light",
+    type: "text",
+    register: loginRegister,
+    errors: loginErrors,
+    validation: {
+      required: 'El usuario es obligatorio'
+    },
     placeholder: "usuario123"
-  }), loginErrors.username !== undefined ? /*#__PURE__*/React.createElement("div", {
-    className: "form-text text-danger small"
-  }, loginErrors.username) : /*#__PURE__*/React.createElement("div", {
-    className: "form-text text-danger small",
-    style: {
-      visibility: 'hidden'
-    }
-  }, "\xA0")), /*#__PURE__*/React.createElement("div", {
-    className: "mb-3"
-  }, /*#__PURE__*/React.createElement("label", {
-    className: "form-label"
-  }, "Contrase\xF1a"), /*#__PURE__*/React.createElement("input", {
-    type: "password",
+  }), /*#__PURE__*/React.createElement(window.HookFormUtils.InputField, {
+    label: "Contrase\xF1a",
     name: "password",
-    value: loginForm.password,
-    onChange: handleLoginInput,
-    className: "form-control input-light",
+    type: "password",
+    register: loginRegister,
+    errors: loginErrors,
+    validation: {
+      required: 'La contraseña es obligatoria'
+    },
     placeholder: "*******"
-  }), loginErrors.password !== undefined ? /*#__PURE__*/React.createElement("div", {
-    className: "form-text text-danger small"
-  }, loginErrors.password) : /*#__PURE__*/React.createElement("div", {
-    className: "form-text text-danger small",
-    style: {
-      visibility: 'hidden'
-    }
-  }, "\xA0"))), /*#__PURE__*/React.createElement("div", {
+  })), /*#__PURE__*/React.createElement("div", {
     className: "register-btn-container d-flex gap-2"
   }, /*#__PURE__*/React.createElement("button", {
     type: "submit",

@@ -11,6 +11,10 @@ function TableUsers(props) {
   var page = props.page || 0;
   var PAGE_SIZE = props.pageSize || 15;
   var onPageChange = props.onPageChange;
+
+  // Redux hooks para tema
+  var _window$ReduxProvider = window.ReduxProvider.useApp(),
+    tema = _window$ReduxProvider.tema;
   var data = [{
     fid_usuario: 1,
     fnombre: "Juan Pérez",
@@ -182,7 +186,7 @@ function TableUsers(props) {
             position: 'relative'
           }
         }, React.createElement('button', {
-          className: 'table-action-icon',
+          className: "table-action-icon ".concat(tema === 'dark' ? 'table-action-icon-dark' : ''),
           onClick: function onClick(e) {
             e.stopPropagation();
             setMenuRow(cell.row.id);
@@ -190,7 +194,7 @@ function TableUsers(props) {
         }, React.createElement('i', {
           className: 'bi bi-three-dots-vertical'
         })), menuRow === cell.row.id && React.createElement('div', {
-          className: 'table-action-menu card shadow-sm',
+          className: "table-action-menu card shadow-sm ".concat(tema === 'dark' ? 'table-action-menu-dark' : ''),
           style: {
             position: 'absolute',
             top: 0,
@@ -199,7 +203,7 @@ function TableUsers(props) {
             minWidth: 120
           }
         }, React.createElement('button', {
-          className: 'dropdown-item',
+          className: "dropdown-item ".concat(tema === 'dark' ? 'dropdown-item-dark' : ''),
           onClick: function onClick() {
             setMenuRow(null);
             if (props.onEditUser) {
@@ -207,7 +211,7 @@ function TableUsers(props) {
             }
           }
         }, 'Editar'), React.createElement('button', {
-          className: 'dropdown-item',
+          className: "dropdown-item ".concat(tema === 'dark' ? 'dropdown-item-dark' : ''),
           onClick: function onClick() {
             setMenuRow(null);
             if (props.onPermissions) {
@@ -215,14 +219,16 @@ function TableUsers(props) {
             }
           }
         }, 'Permisos'), React.createElement('button', {
-          className: 'dropdown-item',
+          className: "dropdown-item ".concat(tema === 'dark' ? 'dropdown-item-dark' : ''),
           onClick: function onClick() {
-            /* lógica anular */setMenuRow(null);
+            setMenuRow(null);
+            if (window.Toats) window.Toats.show('accent', 'Usuario anulado');
           }
         }, 'Anular'), React.createElement('button', {
-          className: 'dropdown-item text-danger',
+          className: "dropdown-item text-danger ".concat(tema === 'dark' ? 'dropdown-item-dark dropdown-item-danger-dark' : ''),
           onClick: function onClick() {
-            /* lógica eliminar */setMenuRow(null);
+            setMenuRow(null);
+            if (window.Toats) window.Toats.show('danger', 'Usuario eliminado');
           }
         }, 'Eliminar')));
       }
@@ -238,14 +244,10 @@ function TableUsers(props) {
     rows = _window$ReactTable$us.rows,
     prepareRow = _window$ReactTable$us.prepareRow;
   return React.createElement(React.Fragment, null, React.createElement('div', {
-    className: 'card shadow-sm'
-  }, React.createElement('div', {
-    className: 'card-body p-0'
+    className: 'users-table-section'
   }, React.createElement('table', Object.assign({
-    className: 'table table-hover mb-0'
-  }, getTableProps()), React.createElement('thead', {
-    className: 'table-light'
-  }, headerGroups.map(function (headerGroup) {
+    className: 'react-table'
+  }, getTableProps()), React.createElement('thead', null, headerGroups.map(function (headerGroup) {
     return React.createElement('tr', Object.assign({
       key: headerGroup.id
     }, headerGroup.getHeaderGroupProps()), headerGroup.headers.map(function (column) {
@@ -262,39 +264,42 @@ function TableUsers(props) {
         key: cell.column.id
       }, cell.getCellProps()), typeof cell.render === 'function' ? cell.render('Cell') : cell.value);
     }));
-  }))))), pageCount > 1 && React.createElement('div', {
-    className: 'd-flex justify-content-end align-items-center mt-3'
+  })))), pageCount > 1 && React.createElement('div', {
+    className: 'd-flex justify-content-end align-items-center mt-3',
+    style: {
+      padding: '0 24px'
+    }
   }, React.createElement('button', {
+    className: "btn btn-primary ".concat(page === 0 ? 'disabled' : ''),
     style: {
       borderRadius: '8px 0px 0px 8px',
-      transition: 'none',
-      transform: 'none',
-      boxShadow: 'none'
+      minWidth: '100px',
+      opacity: page === 0 ? 0.6 : 1
     },
-    className: 'register-button',
     disabled: page === 0,
     onClick: function onClick() {
-      if (onPageChange) onPageChange(page - 1);
+      if (onPageChange && page > 0) onPageChange(page - 1);
     }
   }, 'Anterior'), React.createElement('span', {
+    className: tema === 'dark' ? 'text-light' : 'text-dark',
     style: {
-      padding: 10,
-      background: 'white',
-      boxShadow: 'none',
-      minWidth: 80,
-      textAlign: 'center'
+      padding: '8px 16px',
+      background: tema === 'dark' ? 'rgba(15, 20, 35, 0.8)' : '#fff',
+      border: tema === 'dark' ? '1px solid rgba(67, 97, 238, 0.3)' : '1px solid #e0e0e0',
+      minWidth: '140px',
+      textAlign: 'center',
+      fontSize: '0.9rem'
     }
   }, "P\xE1gina ".concat(page + 1, " de ").concat(pageCount)), React.createElement('button', {
+    className: "btn btn-primary ".concat(page >= pageCount - 1 ? 'disabled' : ''),
     style: {
       borderRadius: '0px 8px 8px 0px',
-      transition: 'none',
-      transform: 'none',
-      boxShadow: 'none'
+      minWidth: '100px',
+      opacity: page >= pageCount - 1 ? 0.6 : 1
     },
-    className: 'register-button',
     disabled: page >= pageCount - 1,
     onClick: function onClick() {
-      if (onPageChange) onPageChange(page + 1);
+      if (onPageChange && page < pageCount - 1) onPageChange(page + 1);
     }
   }, 'Siguiente')));
 }

@@ -1,145 +1,123 @@
 "use strict";
 
-function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, _typeof(o); }
-function _classCallCheck(a, n) { if (!(a instanceof n)) throw new TypeError("Cannot call a class as a function"); }
-function _defineProperties(e, r) { for (var t = 0; t < r.length; t++) { var o = r[t]; o.enumerable = o.enumerable || !1, o.configurable = !0, "value" in o && (o.writable = !0), Object.defineProperty(e, _toPropertyKey(o.key), o); } }
-function _createClass(e, r, t) { return r && _defineProperties(e.prototype, r), t && _defineProperties(e, t), Object.defineProperty(e, "prototype", { writable: !1 }), e; }
-function _callSuper(t, o, e) { return o = _getPrototypeOf(o), _possibleConstructorReturn(t, _isNativeReflectConstruct() ? Reflect.construct(o, e || [], _getPrototypeOf(t).constructor) : o.apply(t, e)); }
-function _possibleConstructorReturn(t, e) { if (e && ("object" == _typeof(e) || "function" == typeof e)) return e; if (void 0 !== e) throw new TypeError("Derived constructors may only return object or undefined"); return _assertThisInitialized(t); }
-function _assertThisInitialized(e) { if (void 0 === e) throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); return e; }
-function _isNativeReflectConstruct() { try { var t = !Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); } catch (t) {} return (_isNativeReflectConstruct = function _isNativeReflectConstruct() { return !!t; })(); }
-function _getPrototypeOf(t) { return _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf.bind() : function (t) { return t.__proto__ || Object.getPrototypeOf(t); }, _getPrototypeOf(t); }
-function _inherits(t, e) { if ("function" != typeof e && null !== e) throw new TypeError("Super expression must either be null or a function"); t.prototype = Object.create(e && e.prototype, { constructor: { value: t, writable: !0, configurable: !0 } }), Object.defineProperty(t, "prototype", { writable: !1 }), e && _setPrototypeOf(t, e); }
-function _setPrototypeOf(t, e) { return _setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function (t, e) { return t.__proto__ = e, t; }, _setPrototypeOf(t, e); }
-function _defineProperty(e, r, t) { return (r = _toPropertyKey(r)) in e ? Object.defineProperty(e, r, { value: t, enumerable: !0, configurable: !0, writable: !0 }) : e[r] = t, e; }
-function _toPropertyKey(t) { var i = _toPrimitive(t, "string"); return "symbol" == _typeof(i) ? i : i + ""; }
-function _toPrimitive(t, r) { if ("object" != _typeof(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != _typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
-var UsersList = /*#__PURE__*/function (_React$Component) {
-  function UsersList(props) {
-    var _this;
-    _classCallCheck(this, UsersList);
-    _this = _callSuper(this, UsersList, [props]);
-    _defineProperty(_this, "handleSearchChange", function (e) {
-      _this.setState({
-        search: e.target.value,
-        page: 0
-      });
-    });
-    _defineProperty(_this, "handlePageChange", function (newPage) {
-      _this.setState({
-        page: newPage
-      });
-    });
-    _defineProperty(_this, "handleOpenCreate", function () {
-      _this.setState({
-        modalOpen: true,
-        modalUser: null
-      });
-    });
-    _defineProperty(_this, "handleOpenEdit", function (user) {
-      _this.setState({
-        modalOpen: true,
-        modalUser: user
-      });
-    });
-    _defineProperty(_this, "handleCloseModal", function () {
-      _this.setState({
-        modalOpen: false,
-        modalUser: null
-      });
-    });
-    _defineProperty(_this, "handleSaveUser", function (user) {
-      // Aquí puedes agregar lógica para guardar/actualizar el usuario
-      _this.setState({
-        modalOpen: false,
-        modalUser: null
-      });
-    });
-    _defineProperty(_this, "handleOpenPermissions", function (user) {
-      _this.setState({
-        selectedUser: user,
-        showOffCanvas: true
-      });
-    });
-    _defineProperty(_this, "handleCloseOffCanvas", function () {
-      _this.setState({
-        showOffCanvas: false,
-        selectedUser: null
-      });
-    });
-    _this.PAGE_SIZE = 15;
-    _this.state = {
-      search: "",
-      page: 0,
-      modalOpen: false,
-      modalUser: null,
-      // null = crear, objeto = editar
-      showOffCanvas: false,
-      selectedUser: null
-    };
-    return _this;
-  }
-  _inherits(UsersList, _React$Component);
-  return _createClass(UsersList, [{
-    key: "render",
-    value: function render() {
-      var _this$state = this.state,
-        search = _this$state.search,
-        page = _this$state.page,
-        modalOpen = _this$state.modalOpen,
-        modalUser = _this$state.modalUser,
-        showOffCanvas = _this$state.showOffCanvas,
-        selectedUser = _this$state.selectedUser;
-      return /*#__PURE__*/React.createElement("div", {
-        className: "users-page"
-      }, /*#__PURE__*/React.createElement("div", {
-        className: "parent users-content"
-      }, /*#__PURE__*/React.createElement("div", {
-        className: "div1 main-container"
-      }, /*#__PURE__*/React.createElement("div", {
-        className: "div2 users-header-section"
-      }, /*#__PURE__*/React.createElement("div", {
-        className: "users-header-content d-flex justify-content-between align-items-center"
-      }, /*#__PURE__*/React.createElement("div", {
-        className: "users-title-section justify-content-start"
-      }, /*#__PURE__*/React.createElement("h2", {
-        className: "users-title fw-bold mb-0"
-      }, "Administrar datos de usuarios")), /*#__PURE__*/React.createElement("div", {
-        className: "users-actions d-flex justify-content-end gap-2"
-      }, /*#__PURE__*/React.createElement("input", {
-        type: "text",
-        className: "form-control input-light",
-        placeholder: "Buscar usuario...",
-        style: {
-          maxWidth: 260
-        },
-        value: search,
-        onChange: this.handleSearchChange
-      }), /*#__PURE__*/React.createElement("button", {
-        className: "register-button",
-        onClick: this.handleOpenCreate
-      }, "Crear Usuario")))), /*#__PURE__*/React.createElement("div", {
-        className: "div3 users-table-section mt-3"
-      }, window.TableUsers ? React.createElement(window.TableUsers, {
-        search: search,
-        page: page,
-        pageSize: this.PAGE_SIZE,
-        onPageChange: this.handlePageChange,
-        onEditUser: this.handleOpenEdit,
-        onPermissions: this.handleOpenPermissions
-      }) : null))), window.Modal && window.CreateUserModal && React.createElement(window.Modal, {
-        open: modalOpen,
-        onClose: this.handleCloseModal
-      }, React.createElement(window.CreateUserModal, {
-        user: modalUser,
-        onClose: this.handleCloseModal,
-        onSave: this.handleSaveUser
-      })), window.OffCanvasPermissions && React.createElement(window.OffCanvasPermissions, {
-        show: showOffCanvas,
-        user: selectedUser,
-        onClose: this.handleCloseOffCanvas
-      }));
-    }
-  }]);
-}(React.Component);
+function _slicedToArray(r, e) { return _arrayWithHoles(r) || _iterableToArrayLimit(r, e) || _unsupportedIterableToArray(r, e) || _nonIterableRest(); }
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+function _unsupportedIterableToArray(r, a) { if (r) { if ("string" == typeof r) return _arrayLikeToArray(r, a); var t = {}.toString.call(r).slice(8, -1); return "Object" === t && r.constructor && (t = r.constructor.name), "Map" === t || "Set" === t ? Array.from(r) : "Arguments" === t || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(t) ? _arrayLikeToArray(r, a) : void 0; } }
+function _arrayLikeToArray(r, a) { (null == a || a > r.length) && (a = r.length); for (var e = 0, n = Array(a); e < a; e++) n[e] = r[e]; return n; }
+function _iterableToArrayLimit(r, l) { var t = null == r ? null : "undefined" != typeof Symbol && r[Symbol.iterator] || r["@@iterator"]; if (null != t) { var e, n, i, u, a = [], f = !0, o = !1; try { if (i = (t = t.call(r)).next, 0 === l) { if (Object(t) !== t) return; f = !1; } else for (; !(f = (e = i.call(t)).done) && (a.push(e.value), a.length !== l); f = !0); } catch (r) { o = !0, n = r; } finally { try { if (!f && null != t["return"] && (u = t["return"](), Object(u) !== u)) return; } finally { if (o) throw n; } } return a; } }
+function _arrayWithHoles(r) { if (Array.isArray(r)) return r; }
+function UsersList() {
+  var PAGE_SIZE = 15;
+  var _React$useState = React.useState(""),
+    _React$useState2 = _slicedToArray(_React$useState, 2),
+    search = _React$useState2[0],
+    setSearch = _React$useState2[1];
+  var _React$useState3 = React.useState(0),
+    _React$useState4 = _slicedToArray(_React$useState3, 2),
+    page = _React$useState4[0],
+    setPage = _React$useState4[1];
+  var _React$useState5 = React.useState(false),
+    _React$useState6 = _slicedToArray(_React$useState5, 2),
+    modalOpen = _React$useState6[0],
+    setModalOpen = _React$useState6[1];
+  var _React$useState7 = React.useState(null),
+    _React$useState8 = _slicedToArray(_React$useState7, 2),
+    modalUser = _React$useState8[0],
+    setModalUser = _React$useState8[1]; // null = crear, objeto = editar
+  var _React$useState9 = React.useState(false),
+    _React$useState0 = _slicedToArray(_React$useState9, 2),
+    showOffCanvas = _React$useState0[0],
+    setShowOffCanvas = _React$useState0[1];
+  var _React$useState1 = React.useState(null),
+    _React$useState10 = _slicedToArray(_React$useState1, 2),
+    selectedUser = _React$useState10[0],
+    setSelectedUser = _React$useState10[1];
+
+  // Redux hooks para tema
+  var _window$ReduxProvider = window.ReduxProvider.useApp(),
+    tema = _window$ReduxProvider.tema;
+  var handleSearchChange = function handleSearchChange(e) {
+    setSearch(e.target.value);
+    setPage(0);
+  };
+  var handlePageChange = function handlePageChange(newPage) {
+    setPage(newPage);
+  };
+  var handleOpenCreate = function handleOpenCreate() {
+    setModalOpen(true);
+    setModalUser(null);
+  };
+  var handleOpenEdit = function handleOpenEdit(user) {
+    setModalOpen(true);
+    setModalUser(user);
+  };
+  var handleCloseModal = function handleCloseModal() {
+    setModalOpen(false);
+    setModalUser(null);
+  };
+  var handleSaveUser = function handleSaveUser(user) {
+    // Aquí puedes agregar lógica para guardar/actualizar el usuario
+    setModalOpen(false);
+    setModalUser(null);
+  };
+  var handleOpenPermissions = function handleOpenPermissions(user) {
+    setSelectedUser(user);
+    setShowOffCanvas(true);
+  };
+  var handleCloseOffCanvas = function handleCloseOffCanvas() {
+    setShowOffCanvas(false);
+    setSelectedUser(null);
+  };
+  return React.createElement('div', {
+    className: "users-page ".concat(tema === 'dark' ? 'theme-dark' : 'theme-light')
+  }, React.createElement('div', {
+    className: 'parent users-content'
+  }, React.createElement('div', {
+    className: 'div1 main-container'
+  }, React.createElement('div', {
+    className: 'div2 users-header-section'
+  }, React.createElement('div', {
+    className: 'users-header-content d-flex justify-content-between align-items-center'
+  }, React.createElement('div', {
+    className: 'users-title-section justify-content-start'
+  }, React.createElement('h2', {
+    className: 'users-title fw-bold mb-0'
+  }, 'Administrar datos de usuarios')), React.createElement('div', {
+    className: 'users-actions d-flex justify-content-end gap-2'
+  }, React.createElement('input', {
+    type: 'text',
+    className: "form-control input-light ".concat(tema === 'dark' ? 'input-dark' : ''),
+    placeholder: 'Buscar usuario...',
+    style: {
+      maxWidth: 260
+    },
+    value: search,
+    onChange: handleSearchChange
+  }), React.createElement('button', {
+    className: 'btn btn-primary',
+    onClick: handleOpenCreate
+  }, React.createElement('i', {
+    className: 'bi bi-plus-circle me-2'
+  }), 'Crear Usuario')))), React.createElement('div', {
+    className: 'div3'
+  }, window.TableUsers ? React.createElement(window.TableUsers, {
+    search: search,
+    page: page,
+    pageSize: PAGE_SIZE,
+    onPageChange: handlePageChange,
+    onEditUser: handleOpenEdit,
+    onPermissions: handleOpenPermissions
+  }) : null))), window.Modal && window.CreateUserModal && React.createElement(window.Modal, {
+    open: modalOpen,
+    onClose: handleCloseModal
+  }, React.createElement(window.CreateUserModal, {
+    user: modalUser,
+    onClose: handleCloseModal,
+    onSave: handleSaveUser
+  })), window.OffCanvasPermissions && React.createElement(window.OffCanvasPermissions, {
+    show: showOffCanvas,
+    user: selectedUser,
+    onClose: handleCloseOffCanvas
+  }));
+}
 window.UsersList = UsersList;
