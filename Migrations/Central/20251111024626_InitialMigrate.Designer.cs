@@ -12,8 +12,8 @@ using ventas.Context;
 namespace ventas.Migrations.Central
 {
     [DbContext(typeof(CentralDbContext))]
-    [Migration("20251014081117_initialMigrate")]
-    partial class initialMigrate
+    [Migration("20251111024626_InitialMigrate")]
+    partial class InitialMigrate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -237,6 +237,14 @@ namespace ventas.Migrations.Central
                         .HasColumnType("varchar(50)")
                         .HasColumnName("faccion");
 
+                    b.Property<string>("Fdetalles")
+                        .HasColumnType("text")
+                        .HasColumnName("fdetalles");
+
+                    b.Property<string>("FdireccionIp")
+                        .HasColumnType("varchar(50)")
+                        .HasColumnName("fdireccion_ip");
+
                     b.Property<DateTime>("Ffecha")
                         .HasColumnType("Date")
                         .HasColumnName("ffecha");
@@ -245,6 +253,10 @@ namespace ventas.Migrations.Central
                         .IsRequired()
                         .HasColumnType("nvarchar(max)")
                         .HasColumnName("fhora");
+
+                    b.Property<int?>("FkidEmpresa")
+                        .HasColumnType("int")
+                        .HasColumnName("fkid_empresa");
 
                     b.Property<int>("FkidRegistro")
                         .HasColumnType("int")
@@ -258,6 +270,10 @@ namespace ventas.Migrations.Central
                         .IsRequired()
                         .HasColumnType("varchar(50)")
                         .HasColumnName("ftabla");
+
+                    b.Property<string>("FuserAgent")
+                        .HasColumnType("varchar(500)")
+                        .HasColumnName("fuser_agent");
 
                     b.HasKey("FidAuditoria");
 

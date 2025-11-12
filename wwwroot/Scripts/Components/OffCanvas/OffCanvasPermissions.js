@@ -85,12 +85,15 @@ var OffCanvasPermissions = /*#__PURE__*/function (_React$Component) {
       var _this2 = this;
       var _this$props = this.props,
         show = _this$props.show,
+        usuario = _this$props.usuario,
         user = _this$props.user;
       var _this$state = this.state,
         activeTab = _this$state.activeTab,
         categories = _this$state.categories,
         permissions = _this$state.permissions;
-      if (!show || !user) return null;
+      // Soportar tanto 'usuario' como 'user' para compatibilidad
+      var userData = usuario;
+      if (!show || !userData) return null;
       return /*#__PURE__*/React.createElement(window.OffCanvas, {
         show: show,
         onClose: this.handleClose,
@@ -108,7 +111,7 @@ var OffCanvasPermissions = /*#__PURE__*/function (_React$Component) {
           fontWeight: 700,
           marginBottom: 0
         }
-      }, 'Permisos de ' + (user.fnombre || user.nombre))), /*#__PURE__*/React.createElement("ul", {
+      }, 'Permisos de ' + userData.fnombre)), /*#__PURE__*/React.createElement("ul", {
         className: "nav nav-tabs mb-3"
       }, categories.map(function (cat) {
         return /*#__PURE__*/React.createElement("li", {

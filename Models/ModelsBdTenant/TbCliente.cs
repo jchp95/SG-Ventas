@@ -7,7 +7,10 @@ namespace ventas.Models.ModelsBdTenant;
 [Table("tb_cliente")]
 public class TbCliente
 {
-    [Key] [Column("fid_cliente")] public int FidCliente { get; set; }
+    [Key]
+    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+    [Column("fid_cliente")]
+    public int FidCliente { get; set; }
 
     [Column("fnumero_cliente")] public int? FnumeroCliente { get; set; }
 

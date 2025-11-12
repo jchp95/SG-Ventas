@@ -11,8 +11,8 @@ const usuariosReducer = (state = {
         estado: 'todos'
     }
 }, action) => {
-    const { TYPES } = window.UsuariosActions;
-    
+    const {TYPES} = window.UsuariosActions;
+
     switch (action.type) {
         case TYPES.SET_USUARIOS:
             return {
@@ -21,48 +21,52 @@ const usuariosReducer = (state = {
                 cargando: false,
                 error: null
             };
-            
+
         case TYPES.AGREGAR_USUARIO:
             return {
                 ...state,
                 lista: [...state.lista, action.payload]
             };
-            
+
         case TYPES.ACTUALIZAR_USUARIO:
             return {
                 ...state,
-                lista: state.lista.map(u => 
-                    u.id === action.payload.id 
-                        ? { ...u, ...action.payload } 
+                lista: state.lista.map(u =>
+                    u.fidUsuario === action.payload.fidUsuario
+                        ? {...u, ...action.payload}
                         : u
                 )
             };
-            
+
         case TYPES.ELIMINAR_USUARIO:
             return {
                 ...state,
-                lista: state.lista.filter(u => u.id !== action.payload)
+                lista: state.lista.map(u =>
+                    u.fidUsuario === action.payload
+                        ? {...u, activo: false}
+                        : u
+                )
             };
-            
+
         case TYPES.SET_CARGANDO:
             return {
                 ...state,
                 cargando: action.payload
             };
-            
+
         case TYPES.SET_ERROR:
             return {
                 ...state,
                 error: action.payload,
                 cargando: false
             };
-            
+
         case TYPES.SET_FILTROS:
             return {
                 ...state,
-                filtros: { ...state.filtros, ...action.payload }
+                filtros: {...state.filtros, ...action.payload}
             };
-            
+
         default:
             return state;
     }

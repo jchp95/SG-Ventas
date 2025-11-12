@@ -42,13 +42,15 @@ var usuariosReducer = function usuariosReducer() {
     case TYPES.ACTUALIZAR_USUARIO:
       return _objectSpread(_objectSpread({}, state), {}, {
         lista: state.lista.map(function (u) {
-          return u.id === action.payload.id ? _objectSpread(_objectSpread({}, u), action.payload) : u;
+          return u.fidUsuario === action.payload.fidUsuario ? _objectSpread(_objectSpread({}, u), action.payload) : u;
         })
       });
     case TYPES.ELIMINAR_USUARIO:
       return _objectSpread(_objectSpread({}, state), {}, {
-        lista: state.lista.filter(function (u) {
-          return u.id !== action.payload;
+        lista: state.lista.map(function (u) {
+          return u.fidUsuario === action.payload ? _objectSpread(_objectSpread({}, u), {}, {
+            activo: false
+          }) : u;
         })
       });
     case TYPES.SET_CARGANDO:

@@ -3,21 +3,48 @@
 /* global React, ReactDOM, App */
 
 function Register() {
-    const {useState} = React;
+    const {useState, useEffect} = React;
     const {useHistory} = window.ReactRouterDOM;
     const history = useHistory();
 
-    // React Hook Form SEPARADO para cada step
-    const { register: userRegister, handleSubmit: handleUserSubmit, formState: { errors: userErrors }, trigger: triggerUser, watch: watchUser } = window.HookFormUtils.useForm({
+    /// Redux hooks
+    const {useAuth} = window.ReduxProvider;
+    const {
+        isAuthenticated,
+        loading: authLoading,
+        error: authError,
+        message: authMessage,
+        login,
+        register,
+        clearError
+    } = useAuth();
+
+    /// React Hook Form SEPARADO para cada step
+    const {
+        register: userRegister,
+        handleSubmit: handleUserSubmit,
+        formState: {errors: userErrors},
+        trigger: triggerUser,
+        watch: watchUser
+    } = window.HookFormUtils.useForm({
         mode: 'onChange'
     });
 
-    const { register: companyRegister, handleSubmit: handleCompanySubmit, formState: { errors: companyErrors }, trigger: triggerCompany } = window.HookFormUtils.useForm({
+    const {
+        register: companyRegister,
+        handleSubmit: handleCompanySubmit,
+        formState: {errors: companyErrors},
+        trigger: triggerCompany
+    } = window.HookFormUtils.useForm({
         mode: 'onChange'
     });
 
     // React Hook Form para login
-    const { register: loginRegister, handleSubmit: handleLoginSubmit, formState: { errors: loginErrors } } = window.HookFormUtils.useForm({
+    const {
+        register: loginRegister,
+        handleSubmit: handleLoginSubmit,
+        formState: {errors: loginErrors}
+    } = window.HookFormUtils.useForm({
         mode: 'onChange'
     });
 
@@ -32,6 +59,7 @@ function Register() {
     const [loginTransition, setLoginTransition] = useState('scale-fade-in');
     const [imageTransition, setImageTransition] = useState('scale-fade-in');
     const [stepTransition, setStepTransition] = useState('scale-fade-in');
+    const [hasRedirected, setHasRedirected] = useState(false); // Para evitar múltiples redirecciones
 
     // Watch para validación de confirmación de password (del step 1)
     const watchPassword = watchUser("password");
@@ -42,11 +70,16 @@ function Register() {
         company: {}
     });
 
-    // Continuar al step 2 - Guardar datos del usuario y avanzar
+    // Continuar al step 2 - Guardar datos del usuario y avanzar 
     const onUserSubmit = async (userData) => {
-        const isValid = await triggerUser(['name', 'username', 'email', 'password', 'confirm']);
+        console.log('Datos recibidos en onUserSubmit:', userData);
+        if (!userData.name || userData.name.trim() === "") {
+            window.ToastUtils.show('error', 'El nombre completo es obligatorio.', 'Error');
+            return;
+        }
+        const isValid = await triggerUser(['name', 'userName', 'email', 'password', 'confirmPassword']);
         if (isValid) {
-            setFormData(prev => ({...prev, user: userData}));
+            setFormData(prev => ({...prev, user: {...userData, name: userData.name}}));
             setMessage(null);
             setStepTransition('scale-fade-out');
             setTimeout(() => {
@@ -60,20 +93,33 @@ function Register() {
     const onCompanySubmit = async (companyData) => {
         const isValid = await triggerCompany(['companyRnc', 'companyName']);
         if (isValid) {
-            setSubmitting(true);
             setMessage(null);
 
+            // Limpiar errores previos
+            if (clearError) {
+                clearError();
+            }
+
+            // Combinar datos de usuario y empresa
             const completeData = {
-                ...formData.user,
-                ...companyData
+                name: formData.user.name,
+                userName: formData.user.userName,
+                email: formData.user.email,
+                password: formData.user.password,
+                confirmPassword: formData.user.confirmPassword,
+                // Datos de la empresa
+                companyRnc: companyData.companyRnc,
+                companyName: companyData.companyName,
+                companyRazonSocial: companyData.companyRazonSocial || null,
+                companyAddress: companyData.companyAddress || null,
+                companyPhone: companyData.companyPhone || null,
+                companyEmail: companyData.companyEmail || null
             };
 
             console.log('Datos completos para enviar:', completeData);
 
-            setTimeout(() => {
-                setSubmitting(false);
-                history.push('/home');
-            }, 1200);
+            // Usar el thunk de register directamente
+            await register(completeData);
         }
     };
 
@@ -115,13 +161,35 @@ function Register() {
         }, 450);
     }
 
-    // Login submit con React Hook Form
+    // Login submit con React Hook Form - Usando el thunk de Redux
     const onLoginSubmit = async (data) => {
-        setSubmitting(true);
-        console.log('Datos de login:', data);
-        setTimeout(() => {
-            setSubmitting(false);
-        }, 900);
+        setMessage(null);
+
+        // Limpiar errores previos
+        if (clearError) {
+            clearError();
+        }
+
+        // Preparar datos de login
+        const loginData = {
+            userName: data.username,
+            password: data.password,
+            rememberMe: false
+        };
+
+        console.log("Datos enviados al servidor", loginData);
+
+        // Usar el thunk de login directamente
+        const result = await login(loginData);
+        
+        // Si el login es exitoso, redirigir usando React Router
+        if (result && result.success && result.redirectPath) {
+            console.log('🚀 [Register] Redirigiendo a:', result.redirectPath);
+            setHasRedirected(true); // Marcar que ya redirigimos para evitar el useEffect
+            setTimeout(() => {
+                history.push(result.redirectPath);
+            }, 500);
+        }
     };
 
     const transitionClass = `${fading ? 'fade-out' : 'fade-in'} fade-slide`;
@@ -131,6 +199,57 @@ function Register() {
     };
 
     const stepTitle = step === 1 ? 'Registro de usuario' : 'Registro de la empresa';
+
+    // Effects para manejo de autenticación
+    useEffect(() => {
+        // Verificar si ya hay token guardado al cargar
+        if (window.AuthActions) {
+            const tokenAction = window.AuthActions.checkAuthToken();
+            if (tokenAction && tokenAction.type !== 'auth/noToken') {
+                window.ReduxStore.store.dispatch(tokenAction);
+            }
+        }
+    }, []);
+
+    useEffect(() => {
+        // Si ya está autenticado AL CARGAR LA PÁGINA (no después de login), redirigir según el rol
+        if (isAuthenticated && !hasRedirected) {
+            const token = localStorage.getItem('authToken');
+            
+            if (token && window.JwtUtils && window.RoleConstants) {
+                const role = window.JwtUtils.getRoleFromToken(token);
+                console.log('🔄 [Register] Usuario autenticado detectado al cargar, rol:', role);
+                
+                if (role) {
+                    const roleCode = window.RoleConstants.getRoleCode(role);
+                    const isAdmin = window.RoleConstants.isAdmin(roleCode);
+                    
+                    const redirectPath = isAdmin ? '/home' : '/comun-home';
+                    console.log('🚀 [Register] Redirigiendo al cargar a:', redirectPath);
+                    
+                    setHasRedirected(true);
+                    setTimeout(() => {
+                        history.push(redirectPath);
+                    }, 300);
+                } else {
+                    // Si no se puede extraer el rol, redirigir a home por defecto
+                    console.warn('⚠️ [Register] No se pudo extraer el rol al cargar, redirigiendo a /home');
+                    setHasRedirected(true);
+                    history.push('/home');
+                }
+            } else {
+                // Si no hay JwtUtils, redirigir a home por defecto
+                console.warn('⚠️ [Register] JwtUtils no disponible al cargar, redirigiendo a /home');
+                setHasRedirected(true);
+                window.location.href = '/home';
+            }
+        }
+    }, [isAuthenticated, history, hasRedirected]);
+
+    useEffect(() => {
+        // Sincronizar el estado local de submitting con authLoading
+        setSubmitting(authLoading);
+    }, [authLoading]);
 
     return (
         <div className="register-container d-flex justify-content-center align-items-center position-relative"
@@ -152,6 +271,8 @@ function Register() {
                 <div className="col-12 col-lg-10">
                     <div className="card shadow-sm register-card glassmorphism-effect register-card-min-height">
                         <div className="card-body d-grid">
+                            {/* Mostrar mensajes de error/éxito */}
+                            {/* Eliminado el alert clásico, los mensajes globales van por ToastUtils */}
                             <div className="row">
                                 {/* Izquierda: formulario (usuario o empresa según step) */}
                                 {!loginMode && (
@@ -172,20 +293,26 @@ function Register() {
                                                                 errors={userErrors}
                                                                 validation={{
                                                                     required: 'El nombre es obligatorio',
-                                                                    minLength: { value: 2, message: 'Mínimo 2 caracteres' }
+                                                                    minLength: {
+                                                                        value: 2,
+                                                                        message: 'Mínimo 2 caracteres'
+                                                                    }
                                                                 }}
                                                                 placeholder="Nombre completo"
                                                             />
 
                                                             <window.HookFormUtils.InputField
                                                                 label="Nombre de usuario"
-                                                                name="username"
+                                                                name="userName"
                                                                 type="text"
                                                                 register={userRegister}
                                                                 errors={userErrors}
                                                                 validation={{
                                                                     required: 'El nombre de usuario es obligatorio',
-                                                                    pattern: { value: /^[a-zA-Z0-9_]+$/, message: 'Solo letras, números y guiones bajos' }
+                                                                    pattern: {
+                                                                        value: /^[a-zA-Z0-9_]+$/,
+                                                                        message: 'Solo letras, números y guiones bajos'
+                                                                    }
                                                                 }}
                                                                 placeholder="usuario123"
                                                             />
@@ -214,14 +341,17 @@ function Register() {
                                                                 errors={userErrors}
                                                                 validation={{
                                                                     required: 'La contraseña es obligatoria',
-                                                                    minLength: { value: 6, message: 'Mínimo 6 caracteres' }
+                                                                    minLength: {
+                                                                        value: 6,
+                                                                        message: 'Mínimo 6 caracteres'
+                                                                    }
                                                                 }}
                                                                 placeholder="*******"
                                                             />
 
                                                             <window.HookFormUtils.InputField
                                                                 label="Confirmar contraseña"
-                                                                name="confirm"
+                                                                name="confirmPassword"
                                                                 type="password"
                                                                 register={userRegister}
                                                                 errors={userErrors}
@@ -237,7 +367,8 @@ function Register() {
 
                                                 {/* FORMULARIO SEPARADO PARA STEP 2 - EMPRESA */}
                                                 {step === 2 && (
-                                                    <form className="mt-2" onSubmit={handleCompanySubmit(onCompanySubmit)}>
+                                                    <form className="mt-2"
+                                                          onSubmit={handleCompanySubmit(onCompanySubmit)}>
                                                         <div className="register-fields">
                                                             <window.HookFormUtils.InputField
                                                                 label="RNC"
@@ -347,7 +478,10 @@ function Register() {
                                         <div className="col-md-6 d-flex align-items-center justify-content-center">
                                             <img src="/img/register.jpg" alt="Ilustración registro"
                                                  className={`image ${imageTransition}`}
-                                                 style={{ maxWidth: '100%', boxShadow: '0 8px 30px rgba(36,37,38,0.06)' }}/>
+                                                 style={{
+                                                     maxWidth: '100%',
+                                                     boxShadow: '0 8px 30px rgba(36,37,38,0.06)'
+                                                 }}/>
                                         </div>
                                     </>
                                 )}
@@ -357,7 +491,8 @@ function Register() {
                                     <>
                                         <div className={`col-md-6 ${loginTransition}`}>
                                             <div className="form-inner-container w-100">
-                                                <h4 className="card-title d-flex justify-content-center">Iniciar sesión</h4>
+                                                <h4 className="card-title d-flex justify-content-center">Iniciar
+                                                    sesión</h4>
                                                 <form className="mt-2" onSubmit={handleLoginSubmit(onLoginSubmit)}>
                                                     <div className="register-fields">
                                                         <window.HookFormUtils.InputField
@@ -399,7 +534,10 @@ function Register() {
                                         <div className="col-md-6 d-flex align-items-center justify-content-center">
                                             <img src="/img/login.jpg" alt="Ilustración login"
                                                  className={`image ${imageTransition}`}
-                                                 style={{ maxWidth: '100%', boxShadow: '0 8px 30px rgba(36,37,38,0.06)' }}/>
+                                                 style={{
+                                                     maxWidth: '100%',
+                                                     boxShadow: '0 8px 30px rgba(36,37,38,0.06)'
+                                                 }}/>
                                         </div>
                                     </>
                                 )}

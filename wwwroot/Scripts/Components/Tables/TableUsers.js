@@ -7,7 +7,7 @@ function _arrayLikeToArray(r, a) { (null == a || a > r.length) && (a = r.length)
 function _iterableToArrayLimit(r, l) { var t = null == r ? null : "undefined" != typeof Symbol && r[Symbol.iterator] || r["@@iterator"]; if (null != t) { var e, n, i, u, a = [], f = !0, o = !1; try { if (i = (t = t.call(r)).next, 0 === l) { if (Object(t) !== t) return; f = !1; } else for (; !(f = (e = i.call(t)).done) && (a.push(e.value), a.length !== l); f = !0); } catch (r) { o = !0, n = r; } finally { try { if (!f && null != t["return"] && (u = t["return"](), Object(u) !== u)) return; } finally { if (o) throw n; } } return a; } }
 function _arrayWithHoles(r) { if (Array.isArray(r)) return r; }
 function TableUsers(props) {
-  var search = props.search || "";
+  var data = props.data || [];
   var page = props.page || 0;
   var PAGE_SIZE = props.pageSize || 15;
   var onPageChange = props.onPageChange;
@@ -15,127 +15,13 @@ function TableUsers(props) {
   // Redux hooks para tema
   var _window$ReduxProvider = window.ReduxProvider.useApp(),
     tema = _window$ReduxProvider.tema;
-  var data = [{
-    fid_usuario: 1,
-    fnombre: "Juan Pérez",
-    fnombre_usuario: "jperez",
-    femail: "juan@ejemplo.com",
-    fnivel: 1,
-    factivo: true
-  }, {
-    fid_usuario: 2,
-    fnombre: "Ana Gómez",
-    fnombre_usuario: "agomez",
-    femail: "ana@ejemplo.com",
-    fnivel: 2,
-    factivo: false
-  }, {
-    fid_usuario: 3,
-    fnombre: "Camila Gómez",
-    fnombre_usuario: "cgomez",
-    femail: "camila@ejemplo.com",
-    fnivel: 2,
-    factivo: true
-  }, {
-    fid_usuario: 4,
-    fnombre: "Pedro Martínez",
-    fnombre_usuario: "pmartinez",
-    femail: "pedro@ejemplo.com",
-    fnivel: 2,
-    factivo: false
-  }, {
-    fid_usuario: 5,
-    fnombre: "Laura Fernández",
-    fnombre_usuario: "lfernandez",
-    femail: "laura@ejemplo.com",
-    fnivel: 2,
-    factivo: false
-  }, {
-    fid_usuario: 6,
-    fnombre: "Javier López",
-    fnombre_usuario: "jlopez",
-    femail: "javier@ejemplo.com",
-    fnivel: 2,
-    factivo: true
-  }, {
-    fid_usuario: 7,
-    fnombre: "Malena Torres",
-    fnombre_usuario: "matorres",
-    femail: "malena@ejemplo.com",
-    fnivel: 2,
-    factivo: false
-  }, {
-    fid_usuario: 8,
-    fnombre: "Javier Torres",
-    fnombre_usuario: "storres",
-    femail: "sofia@ejemplo.com",
-    fnivel: 2,
-    factivo: false
-  }, {
-    fid_usuario: 9,
-    fnombre: "Carlos Torres",
-    fnombre_usuario: "storres",
-    femail: "sofia@ejemplo.com",
-    fnivel: 2,
-    factivo: false
-  }, {
-    fid_usuario: 10,
-    fnombre: "Juan Torres",
-    fnombre_usuario: "storres",
-    femail: "sofia@ejemplo.com",
-    fnivel: 2,
-    factivo: false
-  }, {
-    fid_usuario: 11,
-    fnombre: "Juan Torres",
-    fnombre_usuario: "storres",
-    femail: "sofia@ejemplo.com",
-    fnivel: 2,
-    factivo: false
-  }, {
-    fid_usuario: 12,
-    fnombre: "Juan Torres",
-    fnombre_usuario: "storres",
-    femail: "sofia@ejemplo.com",
-    fnivel: 2,
-    factivo: false
-  }, {
-    fid_usuario: 13,
-    fnombre: "Juan Torres",
-    fnombre_usuario: "storres",
-    femail: "sofia@ejemplo.com",
-    fnivel: 2,
-    factivo: false
-  }, {
-    fid_usuario: 14,
-    fnombre: "Juan Torres",
-    fnombre_usuario: "storres",
-    femail: "sofia@ejemplo.com",
-    fnivel: 2,
-    factivo: false
-  }, {
-    fid_usuario: 15,
-    fnombre: "Juan Torres",
-    fnombre_usuario: "storres",
-    femail: "sofia@ejemplo.com",
-    fnivel: 2,
-    factivo: false
-  }, {
-    fid_usuario: 16,
-    fnombre: "Juan Torres",
-    fnombre_usuario: "storres",
-    femail: "sofia@ejemplo.com",
-    fnivel: 2,
-    factivo: false
-  }];
-  var filteredData = search ? data.filter(function (u) {
-    return u.fnombre.toLowerCase().indexOf(search.toLowerCase()) !== -1 || u.fnombre_usuario.toLowerCase().indexOf(search.toLowerCase()) !== -1 || u.femail.toLowerCase().indexOf(search.toLowerCase()) !== -1;
-  }) : data;
-  var pageCount = Math.ceil(filteredData.length / PAGE_SIZE);
-  var pagedData = filteredData.slice(page * PAGE_SIZE, (page + 1) * PAGE_SIZE);
+
+  // Calcular paginación
+  var pageCount = Math.ceil(data.length / PAGE_SIZE);
+  var pagedData = data.slice(page * PAGE_SIZE, (page + 1) * PAGE_SIZE);
   React.useEffect(function () {
     if (page > 0 && page >= pageCount && onPageChange) onPageChange(0);
-  }, [search, filteredData.length]);
+  }, [data.length, page, pageCount, onPageChange]);
 
   // Estado para el menú de acciones
   var _React$useState = React.useState(null),
@@ -158,25 +44,37 @@ function TableUsers(props) {
   var columns = React.useMemo(function () {
     return [{
       Header: '#',
-      accessor: 'fid_usuario'
+      accessor: 'fidUsuario'
     }, {
       Header: 'Nombre',
-      accessor: 'fnombre'
+      accessor: 'nombre'
     }, {
       Header: 'Usuario',
-      accessor: 'fnombre_usuario'
+      accessor: 'nombreUsuario'
     }, {
       Header: 'Email',
-      accessor: 'femail'
+      accessor: 'email'
     }, {
-      Header: 'Nivel',
-      accessor: 'fnivel'
+      Header: 'Rol',
+      accessor: 'roles',
+      Cell: function Cell(_ref) {
+        var value = _ref.value,
+          row = _ref.row;
+        var rol = value && value.length > 0 ? value[0] : 'Usuario';
+        var nivel = row.original.nivel;
+        return React.createElement('span', {
+          className: "badge ".concat(rol === 'Administrador' ? 'bg-primary' : 'bg-info'),
+          title: "Nivel ".concat(nivel)
+        }, rol);
+      }
     }, {
       Header: 'Activo',
-      accessor: 'factivo',
-      Cell: function Cell(_ref) {
-        var value = _ref.value;
-        return value ? 'Sí' : 'No';
+      accessor: 'activo',
+      Cell: function Cell(_ref2) {
+        var value = _ref2.value;
+        return React.createElement('span', {
+          className: "badge ".concat(value ? 'bg-success' : 'bg-danger')
+        }, value ? 'Activo' : 'Inactivo');
       }
     }, {
       Header: 'Acciones',
@@ -218,22 +116,26 @@ function TableUsers(props) {
               props.onPermissions(cell.row.original);
             }
           }
-        }, 'Permisos'), React.createElement('button', {
-          className: "dropdown-item ".concat(tema === 'dark' ? 'dropdown-item-dark' : ''),
-          onClick: function onClick() {
-            setMenuRow(null);
-            if (window.Toats) window.Toats.show('accent', 'Usuario anulado');
-          }
-        }, 'Anular'), React.createElement('button', {
+        }, 'Permisos'), cell.row.original.activo ? React.createElement('button', {
           className: "dropdown-item text-danger ".concat(tema === 'dark' ? 'dropdown-item-dark dropdown-item-danger-dark' : ''),
           onClick: function onClick() {
             setMenuRow(null);
-            if (window.Toats) window.Toats.show('danger', 'Usuario eliminado');
+            if (props.onDeleteUser) {
+              props.onDeleteUser(cell.row.original.fidUsuario);
+            }
           }
-        }, 'Eliminar')));
+        }, 'Desactivar') : React.createElement('button', {
+          className: "dropdown-item text-success ".concat(tema === 'dark' ? 'dropdown-item-dark' : ''),
+          onClick: function onClick() {
+            setMenuRow(null);
+            if (props.onActivateUser) {
+              props.onActivateUser(cell.row.original.fidUsuario);
+            }
+          }
+        }, 'Activar')));
       }
     }];
-  }, [menuRow]);
+  }, [menuRow, tema]);
   var _window$ReactTable$us = window.ReactTable.useTable({
       columns: columns,
       data: pagedData
@@ -243,6 +145,15 @@ function TableUsers(props) {
     headerGroups = _window$ReactTable$us.headerGroups,
     rows = _window$ReactTable$us.rows,
     prepareRow = _window$ReactTable$us.prepareRow;
+
+  // Mostrar mensaje si no hay datos
+  if (data.length === 0) {
+    return React.createElement('div', {
+      className: 'text-center p-5'
+    }, React.createElement('p', {
+      className: 'text-muted'
+    }, 'No hay usuarios para mostrar.'));
+  }
   return React.createElement(React.Fragment, null, React.createElement('div', {
     className: 'users-table-section'
   }, React.createElement('table', Object.assign({

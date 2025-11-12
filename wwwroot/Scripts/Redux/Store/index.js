@@ -8,19 +8,41 @@
 // Extraer Redux del objeto global
 var _Redux = Redux,
   createStore = _Redux.createStore,
-  combineReducers = _Redux.combineReducers;
+  combineReducers = _Redux.combineReducers,
+  applyMiddleware = _Redux.applyMiddleware;
 
-// Combinar todos los reducers
+// Middleware thunk simple para manejar acciones asíncronas
+var thunkMiddleware = function thunkMiddleware(_ref) {
+  var dispatch = _ref.dispatch,
+    getState = _ref.getState;
+  return function (next) {
+    return function (action) {
+      if (typeof action === 'function') {
+        return action(dispatch, getState);
+      }
+      return next(action);
+    };
+  };
+};
+
+// Reducer por defecto para casos donde los reducers no están cargados
+var defaultReducer = function defaultReducer() {
+  var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+  return state;
+};
+
+// Combinar todos los reducers con verificaciones de seguridad
 var rootReducer = combineReducers({
-  usuarios: window.UsuariosReducer,
-  ventas: window.VentasReducer,
-  app: window.AppReducer
+  usuarios: window.UsuariosReducer || defaultReducer,
+  ventas: window.VentasReducer || defaultReducer,
+  clientes: window.ClientesReducer || defaultReducer,
+  app: window.AppReducer || defaultReducer,
+  auth: window.AuthReducer || defaultReducer,
+  auditoria: window.AuditoriaReducer || defaultReducer
 });
 
-// Crear el store
-var store = createStore(rootReducer,
-// Habilitar Redux DevTools si están disponibles
-window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__());
+// Crear el store con middleware thunk
+var store = createStore(rootReducer, applyMiddleware(thunkMiddleware));
 
 // Hacer disponible globalmente
 window.ReduxStore = {
@@ -28,7 +50,10 @@ window.ReduxStore = {
   // Actions
   usuarios: window.UsuariosActions,
   ventas: window.VentasActions,
+  clientes: window.ClientesActions,
   app: window.AppActions,
+  auth: window.AuthActions,
+  auditoria: window.AuditoriaActions,
   // Selectores
   selectors: window.ReduxSelectors,
   // Métodos de conveniencia
@@ -44,6 +69,6 @@ window.ReduxStore = {
 };
 
 // Log del estado inicial
-console.log('🚀 Redux Store configurado correctamente');
+console.log('🚀 Redux Store configurado correctamente con Thunk middleware');
 console.log('📊 Estado inicial:', store.getState());
 console.log('🛠️ Redux DevTools:', window.__REDUX_DEVTOOLS_EXTENSION__ ? 'Habilitado' : 'No disponible');

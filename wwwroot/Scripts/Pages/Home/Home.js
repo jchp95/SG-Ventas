@@ -7,10 +7,16 @@ function _arrayLikeToArray(r, a) { (null == a || a > r.length) && (a = r.length)
 function _iterableToArrayLimit(r, l) { var t = null == r ? null : "undefined" != typeof Symbol && r[Symbol.iterator] || r["@@iterator"]; if (null != t) { var e, n, i, u, a = [], f = !0, o = !1; try { if (i = (t = t.call(r)).next, 0 === l) { if (Object(t) !== t) return; f = !1; } else for (; !(f = (e = i.call(t)).done) && (a.push(e.value), a.length !== l); f = !0); } catch (r) { o = !0, n = r; } finally { try { if (!f && null != t["return"] && (u = t["return"](), Object(u) !== u)) return; } finally { if (o) throw n; } } return a; } }
 function _arrayWithHoles(r) { if (Array.isArray(r)) return r; }
 var Home = function Home() {
-  // Redux hooks para tema
+  // Redux hooks para tema y usuario
   var _window$ReduxProvider = window.ReduxProvider.useApp(),
-    tema = _window$ReduxProvider.tema,
-    usuario = _window$ReduxProvider.usuario;
+    tema = _window$ReduxProvider.tema;
+  var useSelector = window.ReactRedux.useSelector;
+
+  // Obtener el nombre de usuario del estado de autenticación
+  var userName = useSelector(function (state) {
+    var _state$auth;
+    return (_state$auth = state.auth) === null || _state$auth === void 0 ? void 0 : _state$auth.userName;
+  });
 
   // Estado local
   var _React$useState = React.useState({
@@ -24,7 +30,7 @@ var Home = function Home() {
     }),
     _React$useState2 = _slicedToArray(_React$useState, 1),
     metrics = _React$useState2[0];
-  var user = (usuario === null || usuario === void 0 ? void 0 : usuario.nombre) || 'Invitado';
+  var user = userName || 'Administrador';
   return /*#__PURE__*/React.createElement("div", {
     className: "home-page ".concat(tema === 'dark' ? 'theme-dark' : 'theme-light')
   }, /*#__PURE__*/React.createElement("div", {
@@ -39,7 +45,15 @@ var Home = function Home() {
     className: "welcome-text"
   }, /*#__PURE__*/React.createElement("h2", {
     className: "home-title"
-  }, "\xA1Bienvenido, ", user, "!"), /*#__PURE__*/React.createElement("p", {
+  }, "\xA1Bienvenido, ", user, "!", /*#__PURE__*/React.createElement("span", {
+    className: "badge bg-primary ms-2",
+    style: {
+      fontSize: '0.5em',
+      verticalAlign: 'middle'
+    }
+  }, /*#__PURE__*/React.createElement("i", {
+    className: "bi bi-shield-check me-1"
+  }), "Admin")), /*#__PURE__*/React.createElement("p", {
     className: "home-subtitle"
   }, "Gestiona tus ventas y clientes de forma r\xE1pida y moderna.")), /*#__PURE__*/React.createElement("div", {
     className: "home-actions ".concat(tema === 'dark' ? 'theme-dark' : '')

@@ -17,6 +17,13 @@ var _ReactRedux = ReactRedux,
 // Componente Provider personalizado
 var AppProvider = function AppProvider(_ref) {
   var children = _ref.children;
+  // Verificar que el store esté disponible antes de usarlo
+  if (!window.ReduxStore || !window.ReduxStore.store) {
+    console.warn('ReduxStore no está disponible aún');
+    return React.createElement('div', {
+      className: 'loading'
+    }, 'Cargando...');
+  }
   return /*#__PURE__*/React.createElement(Provider, {
     store: window.ReduxStore.store
   }, children);
@@ -33,14 +40,23 @@ var useAppDispatch = function useAppDispatch() {
 // Hook para acciones de usuarios
 var useUsuarios = function useUsuarios() {
   var dispatch = useAppDispatch();
-  var usuarios = useAppSelector(window.ReduxStore.selectors.selectUsuarios);
-  var usuariosFiltrados = useAppSelector(window.ReduxStore.selectors.selectUsuariosFiltrados);
-  var cargando = useAppSelector(window.ReduxStore.selectors.selectUsuariosCargando);
-  var error = useAppSelector(window.ReduxStore.selectors.selectUsuariosError);
-  var filtros = useAppSelector(window.ReduxStore.selectors.selectUsuariosFiltros);
+  var lista = useAppSelector(function (state) {
+    return state.usuarios.lista || [];
+  });
+  var cargando = useAppSelector(function (state) {
+    return state.usuarios.cargando || false;
+  });
+  var error = useAppSelector(function (state) {
+    return state.usuarios.error || null;
+  });
+  var filtros = useAppSelector(function (state) {
+    return state.usuarios.filtros || {
+      busqueda: '',
+      estado: 'todos'
+    };
+  });
   return {
-    usuarios: usuarios,
-    usuariosFiltrados: usuariosFiltrados,
+    usuarios: lista,
     cargando: cargando,
     error: error,
     filtros: filtros,
@@ -100,6 +116,73 @@ var useVentas = function useVentas() {
   };
 };
 
+// Hook para acciones de clientes
+var useClientes = function useClientes() {
+  var dispatch = useAppDispatch();
+  var lista = useAppSelector(function (state) {
+    return state.clientes.lista || [];
+  });
+  var cargando = useAppSelector(function (state) {
+    return state.clientes.cargando || false;
+  });
+  var error = useAppSelector(function (state) {
+    return state.clientes.error || null;
+  });
+  var filtros = useAppSelector(function (state) {
+    return state.clientes.filtros || {
+      busqueda: '',
+      estado: 'todos'
+    };
+  });
+  return {
+    clientes: lista,
+    cargando: cargando,
+    error: error,
+    filtros: filtros,
+    // Acciones síncronas
+    setClientes: function setClientes(clientes) {
+      return dispatch(window.ReduxStore.clientes.setClientes(clientes));
+    },
+    agregarCliente: function agregarCliente(cliente) {
+      return dispatch(window.ReduxStore.clientes.agregarCliente(cliente));
+    },
+    actualizarCliente: function actualizarCliente(cliente) {
+      return dispatch(window.ReduxStore.clientes.actualizarCliente(cliente));
+    },
+    eliminarCliente: function eliminarCliente(id) {
+      return dispatch(window.ReduxStore.clientes.eliminarCliente(id));
+    },
+    setCargando: function setCargando(cargando) {
+      return dispatch(window.ReduxStore.clientes.setCargando(cargando));
+    },
+    setError: function setError(error) {
+      return dispatch(window.ReduxStore.clientes.setError(error));
+    },
+    setFiltros: function setFiltros(filtros) {
+      return dispatch(window.ReduxStore.clientes.setFiltros(filtros));
+    },
+    // Acciones asíncronas (thunks)
+    fetchClientes: function fetchClientes() {
+      return dispatch(window.ReduxStore.clientes.fetchClientes());
+    },
+    createCliente: function createCliente(clienteData) {
+      return dispatch(window.ReduxStore.clientes.createCliente(clienteData));
+    },
+    updateCliente: function updateCliente(clienteData) {
+      return dispatch(window.ReduxStore.clientes.updateCliente(clienteData));
+    },
+    deleteCliente: function deleteCliente(clienteId) {
+      return dispatch(window.ReduxStore.clientes.deleteCliente(clienteId));
+    },
+    activateCliente: function activateCliente(clienteId) {
+      return dispatch(window.ReduxStore.clientes.activateCliente(clienteId));
+    },
+    toggleActivoCliente: function toggleActivoCliente(clienteId) {
+      return dispatch(window.ReduxStore.clientes.toggleActivoCliente(clienteId));
+    }
+  };
+};
+
 // Hook para estado de la aplicación
 var useApp = function useApp() {
   var dispatch = useAppDispatch();
@@ -153,6 +236,161 @@ var useEstadisticas = function useEstadisticas() {
   };
 };
 
+// Hook para autenticación
+var useAuth = function useAuth() {
+  var dispatch = useAppDispatch();
+  var isAuthenticated = useAppSelector(function (state) {
+    var _state$auth;
+    return ((_state$auth = state.auth) === null || _state$auth === void 0 ? void 0 : _state$auth.isAuthenticated) || false;
+  });
+  var token = useAppSelector(function (state) {
+    var _state$auth2;
+    return ((_state$auth2 = state.auth) === null || _state$auth2 === void 0 ? void 0 : _state$auth2.token) || null;
+  });
+  var userName = useAppSelector(function (state) {
+    var _state$auth3;
+    return ((_state$auth3 = state.auth) === null || _state$auth3 === void 0 ? void 0 : _state$auth3.userName) || null;
+  });
+  var loading = useAppSelector(function (state) {
+    var _state$auth4;
+    return ((_state$auth4 = state.auth) === null || _state$auth4 === void 0 ? void 0 : _state$auth4.loading) || false;
+  });
+  var error = useAppSelector(function (state) {
+    var _state$auth5;
+    return ((_state$auth5 = state.auth) === null || _state$auth5 === void 0 ? void 0 : _state$auth5.error) || null;
+  });
+  var message = useAppSelector(function (state) {
+    var _state$auth6;
+    return ((_state$auth6 = state.auth) === null || _state$auth6 === void 0 ? void 0 : _state$auth6.message) || null;
+  });
+  return {
+    isAuthenticated: isAuthenticated,
+    token: token,
+    userName: userName,
+    loading: loading,
+    error: error,
+    message: message,
+    // Acciones thunk - ahora todas son consistentes
+    login: function login(credentials) {
+      if (!window.AuthActions) {
+        console.error('AuthActions no está disponible');
+        return Promise.resolve({
+          success: false,
+          error: 'AuthActions no disponible'
+        });
+      }
+      return dispatch(window.AuthActions.login(credentials));
+    },
+    register: function register(userData) {
+      if (!window.AuthActions) {
+        console.error('AuthActions no está disponible');
+        return Promise.resolve({
+          success: false,
+          error: 'AuthActions no disponible'
+        });
+      }
+      return dispatch(window.AuthActions.register(userData));
+    },
+    logout: function logout() {
+      if (!window.AuthActions) {
+        console.error('AuthActions no está disponible');
+        return;
+      }
+      return dispatch(window.AuthActions.logout());
+    },
+    changePassword: function changePassword(passwordData) {
+      if (!window.AuthActions) {
+        console.error('AuthActions no está disponible');
+        return Promise.resolve({
+          success: false,
+          error: 'AuthActions no disponible'
+        });
+      }
+      return dispatch(window.AuthActions.changePassword(passwordData));
+    },
+    clearError: function clearError() {
+      if (!window.AuthActions) {
+        console.error('AuthActions no está disponible');
+        return;
+      }
+      return dispatch(window.AuthActions.clearAuthError());
+    },
+    checkAuthToken: function checkAuthToken() {
+      if (!window.AuthActions) {
+        console.error('AuthActions no está disponible');
+        return;
+      }
+      return dispatch(window.AuthActions.checkAuthToken());
+    }
+  };
+};
+
+// Hook para acciones de auditoría
+var useAuditoria = function useAuditoria() {
+  var dispatch = useAppDispatch();
+  var auditorias = useAppSelector(window.ReduxStore.selectors.selectAuditorias);
+  var auditoriasFiltradas = useAppSelector(window.ReduxStore.selectors.selectAuditoriasFiltradas);
+  var cargando = useAppSelector(window.ReduxStore.selectors.selectAuditoriasCargando);
+  var error = useAppSelector(window.ReduxStore.selectors.selectAuditoriasError);
+  var filtros = useAppSelector(window.ReduxStore.selectors.selectAuditoriasFiltros);
+  var paginacion = useAppSelector(window.ReduxStore.selectors.selectAuditoriasPaginacion);
+
+  // Estado para auditoría de usuarios
+  var auditoriasUsuarios = useAppSelector(function (state) {
+    var _state$auditoria;
+    return ((_state$auditoria = state.auditoria) === null || _state$auditoria === void 0 || (_state$auditoria = _state$auditoria.usuarios) === null || _state$auditoria === void 0 ? void 0 : _state$auditoria.lista) || [];
+  });
+  var cargandoUsuarios = useAppSelector(function (state) {
+    var _state$auditoria2;
+    return ((_state$auditoria2 = state.auditoria) === null || _state$auditoria2 === void 0 || (_state$auditoria2 = _state$auditoria2.usuarios) === null || _state$auditoria2 === void 0 ? void 0 : _state$auditoria2.cargando) || false;
+  });
+  var errorUsuarios = useAppSelector(function (state) {
+    var _state$auditoria3;
+    return ((_state$auditoria3 = state.auditoria) === null || _state$auditoria3 === void 0 || (_state$auditoria3 = _state$auditoria3.usuarios) === null || _state$auditoria3 === void 0 ? void 0 : _state$auditoria3.error) || null;
+  });
+  return {
+    auditorias: auditorias,
+    auditoriasFiltradas: auditoriasFiltradas,
+    cargando: cargando,
+    error: error,
+    filtros: filtros,
+    paginacion: paginacion,
+    // Estado de auditoría de usuarios
+    auditoriasUsuarios: auditoriasUsuarios,
+    cargandoUsuarios: cargandoUsuarios,
+    errorUsuarios: errorUsuarios,
+    // Acciones síncronas
+    setAuditorias: function setAuditorias(auditorias) {
+      return dispatch(window.AuditoriaActions.setAuditorias(auditorias));
+    },
+    setCargando: function setCargando(cargando) {
+      return dispatch(window.AuditoriaActions.setCargando(cargando));
+    },
+    setError: function setError(error) {
+      return dispatch(window.AuditoriaActions.setError(error));
+    },
+    setFiltros: function setFiltros(filtros) {
+      return dispatch(window.AuditoriaActions.setFiltros(filtros));
+    },
+    setPaginacion: function setPaginacion(paginacion) {
+      return dispatch(window.AuditoriaActions.setPaginacion(paginacion));
+    },
+    limpiarFiltros: function limpiarFiltros() {
+      return dispatch(window.AuditoriaActions.limpiarFiltros());
+    },
+    // Acciones asíncronas
+    fetchAuditorias: function fetchAuditorias() {
+      return dispatch(window.AuditoriaActions.fetchAuditorias());
+    },
+    fetchAuditoriasByFilter: function fetchAuditoriasByFilter(filtros) {
+      return dispatch(window.AuditoriaActions.fetchAuditoriasByFilter(filtros));
+    },
+    fetchUsuariosAuditoria: function fetchUsuariosAuditoria(filtros) {
+      return dispatch(window.AuditoriaActions.fetchUsuariosAuditoria(filtros));
+    }
+  };
+};
+
 // Componente de ejemplo que usa Redux
 var ContadorEjemplo = function ContadorEjemplo() {
   var _useApp = useApp(),
@@ -185,10 +423,15 @@ window.ReduxProvider = {
   AppProvider: AppProvider,
   useAppSelector: useAppSelector,
   useAppDispatch: useAppDispatch,
+  useDispatch: useAppDispatch,
+  // Agregar alias para useDispatch
   useUsuarios: useUsuarios,
   useVentas: useVentas,
+  useClientes: useClientes,
   useApp: useApp,
   useEstadisticas: useEstadisticas,
+  useAuth: useAuth,
+  useAuditoria: useAuditoria,
   ContadorEjemplo: ContadorEjemplo
 };
 console.log('🔗 Redux Provider (organizado) configurado correctamente');

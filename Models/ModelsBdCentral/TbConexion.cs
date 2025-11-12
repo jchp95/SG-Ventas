@@ -4,11 +4,11 @@ using JetBrains.Annotations;
 
 namespace ventas.Models.ModelsBdCentral;
 
-[Table("tb_empresa")]
+[Table("tb_conexion")]
 [UsedImplicitly]
 public class TbConexion
 {
-    [Key] [Column("conexion")] public int FidConexion { get; set; }
+    [Key] [Column("fid_conexion")] public int FidConexion { get; set; }
 
     [Column("fnombre_bd", TypeName = "varchar(50)")]
     public string FnombreBd { get; set; } = null!;

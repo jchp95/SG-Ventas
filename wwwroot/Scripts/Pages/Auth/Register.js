@@ -23,11 +23,23 @@ function _arrayWithHoles(r) { if (Array.isArray(r)) return r; }
 
 function Register() {
   var _React = React,
-    useState = _React.useState;
+    useState = _React.useState,
+    useEffect = _React.useEffect;
   var useHistory = window.ReactRouterDOM.useHistory;
   var history = useHistory();
 
-  // React Hook Form SEPARADO para cada step
+  /// Redux hooks
+  var useAuth = window.ReduxProvider.useAuth;
+  var _useAuth = useAuth(),
+    isAuthenticated = _useAuth.isAuthenticated,
+    authLoading = _useAuth.loading,
+    authError = _useAuth.error,
+    authMessage = _useAuth.message,
+    login = _useAuth.login,
+    register = _useAuth.register,
+    clearError = _useAuth.clearError;
+
+  /// React Hook Form SEPARADO para cada step
   var _window$HookFormUtils = window.HookFormUtils.useForm({
       mode: 'onChange'
     }),
@@ -91,34 +103,48 @@ function Register() {
     _useState18 = _slicedToArray(_useState17, 2),
     stepTransition = _useState18[0],
     setStepTransition = _useState18[1];
+  var _useState19 = useState(false),
+    _useState20 = _slicedToArray(_useState19, 2),
+    hasRedirected = _useState20[0],
+    setHasRedirected = _useState20[1]; // Para evitar múltiples redirecciones
 
   // Watch para validación de confirmación de password (del step 1)
   var watchPassword = watchUser("password");
 
   // Datos combinados para enviar al servidor
-  var _useState19 = useState({
+  var _useState21 = useState({
       user: {},
       company: {}
     }),
-    _useState20 = _slicedToArray(_useState19, 2),
-    formData = _useState20[0],
-    setFormData = _useState20[1];
+    _useState22 = _slicedToArray(_useState21, 2),
+    formData = _useState22[0],
+    setFormData = _useState22[1];
 
-  // Continuar al step 2 - Guardar datos del usuario y avanzar
+  // Continuar al step 2 - Guardar datos del usuario y avanzar 
   var onUserSubmit = /*#__PURE__*/function () {
     var _ref = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee(userData) {
       var isValid;
       return _regenerator().w(function (_context) {
         while (1) switch (_context.n) {
           case 0:
-            _context.n = 1;
-            return triggerUser(['name', 'username', 'email', 'password', 'confirm']);
+            console.log('Datos recibidos en onUserSubmit:', userData);
+            if (!(!userData.name || userData.name.trim() === "")) {
+              _context.n = 1;
+              break;
+            }
+            window.ToastUtils.show('error', 'El nombre completo es obligatorio.', 'Error');
+            return _context.a(2);
           case 1:
+            _context.n = 2;
+            return triggerUser(['name', 'userName', 'email', 'password', 'confirmPassword']);
+          case 2:
             isValid = _context.v;
             if (isValid) {
               setFormData(function (prev) {
                 return _objectSpread(_objectSpread({}, prev), {}, {
-                  user: userData
+                  user: _objectSpread(_objectSpread({}, userData), {}, {
+                    name: userData.name
+                  })
                 });
               });
               setMessage(null);
@@ -128,7 +154,7 @@ function Register() {
                 setStepTransition('slide-fade-in');
               }, 450);
             }
-          case 2:
+          case 3:
             return _context.a(2);
         }
       }, _callee);
@@ -149,16 +175,37 @@ function Register() {
             return triggerCompany(['companyRnc', 'companyName']);
           case 1:
             isValid = _context2.v;
-            if (isValid) {
-              setSubmitting(true);
-              setMessage(null);
-              completeData = _objectSpread(_objectSpread({}, formData.user), companyData);
-              console.log('Datos completos para enviar:', completeData);
-              setTimeout(function () {
-                setSubmitting(false);
-                history.push('/home');
-              }, 1200);
+            if (!isValid) {
+              _context2.n = 2;
+              break;
             }
+            setMessage(null);
+
+            // Limpiar errores previos
+            if (clearError) {
+              clearError();
+            }
+
+            // Combinar datos de usuario y empresa
+            completeData = {
+              name: formData.user.name,
+              userName: formData.user.userName,
+              email: formData.user.email,
+              password: formData.user.password,
+              confirmPassword: formData.user.confirmPassword,
+              // Datos de la empresa
+              companyRnc: companyData.companyRnc,
+              companyName: companyData.companyName,
+              companyRazonSocial: companyData.companyRazonSocial || null,
+              companyAddress: companyData.companyAddress || null,
+              companyPhone: companyData.companyPhone || null,
+              companyEmail: companyData.companyEmail || null
+            };
+            console.log('Datos completos para enviar:', completeData);
+
+            // Usar el thunk de register directamente
+            _context2.n = 2;
+            return register(completeData);
           case 2:
             return _context2.a(2);
         }
@@ -203,18 +250,42 @@ function Register() {
     }, 450);
   }
 
-  // Login submit con React Hook Form
+  // Login submit con React Hook Form - Usando el thunk de Redux
   var onLoginSubmit = /*#__PURE__*/function () {
     var _ref3 = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee3(data) {
+      var loginData, result;
       return _regenerator().w(function (_context3) {
         while (1) switch (_context3.n) {
           case 0:
-            setSubmitting(true);
-            console.log('Datos de login:', data);
-            setTimeout(function () {
-              setSubmitting(false);
-            }, 900);
+            setMessage(null);
+
+            // Limpiar errores previos
+            if (clearError) {
+              clearError();
+            }
+
+            // Preparar datos de login
+            loginData = {
+              userName: data.username,
+              password: data.password,
+              rememberMe: false
+            };
+            console.log("Datos enviados al servidor", loginData);
+
+            // Usar el thunk de login directamente
+            _context3.n = 1;
+            return login(loginData);
           case 1:
+            result = _context3.v;
+            // Si el login es exitoso, redirigir usando React Router
+            if (result && result.success && result.redirectPath) {
+              console.log('🚀 [Register] Redirigiendo a:', result.redirectPath);
+              setHasRedirected(true); // Marcar que ya redirigimos para evitar el useEffect
+              setTimeout(function () {
+                history.push(result.redirectPath);
+              }, 500);
+            }
+          case 2:
             return _context3.a(2);
         }
       }, _callee3);
@@ -229,6 +300,51 @@ function Register() {
     opacity: exiting ? 0 : 1
   };
   var stepTitle = step === 1 ? 'Registro de usuario' : 'Registro de la empresa';
+
+  // Effects para manejo de autenticación
+  useEffect(function () {
+    // Verificar si ya hay token guardado al cargar
+    if (window.AuthActions) {
+      var tokenAction = window.AuthActions.checkAuthToken();
+      if (tokenAction && tokenAction.type !== 'auth/noToken') {
+        window.ReduxStore.store.dispatch(tokenAction);
+      }
+    }
+  }, []);
+  useEffect(function () {
+    // Si ya está autenticado AL CARGAR LA PÁGINA (no después de login), redirigir según el rol
+    if (isAuthenticated && !hasRedirected) {
+      var token = localStorage.getItem('authToken');
+      if (token && window.JwtUtils && window.RoleConstants) {
+        var role = window.JwtUtils.getRoleFromToken(token);
+        console.log('🔄 [Register] Usuario autenticado detectado al cargar, rol:', role);
+        if (role) {
+          var roleCode = window.RoleConstants.getRoleCode(role);
+          var isAdmin = window.RoleConstants.isAdmin(roleCode);
+          var redirectPath = isAdmin ? '/home' : '/comun-home';
+          console.log('🚀 [Register] Redirigiendo al cargar a:', redirectPath);
+          setHasRedirected(true);
+          setTimeout(function () {
+            history.push(redirectPath);
+          }, 300);
+        } else {
+          // Si no se puede extraer el rol, redirigir a home por defecto
+          console.warn('⚠️ [Register] No se pudo extraer el rol al cargar, redirigiendo a /home');
+          setHasRedirected(true);
+          history.push('/home');
+        }
+      } else {
+        // Si no hay JwtUtils, redirigir a home por defecto
+        console.warn('⚠️ [Register] JwtUtils no disponible al cargar, redirigiendo a /home');
+        setHasRedirected(true);
+        window.location.href = '/home';
+      }
+    }
+  }, [isAuthenticated, history, hasRedirected]);
+  useEffect(function () {
+    // Sincronizar el estado local de submitting con authLoading
+    setSubmitting(authLoading);
+  }, [authLoading]);
   return /*#__PURE__*/React.createElement("div", {
     className: "register-container d-flex justify-content-center align-items-center position-relative",
     style: containerStyle
@@ -279,7 +395,7 @@ function Register() {
     placeholder: "Nombre completo"
   }), /*#__PURE__*/React.createElement(window.HookFormUtils.InputField, {
     label: "Nombre de usuario",
-    name: "username",
+    name: "userName",
     type: "text",
     register: userRegister,
     errors: userErrors,
@@ -321,7 +437,7 @@ function Register() {
     placeholder: "*******"
   }), /*#__PURE__*/React.createElement(window.HookFormUtils.InputField, {
     label: "Confirmar contrase\xF1a",
-    name: "confirm",
+    name: "confirmPassword",
     type: "password",
     register: userRegister,
     errors: userErrors,

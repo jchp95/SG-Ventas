@@ -18,8 +18,10 @@ var Navbar = function Navbar() {
   var _window$ReduxProvider = window.ReduxProvider.useApp(),
     tema = _window$ReduxProvider.tema,
     setTema = _window$ReduxProvider.setTema,
-    usuario = _window$ReduxProvider.usuario,
-    agregarNotificacion = _window$ReduxProvider.agregarNotificacion;
+    usuario = _window$ReduxProvider.usuario;
+  var _window$ReduxProvider2 = window.ReduxProvider.useAuth(),
+    logout = _window$ReduxProvider2.logout,
+    authLoading = _window$ReduxProvider2.loading;
   var Link = window.ReactRouterDOM.Link;
 
   // Funciones para dropdown
@@ -54,12 +56,10 @@ var Navbar = function Navbar() {
   };
   var handleLogout = function handleLogout(e) {
     e.preventDefault();
-    // Aquí iría la lógica de logout real
-    agregarNotificacion({
-      tipo: 'success',
-      mensaje: 'Sesión cerrada correctamente',
-      autoClose: true
-    });
+    if (authLoading) return; // Prevenir múltiples clics
+
+    // Llamar al logout de Redux que hace la solicitud al backend
+    logout();
   };
   return /*#__PURE__*/React.createElement("nav", {
     className: "navbar navbar-expand-lg ".concat(tema === 'dark' ? 'theme-dark' : 'navbar-light')
@@ -114,9 +114,9 @@ var Navbar = function Navbar() {
     onMouseLeave: function onMouseLeave() {
       return hideDropdown(200);
     }
-  }, /*#__PURE__*/React.createElement("li", null, /*#__PURE__*/React.createElement("a", {
+  }, /*#__PURE__*/React.createElement("li", null, /*#__PURE__*/React.createElement(Link, {
     className: "dropdown-item mb-2",
-    href: "#"
+    to: "/auditoria"
   }, /*#__PURE__*/React.createElement("i", {
     className: "bi bi-clipboard-data me-2"
   }), " Auditor\xEDa")), /*#__PURE__*/React.createElement("li", null, /*#__PURE__*/React.createElement(Link, {
@@ -132,8 +132,11 @@ var Navbar = function Navbar() {
   }), " Administrar usuarios")))), /*#__PURE__*/React.createElement("li", null, /*#__PURE__*/React.createElement("button", {
     className: "theme-toggle-btn",
     onClick: handleLogout,
+    disabled: authLoading,
     title: "Cerrar Sesi\xF3n"
-  }, /*#__PURE__*/React.createElement("i", {
+  }, authLoading ? /*#__PURE__*/React.createElement("i", {
+    className: "bi bi-hourglass-split"
+  }) : /*#__PURE__*/React.createElement("i", {
     className: "bi bi-box-arrow-right"
   }))), /*#__PURE__*/React.createElement("div", {
     className: "d-flex flex-column px-3 d-lg-none"
@@ -155,9 +158,9 @@ var Navbar = function Navbar() {
     className: "bi bi-moon-stars"
   }) : /*#__PURE__*/React.createElement("i", {
     className: "bi bi-sun"
-  })), /*#__PURE__*/React.createElement("span", null, tema === 'light' ? 'Tema Oscuro' : 'Tema Claro')), /*#__PURE__*/React.createElement("a", {
+  })), /*#__PURE__*/React.createElement("span", null, tema === 'light' ? 'Tema Oscuro' : 'Tema Claro')), /*#__PURE__*/React.createElement(Link, {
     className: "nav-link d-flex align-items-center mb-3 ".concat(tema === 'dark' ? 'text-white' : 'text-dark'),
-    href: "#"
+    to: "/auditoria"
   }, /*#__PURE__*/React.createElement("div", {
     className: "me-3",
     style: {
@@ -166,20 +169,9 @@ var Navbar = function Navbar() {
     }
   }, /*#__PURE__*/React.createElement("i", {
     className: "bi bi-clipboard-data"
-  })), /*#__PURE__*/React.createElement("span", null, "Auditor\xEDa")), /*#__PURE__*/React.createElement("a", {
+  })), /*#__PURE__*/React.createElement("span", null, "Auditor\xEDa")), /*#__PURE__*/React.createElement(Link, {
     className: "nav-link d-flex align-items-center mb-3 ".concat(tema === 'dark' ? 'text-white' : 'text-dark'),
-    href: "#"
-  }, /*#__PURE__*/React.createElement("div", {
-    className: "me-3",
-    style: {
-      width: '30px',
-      textAlign: 'center'
-    }
-  }, /*#__PURE__*/React.createElement("i", {
-    className: "bi bi-shield-check"
-  })), /*#__PURE__*/React.createElement("span", null, "Permisos")), /*#__PURE__*/React.createElement("a", {
-    className: "nav-link d-flex align-items-center mb-3 ".concat(tema === 'dark' ? 'text-white' : 'text-dark'),
-    href: "#"
+    to: "/settings"
   }, /*#__PURE__*/React.createElement("div", {
     className: "me-3",
     style: {
@@ -199,6 +191,25 @@ var Navbar = function Navbar() {
     }
   }, /*#__PURE__*/React.createElement("i", {
     className: "bi bi-person-plus"
-  })), /*#__PURE__*/React.createElement("span", null, "Administrar usuarios")))))));
+  })), /*#__PURE__*/React.createElement("span", null, "Administrar usuarios")), /*#__PURE__*/React.createElement("button", {
+    className: "nav-link d-flex align-items-center mb-3 btn ".concat(tema === 'dark' ? 'text-white' : 'text-dark'),
+    onClick: handleLogout,
+    disabled: authLoading,
+    style: {
+      border: 'none',
+      background: 'transparent',
+      textAlign: 'left'
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "me-3",
+    style: {
+      width: '30px',
+      textAlign: 'center'
+    }
+  }, authLoading ? /*#__PURE__*/React.createElement("i", {
+    className: "bi bi-hourglass-split"
+  }) : /*#__PURE__*/React.createElement("i", {
+    className: "bi bi-box-arrow-right"
+  })), /*#__PURE__*/React.createElement("span", null, "Cerrar Sesi\xF3n")))))));
 };
 window.Navbar = Navbar;

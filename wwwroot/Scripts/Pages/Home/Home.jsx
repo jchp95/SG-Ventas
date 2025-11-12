@@ -1,6 +1,10 @@
 const Home = () => {
-    // Redux hooks para tema
-    const { tema, usuario } = window.ReduxProvider.useApp();
+    // Redux hooks para tema y usuario
+    const { tema } = window.ReduxProvider.useApp();
+    const { useSelector } = window.ReactRedux;
+    
+    // Obtener el nombre de usuario del estado de autenticación
+    const userName = useSelector(state => state.auth?.userName);
     
     // Estado local
     const [metrics] = React.useState({
@@ -13,7 +17,7 @@ const Home = () => {
         nuevaPequena: 'Tablet X',
     });
 
-    const user = usuario?.nombre || 'Invitado';
+    const user = userName || 'Administrador';
 
     return (
         <div className={`home-page ${tema === 'dark' ? 'theme-dark' : 'theme-light'}`}>
@@ -24,7 +28,12 @@ const Home = () => {
                         <div className="div2 welcome-section">
                             <div className="welcome-content">
                                 <div className="welcome-text">
-                                    <h2 className="home-title">¡Bienvenido, {user}!</h2>
+                                    <h2 className="home-title">
+                                        ¡Bienvenido, {user}! 
+                                        <span className="badge bg-primary ms-2" style={{fontSize: '0.5em', verticalAlign: 'middle'}}>
+                                            <i className="bi bi-shield-check me-1"></i>Admin
+                                        </span>
+                                    </h2>
                                     <p className="home-subtitle">Gestiona tus ventas y clientes de forma rápida y moderna.</p>
                                 </div>
                                 <div className={`home-actions ${tema === 'dark' ? 'theme-dark' : ''}`}>

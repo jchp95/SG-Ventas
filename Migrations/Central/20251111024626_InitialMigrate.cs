@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace ventas.Migrations.Central
 {
     /// <inheritdoc />
-    public partial class initialMigrate : Migration
+    public partial class InitialMigrate : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -58,10 +58,14 @@ namespace ventas.Migrations.Central
                         .Annotation("SqlServer:Identity", "1, 1"),
                     fkid_usuario = table.Column<int>(type: "int", nullable: false),
                     fkid_registro = table.Column<int>(type: "int", nullable: false),
+                    fkid_empresa = table.Column<int>(type: "int", nullable: true),
                     ftabla = table.Column<string>(type: "varchar(50)", nullable: false),
                     ffecha = table.Column<DateTime>(type: "Date", nullable: false),
                     fhora = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    faccion = table.Column<string>(type: "varchar(50)", nullable: false)
+                    faccion = table.Column<string>(type: "varchar(50)", nullable: false),
+                    fdireccion_ip = table.Column<string>(type: "varchar(50)", nullable: true),
+                    fuser_agent = table.Column<string>(type: "varchar(500)", nullable: true),
+                    fdetalles = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
                 {

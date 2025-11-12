@@ -13,7 +13,7 @@ public static class SeedData
         using var scope = services.CreateScope();
         var dbContext = scope.ServiceProvider.GetRequiredService<CentralDbContext>();
         try
-        {   
+        {
             dbContext.IsSeeding = true;
 
             // First create roles without auditing
@@ -22,7 +22,7 @@ public static class SeedData
 
             // Then create admin user without auditing
             var userManager = scope.ServiceProvider.GetRequiredService<UserManager<IdentityUser>>();
-            await EnsureTestAdminAsync(userManager, dbContext);
+            await EnsureSupportUserAsync(userManager, dbContext);
 
             // Then add permissions (this happens after user is created)
             await EnsurePermissionsAsync(userManager, services);
@@ -50,6 +50,7 @@ public static class SeedData
         // Crear todos los roles necesarios
         var roles = new[]
         {
+            AppConstants.SupportRole, // Rol de soporte para gestionar todos los tenants
             AppConstants.AdministratorRole,
             AppConstants.UserRole
         };
@@ -62,95 +63,166 @@ public static class SeedData
             }
     }
 
-    private static async Task EnsureTestAdminAsync(UserManager<IdentityUser> userManager,
+    private static async Task EnsureSupportUserAsync(UserManager<IdentityUser> userManager,
         CentralDbContext dbContext)
     {
-        var testAdmin = await userManager.Users
-            .Where(x => x.UserName == "admin")
+        // Buscar usuario por nombre de usuario "soporte"
+        var supportUser = await userManager.Users
+            .Where(x => x.UserName == "soporte")
             .SingleOrDefaultAsync();
 
-        if (testAdmin == null)
+        if (supportUser == null)
         {
-            testAdmin = new IdentityUser
+            supportUser = new IdentityUser
             {
-                UserName = "admin",
-                Email = "admin@todo.local",
-                EmailConfirmed = false
+                UserName = "soporte",
+                Email = "soporte@sistema.local",
+                EmailConfirmed = true
             };
 
-            var result = await userManager.CreateAsync(testAdmin, "Admin2025*");
+            var result = await userManager.CreateAsync(supportUser, "Soporte2025*");
             if (!result.Succeeded)
                 throw new Exception(
-                    $"Error creating admin user: {string.Join(", ", result.Errors.Select(e => e.Description))}");
+                    $"Error creating support user: {string.Join(", ", result.Errors.Select(e => e.Description))}");
 
-            // Add role after user is created
-            result = await userManager.AddToRoleAsync(testAdmin, AppConstants.AdministratorRole);
+            // Agregar rol de soporte usando la constante
+            result = await userManager.AddToRoleAsync(supportUser, AppConstants.SupportRole);
             if (!result.Succeeded)
                 throw new Exception(
-                    $"Error adding role to admin: {string.Join(", ", result.Errors.Select(e => e.Description))}");
+                    $"Error adding role to support: {string.Join(", ", result.Errors.Select(e => e.Description))}");
 
-            // Now create the TbUsuario record
-            var empresaPrimera = await dbContext.Set<TbEmpresa>().FirstOrDefaultAsync();
-            var empresaId = empresaPrimera?.FidEmpresa ?? 0;
-            var nuevoUsuario = new TbUsuarioCentral
+            // PASO 1: Verificar si existe una empresa de soporte, si no, crearla
+            // NOTA: Esta empresa NO tiene base de datos tenant, solo cumple con la FK del modelo
+            var empresaSoporte = await dbContext.Set<TbEmpresa>()
+                .FirstOrDefaultAsync(e => e.Frnc == "000-0000000-0");
+
+            if (empresaSoporte == null)
             {
-                Fnombre = "Administrador",
-                FnombreUsuario = "admin",
-                Femail = "admin@todo.local",
-                Fnivel = 1,
-                Fpassword = testAdmin.PasswordHash,
+                // Crear conexión de soporte SIN nombre de base de datos
+                // El campo vacío indica que NO hay tenant asociado (usuario de soporte)
+                var conexionSoporte = new TbConexion
+                {
+                    FnombreBd = "" // VACÍO - No se crea base de datos tenant para soporte
+                };
+                dbContext.Conexiones.Add(conexionSoporte);
+                await dbContext.SaveChangesAsync(true);
+
+                Console.WriteLine("✅ Conexión de soporte creada (SIN base de datos tenant)");
+
+                // Crear empresa de soporte (solo registro en BD central)
+                empresaSoporte = new TbEmpresa
+                {
+                    FnombreEmpresa = "Soporte Técnico",
+                    Frnc = "000-0000000-0",
+                    Femail = "soporte@sistema.local",
+                    Flogo = "",
+                    Feslogan = "Equipo de Soporte del Sistema",
+                    Factivo = true,
+                    FkidConexion = conexionSoporte.FidConexion
+                };
+                dbContext.Empresas.Add(empresaSoporte);
+                await dbContext.SaveChangesAsync(true);
+
+                Console.WriteLine(
+                    $"✅ Empresa de soporte creada (solo en BD central, SIN tenant): {empresaSoporte.FnombreEmpresa}");
+            }
+
+            // PASO 2: Crear usuario de soporte vinculado a empresa de soporte
+            // Este usuario NO tiene base de datos tenant, solo existe en BD central
+            var nuevoUsuarioSoporte = new TbUsuarioCentral
+            {
+                Fnombre = "Usuario de Soporte",
+                FnombreUsuario = "soporte",
+                Femail = "soporte@sistema.local",
+                Fnivel = 0, // Nivel 0 = Soporte (superior a admin que es nivel 1)
+                Fpassword = supportUser.PasswordHash,
                 Factivo = true,
-                IdentityId = testAdmin.Id,
-                FkidEmpresa = empresaId
+                IdentityId = supportUser.Id,
+                FkidEmpresa = empresaSoporte.FidEmpresa
             };
 
-            dbContext.Usuarios.Add(nuevoUsuario);
-            await dbContext.SaveChangesAsync(true); // Se pasa el parámetro requerido
+            dbContext.Usuarios.Add(nuevoUsuarioSoporte);
+            await dbContext.SaveChangesAsync(true);
+
+            Console.WriteLine("✅ Usuario de SOPORTE creado (SOLO en BD central, SIN tenant)");
+            Console.WriteLine("   👤 Usuario: soporte");
+            Console.WriteLine("   🔑 Password: Soporte2025*");
         }
         else
         {
             // Si el usuario ya existe en Identity, asegurarse de que exista en TbUsuarioCentral
-            var usuarioCentral = await dbContext.Usuarios.FirstOrDefaultAsync(u => u.IdentityId == testAdmin.Id);
+            var usuarioCentral = await dbContext.Usuarios.FirstOrDefaultAsync(u => u.IdentityId == supportUser.Id);
             if (usuarioCentral == null)
             {
-                var empresaPrimera = await dbContext.Set<TbEmpresa>().FirstOrDefaultAsync();
-                var empresaId = empresaPrimera?.FidEmpresa ?? 0;
-                var nuevoUsuario = new TbUsuarioCentral
+                // Verificar si existe empresa de soporte
+                var empresaSoporte = await dbContext.Set<TbEmpresa>()
+                    .FirstOrDefaultAsync(e => e.Frnc == "000-0000000-0");
+
+                if (empresaSoporte == null)
                 {
-                    Fnombre = "Administrador",
-                    FnombreUsuario = "admin",
-                    Femail = "admin@todo.local",
-                    Fnivel = 1,
-                    Fpassword = testAdmin.PasswordHash,
+                    // Crear conexión de soporte SIN base de datos tenant
+                    var conexionSoporte = new TbConexion
+                    {
+                        FnombreBd = "" // VACÍO - No tenant para soporte
+                    };
+                    dbContext.Conexiones.Add(conexionSoporte);
+                    await dbContext.SaveChangesAsync(true);
+
+                    // Crear empresa de soporte
+                    empresaSoporte = new TbEmpresa
+                    {
+                        FnombreEmpresa = "Soporte Técnico",
+                        Frnc = "000-0000000-0",
+                        Femail = "soporte@sistema.local",
+                        Flogo = "",
+                        Feslogan = "Equipo de Soporte del Sistema",
+                        Factivo = true,
+                        FkidConexion = conexionSoporte.FidConexion
+                    };
+                    dbContext.Empresas.Add(empresaSoporte);
+                    await dbContext.SaveChangesAsync(true);
+
+                    Console.WriteLine("✅ Empresa de soporte creada (SIN tenant)");
+                }
+
+                var nuevoUsuarioSoporte = new TbUsuarioCentral
+                {
+                    Fnombre = "Usuario de Soporte",
+                    FnombreUsuario = "soporte",
+                    Femail = "soporte@sistema.local",
+                    Fnivel = 0, // Nivel 0 = Soporte
+                    Fpassword = supportUser.PasswordHash,
                     Factivo = true,
-                    IdentityId = testAdmin.Id,
-                    FkidEmpresa = empresaId
+                    IdentityId = supportUser.Id,
+                    FkidEmpresa = empresaSoporte.FidEmpresa
                 };
-                dbContext.Usuarios.Add(nuevoUsuario);
+                dbContext.Usuarios.Add(nuevoUsuarioSoporte);
                 await dbContext.SaveChangesAsync(true);
+
+                Console.WriteLine("✅ Usuario de soporte vinculado (SIN tenant)");
             }
 
-            // ¡IMPORTANTE!: Si el usuario ya existe, verificar y asignar el rol si no lo tiene
-            var userRoles = await userManager.GetRolesAsync(testAdmin);
-            if (!userRoles.Contains(AppConstants.AdministratorRole))
+            // Verificar y asignar el rol si no lo tiene
+            var userRoles = await userManager.GetRolesAsync(supportUser);
+            if (!userRoles.Contains(AppConstants.SupportRole))
             {
-                var result = await userManager.AddToRoleAsync(testAdmin, AppConstants.AdministratorRole);
+                var result = await userManager.AddToRoleAsync(supportUser, AppConstants.SupportRole);
                 if (!result.Succeeded)
                     throw new Exception(
-                        $"Error adding role to existing admin: {string.Join(", ", result.Errors.Select(e => e.Description))}");
-                Console.WriteLine("✅ Rol Administrator asignado al usuario admin existente");
+                        $"Error adding role to existing support: {string.Join(", ", result.Errors.Select(e => e.Description))}");
+                Console.WriteLine("✅ Rol Support asignado al usuario de soporte existente");
             }
             else
             {
-                Console.WriteLine("ℹ️ Usuario admin ya tiene el rol Administrator");
+                Console.WriteLine("ℹ️ Usuario soporte ya tiene el rol Support");
             }
         }
     }
 
     private static async Task EnsurePermissionsAsync(UserManager<IdentityUser> userManager, IServiceProvider services)
     {
-        var adminUser = await userManager.FindByNameAsync("admin");
-        if (adminUser == null) return;
+        var supportUser = await userManager.FindByNameAsync("soporte");
+        if (supportUser == null) return;
 
         var dbContext = services.GetRequiredService<CentralDbContext>();
         var allPermissions = Permissions.GetAllPermissions();
@@ -161,12 +233,14 @@ public static class SeedData
         {
             var existingClaim = await userClaimsDbSet
                 .FirstOrDefaultAsync(uc =>
-                    uc.UserId == adminUser.Id &&
+                    uc.UserId == supportUser.Id &&
                     uc.ClaimType == "Permission" &&
                     uc.ClaimValue == permission);
 
             if (existingClaim == null)
-                await userManager.AddClaimAsync(adminUser, new Claim("Permission", permission));
+                await userManager.AddClaimAsync(supportUser, new Claim("Permission", permission));
         }
+
+        Console.WriteLine("✅ Permisos asignados al usuario de soporte");
     }
 }

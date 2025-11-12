@@ -1,0 +1,282 @@
+/* Auditoria.css */
+.auditoria-page {
+    min-height: 100vh;
+    background-color: var(--bg);
+    background-image: radial-gradient(circle at 10% 18%, rgba(67, 97, 238, .18) 0%, rgba(67, 97, 238, .06) 22%, transparent 36%),
+    radial-gradient(circle at 90% 80%, rgba(72, 149, 239, .13) 0%, transparent 22%),
+    linear-gradient(180deg, rgba(255, 255, 255, .65), rgba(250, 250, 252, .6));
+}
+
+.auditoria-content {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr;
+    min-height: 100vh;
+    width: 100%;
+}
+
+.main-container {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    padding: 20px;
+    gap: 24px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding-bottom: 40px;
+}
+
+/* ===== Header ===== */
+.auditoria-header-section {
+    padding: 10px;
+    flex-shrink: 0;
+}
+
+.auditoria-header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    width: 100%;
+}
+
+.auditoria-title {
+    font-size: 2.2rem;
+    font-weight: 700;
+    background: linear-gradient(90deg, var(--primary-dark), var(--primary-light));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    margin-bottom: 0.5rem;
+}
+
+.auditoria-subtitle {
+    color: var(--text-muted);
+    font-size: 1rem;
+    margin-bottom: 0;
+}
+
+/* ===== Filtros ===== */
+.auditoria-filters-section {
+    background: #fff;
+    border-radius: 18px;
+    box-shadow: 0 2px 16px 0 rgba(67, 97, 238, 0.07), 0 1.5px 4px 0 rgba(67, 97, 238, 0.03);
+    padding: 20px;
+    flex-shrink: 0;
+}
+
+.filters-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 16px;
+    align-items: end;
+}
+
+.filter-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.filter-label {
+    font-weight: 600;
+    color: var(--primary-dark);
+    margin-bottom: 6px;
+    font-size: 0.9rem;
+}
+
+/* ===== Tabla de auditoría ===== */
+.auditoria-table-section {
+    background: #fff;
+    border-radius: 18px;
+    box-shadow: 0 2px 16px 0 rgba(67, 97, 238, 0.07), 0 1.5px 4px 0 rgba(67, 97, 238, 0.03);
+    padding: 24px 18px 18px 18px;
+    overflow-x: auto;
+    flex-grow: 1;
+}
+
+.react-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    font-size: 1rem;
+    color: var(--text-dark);
+}
+
+.react-table thead tr {
+    background: linear-gradient(90deg, var(--primary-light), var(--secondary-light));
+}
+
+.react-table th {
+    font-weight: 700;
+    padding: 12px 10px;
+    border-bottom: 2px solid var(--primary-light);
+    color: var(--primary-dark);
+    background: none;
+}
+
+.react-table td {
+    padding: 10px 10px;
+    border-bottom: 1px solid #f0f0f0;
+    background: none;
+}
+
+.react-table tbody tr {
+    transition: background 0.15s;
+}
+
+.react-table tbody tr:hover {
+    background: rgba(67, 97, 238, 0.07);
+}
+
+.fecha-cell {
+    font-family: monospace;
+    font-size: 0.9rem;
+}
+
+.descripcion-cell {
+    max-width: 300px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/* Badges para tipos de acción */
+.badge {
+    padding: 4px 8px;
+    border-radius: 6px;
+    font-size: 0.8rem;
+    font-weight: 600;
+}
+
+.badge-success {
+    background-color: rgba(40, 167, 69, 0.15);
+    color: var(--success);
+}
+
+.badge-warning {
+    background-color: rgba(255, 193, 7, 0.15);
+    color: var(--warning);
+}
+
+.badge-danger {
+    background-color: rgba(220, 53, 69, 0.15);
+    color: var(--danger);
+}
+
+.badge-info {
+    background-color: rgba(23, 162, 184, 0.15);
+    color: #17a2b8;
+}
+
+.badge-primary {
+    background-color: rgba(67, 97, 238, 0.15);
+    color: var(--primary);
+}
+
+/* ===== TEMA OSCURO ===== */
+.theme-dark .auditoria-page {
+    background-color: #0a0e1a;
+    background-image: radial-gradient(circle at 10% 18%, rgba(67, 97, 238, .25) 0%, rgba(67, 97, 238, .08) 22%, transparent 36%),
+    radial-gradient(circle at 90% 80%, rgba(72, 149, 239, .18) 0%, transparent 22%),
+    linear-gradient(180deg, rgba(15, 20, 35, .85), rgba(10, 14, 26, .8));
+}
+
+.theme-dark .auditoria-title {
+    background: linear-gradient(90deg, #7c93ff, #b3a9ff);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
+
+.theme-dark .auditoria-subtitle {
+    color: rgba(232, 234, 237, 0.7);
+}
+
+.theme-dark .auditoria-filters-section {
+    background: rgba(15, 20, 35, 0.85);
+    box-shadow: 0 2px 16px 0 rgba(0, 0, 0, 0.3), 0 1.5px 4px 0 rgba(67, 97, 238, 0.15);
+    border: 1px solid rgba(67, 97, 238, 0.15);
+}
+
+.theme-dark .filter-label {
+    color: #b3a9ff;
+}
+
+.theme-dark .auditoria-table-section {
+    background: rgba(15, 20, 35, 0.85);
+    box-shadow: 0 2px 16px 0 rgba(0, 0, 0, 0.3), 0 1.5px 4px 0 rgba(67, 97, 238, 0.15);
+    border: 1px solid rgba(67, 97, 238, 0.15);
+}
+
+.theme-dark .react-table {
+    color: #e8eaed;
+}
+
+.theme-dark .react-table thead tr {
+    background: linear-gradient(90deg, rgba(67, 97, 238, 0.3), rgba(179, 169, 255, 0.2));
+}
+
+.theme-dark .react-table th {
+    color: #b3a9ff;
+    border-bottom: 2px solid rgba(67, 97, 238, 0.4);
+}
+
+.theme-dark .react-table td {
+    border-bottom: 1px solid rgba(67, 97, 238, 0.15);
+}
+
+.theme-dark .react-table tbody tr:hover {
+    background: rgba(67, 97, 238, 0.15);
+}
+
+/* ===== Responsive ===== */
+@media (max-width: 900px) {
+    .main-container {
+        padding: 10px;
+    }
+    
+    .auditoria-header-content {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+    }
+    
+    .filters-container {
+        grid-template-columns: 1fr;
+    }
+    
+    .auditoria-table-section {
+        padding: 12px 4px 8px 4px;
+    }
+    
+    .auditoria-title {
+        font-size: 1.5rem;
+    }
+}
+
+@media (max-width: 600px) {
+    .auditoria-title {
+        font-size: 1.1rem;
+    }
+    
+    .auditoria-header-content {
+        gap: 8px;
+    }
+    
+    .auditoria-table-section {
+        padding: 6px 0 4px 0;
+    }
+    
+    .descripcion-cell {
+        max-width: 150px;
+    }
+}
+
+/* ===== Animación de entrada ===== */
+.auditoria-content > div {
+    animation: scaleFadeIn 0.7s cubic-bezier(.39,.575,.565,1.000);
+}
+
+@keyframes scaleFadeIn {
+    0% { opacity: 0; transform: scale(0.98) translateY(16px); }
+    100% { opacity: 1; transform: scale(1) translateY(0); }
+}

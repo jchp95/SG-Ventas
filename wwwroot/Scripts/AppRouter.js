@@ -27,8 +27,11 @@ var AppRouter = /*#__PURE__*/function (_React$Component) {
       var Switch = window.ReactRouterDOM.Switch;
       var App = window.App;
       var Home = window.Home;
-      var UsersList = window.UsersList;
+      var ComunHome = window.ComunHome;
+      var Auditoria = window.Auditoria;
       var Settings = window.Settings;
+      var UsersList = window.UsersList;
+      var ClientesList = window.ClientesList;
       var Register = window.Register;
       var ExampleReduxPage = window.ExampleReduxPage;
       var AppProvider = window.ReduxProvider.AppProvider;
@@ -42,11 +45,20 @@ var AppRouter = /*#__PURE__*/function (_React$Component) {
             path: "/home",
             component: Home
           }), /*#__PURE__*/React.createElement(Route, {
-            path: "/usuarios",
-            component: UsersList
+            path: "/comun-home",
+            component: ComunHome
+          }), /*#__PURE__*/React.createElement(Route, {
+            path: "/auditoria",
+            component: Auditoria
           }), /*#__PURE__*/React.createElement(Route, {
             path: "/settings",
             component: Settings
+          }), /*#__PURE__*/React.createElement(Route, {
+            path: "/usuarios",
+            component: UsersList
+          }), /*#__PURE__*/React.createElement(Route, {
+            path: "/clientes",
+            component: ClientesList
           }), /*#__PURE__*/React.createElement(Route, {
             path: "/redux-demo",
             component: ExampleReduxPage

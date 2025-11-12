@@ -18,6 +18,28 @@ public class TenantMiddleware
         var path = context.Request.Path.Value ?? "";
         var correlationId = context.TraceIdentifier;
 
+        // Omitir validación de tenant para rutas de autenticación
+        var skipTenantValidation = path.StartsWith("/api/Auth", StringComparison.OrdinalIgnoreCase);
+
+        if (skipTenantValidation)
+        {
+            _logger.LogDebug("Omitiendo validación de tenant para ruta de auth: {Path}, CorrelationId: {CorrelationId}", 
+                path, correlationId);
+            
+            var authSw = Stopwatch.StartNew();
+            try
+            {
+                await _next(context);
+            }
+            finally
+            {
+                authSw.Stop();
+                _logger.LogInformation("Request {Method} {Path} terminó con {StatusCode} en {Duration} ms. Tenant: (auth-bypass), CorrelationId: {CorrelationId}",
+                    context.Request.Method, path, context.Response.StatusCode, authSw.ElapsedMilliseconds, correlationId);
+            }
+            return;
+        }
+
         var tenantDbName = context.User.Claims
             .FirstOrDefault(c => c.Type == "TenantDbName")?.Value;
 

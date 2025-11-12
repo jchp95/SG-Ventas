@@ -37,13 +37,16 @@ class OffCanvasPermissions extends React.Component {
         if (this.props.onClose) this.props.onClose();
     }
     render() {
-        const { show, user } = this.props;
+        const { show, usuario, user } = this.props;
         const { activeTab, categories, permissions } = this.state;
-        if (!show || !user) return null;
+        // Soportar tanto 'usuario' como 'user' para compatibilidad
+        const userData = usuario;
+
+        if (!show || !userData) return null;
         return (
             <window.OffCanvas show={show} onClose={this.handleClose} width="400px">
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'start', marginBottom: '18px' }}>
-                    <h5 style={{color: 'var(--primary-dark)', fontWeight: 700, marginBottom: 0}}>{'Permisos de ' + (user.fnombre || user.nombre)}</h5>
+                    <h5 style={{color: 'var(--primary-dark)', fontWeight: 700, marginBottom: 0}}>{'Permisos de ' + (userData.fnombre)}</h5>
                 </div>
                 <ul className="nav nav-tabs mb-3">
                     {categories.map(cat => (

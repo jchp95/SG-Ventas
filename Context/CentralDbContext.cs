@@ -21,6 +21,8 @@ public partial class CentralDbContext : IdentityDbContext<IdentityUser>
     }
 
     public virtual DbSet<TbUsuarioCentral> Usuarios { get; set; } = null!;
+    public virtual DbSet<TbEmpresa> Empresas { get; set; } = null!;
+    public virtual DbSet<TbConexion> Conexiones { get; set; } = null!;
     public virtual DbSet<TbAuditoria> Auditorias { get; set; } = null!;
     public virtual DbSet<TbMoneda> Monedas { get; set; } = null!;
     public new virtual DbSet<IdentityUserClaim<string>> UserClaims { get; set; } = null!;
@@ -81,10 +83,14 @@ public partial class CentralDbContext : IdentityDbContext<IdentityUser>
             entity.Property(a => a.FidAuditoria).HasColumnName("fid_auditoria");
             entity.Property(a => a.FkidUsuario).HasColumnName("fkid_usuario");
             entity.Property(a => a.FkidRegistro).HasColumnName("fkid_registro");
+            entity.Property(a => a.FkidEmpresa).HasColumnName("fkid_empresa");
             entity.Property(a => a.Ftabla).HasColumnName("ftabla").HasColumnType("varchar(50)").IsRequired();
             entity.Property(a => a.Ffecha).HasColumnName("ffecha").HasColumnType("Date").IsRequired();
             entity.Property(a => a.Fhora).HasColumnName("fhora").IsRequired();
             entity.Property(a => a.Faccion).HasColumnName("faccion").HasColumnType("varchar(50)").IsRequired();
+            entity.Property(a => a.FdireccionIp).HasColumnName("fdireccion_ip").HasColumnType("varchar(50)");
+            entity.Property(a => a.FuserAgent).HasColumnName("fuser_agent").HasColumnType("varchar(500)");
+            entity.Property(a => a.Fdetalles).HasColumnName("fdetalles").HasColumnType("text");
         });
 
         modelBuilder.Entity<TbMoneda>(entity =>
@@ -106,7 +112,7 @@ public partial class CentralDbContext : IdentityDbContext<IdentityUser>
         // Saltar auditoría durante la inicialización de datos
         if (IsSeeding) return await base.SaveChangesAsync(acceptAllChangesOnSuccess, cancellationToken);
 
-        // Saltar auditoría para tablas de Identity framework y TbUsuarioCentral
+        // Saltar auditoría SOLO para tablas de Identity framework (NO excluir TbUsuarioCentral)
         var entriesToSkip = ChangeTracker.Entries()
             .Where(e => e.Entity is IdentityUser ||
                         e.Entity is IdentityRole ||
@@ -114,39 +120,90 @@ public partial class CentralDbContext : IdentityDbContext<IdentityUser>
                         e.Entity is IdentityUserLogin<string> ||
                         e.Entity is IdentityUserToken<string> ||
                         e.Entity is IdentityRoleClaim<string> ||
-                        e.Entity is TbUsuarioCentral);
-
-        if (entriesToSkip.Any()) return await base.SaveChangesAsync(acceptAllChangesOnSuccess, cancellationToken);
+                        e.Entity is TbAuditoria); // No auditar la propia tabla de auditoría
 
         var auditorias = new List<TbAuditoria>();
-        var usuarioIdActual = await ObtenerUsuarioActual();
+        var (usuarioId, tenantId) = await ObtenerUsuarioActual();
 
         var entriesToAudit = ChangeTracker.Entries()
             .Where(e => e.State != EntityState.Unchanged &&
+                        e.State != EntityState.Detached &&
                         !entriesToSkip.Any(s => s.Entity == e.Entity));
 
         foreach (var entrada in entriesToAudit)
         {
+            var httpContext = _httpContextAccessor.HttpContext;
+            var ipAddressRaw = httpContext?.Connection?.RemoteIpAddress?.ToString() ?? "Unknown";
+            
+            // Normalizar la IP (convertir ::1 a Localhost o 127.0.0.1)
+            var ipAddress = NormalizarDireccionIp(ipAddressRaw);
+            
+            var userAgent = httpContext?.Request?.Headers["User-Agent"].ToString() ?? "Unknown";
+            
+            // Generar detalles de los cambios
+            var detalles = GenerarDetallesCambios(entrada);
+            
             var auditoria = new TbAuditoria
             {
                 Ftabla = entrada.Entity.GetType().Name,
                 Faccion = TraducirEstadoEntidad(entrada.State),
                 Ffecha = DateTime.UtcNow.Date,
                 Fhora = DateTime.UtcNow.ToString("HH:mm:ss"),
-                FkidUsuario = usuarioIdActual.usuarioId ?? 0,
-                FkidRegistro = ObtenerIdRegistro(entrada)
+                FkidUsuario = usuarioId ?? 0,
+                FkidRegistro = ObtenerIdRegistro(entrada),
+                FkidEmpresa = tenantId, // Agregar TenantId para saber de qué tenant es la acción
+                FdireccionIp = ipAddress,
+                FuserAgent = userAgent.Length > 500 ? userAgent.Substring(0, 500) : userAgent,
+                Fdetalles = detalles
             };
             auditorias.Add(auditoria);
+
+            _logger.LogInformation("📝 Auditoría registrada en BD Central: Tabla={Tabla}, Acción={Accion}, Usuario={Usuario}, TenantId={TenantId}, IP={IP}",
+                auditoria.Ftabla, auditoria.Faccion, auditoria.FkidUsuario, auditoria.FkidEmpresa, ipAddress);
         }
 
         if (auditorias.Any())
         {
-            await using var transaccion = await Database.BeginTransactionAsync(cancellationToken);
-            var result = await base.SaveChangesAsync(acceptAllChangesOnSuccess, cancellationToken);
-            await Auditorias.AddRangeAsync(auditorias, cancellationToken);
-            await base.SaveChangesAsync(acceptAllChangesOnSuccess, cancellationToken);
-            await transaccion.CommitAsync(cancellationToken);
-            return result;
+            // Verificar si ya existe una transacción activa (por ejemplo, de Identity Framework)
+            var transaccionExistente = Database.CurrentTransaction != null;
+            
+            if (transaccionExistente)
+            {
+                // Si ya hay una transacción, NO crear una nueva, usar la existente
+                try
+                {
+                    var result = await base.SaveChangesAsync(acceptAllChangesOnSuccess, cancellationToken);
+                    await Auditorias.AddRangeAsync(auditorias, cancellationToken);
+                    await base.SaveChangesAsync(acceptAllChangesOnSuccess, cancellationToken);
+                    _logger.LogInformation("✅ {Count} registros de auditoría guardados en BD Central (transacción existente)", auditorias.Count);
+                    return result;
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogError(ex, "❌ Error guardando auditoría en BD Central (transacción existente)");
+                    throw;
+                }
+            }
+            else
+            {
+                // Si NO hay transacción, crear una nueva
+                await using var transaccion = await Database.BeginTransactionAsync(cancellationToken);
+                try
+                {
+                    var result = await base.SaveChangesAsync(acceptAllChangesOnSuccess, cancellationToken);
+                    await Auditorias.AddRangeAsync(auditorias, cancellationToken);
+                    await base.SaveChangesAsync(acceptAllChangesOnSuccess, cancellationToken);
+                    await transaccion.CommitAsync(cancellationToken);
+                    _logger.LogInformation("✅ {Count} registros de auditoría guardados en BD Central (nueva transacción)", auditorias.Count);
+                    return result;
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogError(ex, "❌ Error guardando auditoría en BD Central (nueva transacción)");
+                    await transaccion.RollbackAsync(cancellationToken);
+                    throw;
+                }
+            }
         }
 
         return await base.SaveChangesAsync(acceptAllChangesOnSuccess, cancellationToken);
@@ -171,14 +228,14 @@ public partial class CentralDbContext : IdentityDbContext<IdentityUser>
         }
     }
 
-    private async Task<(int? usuarioId, string usuarioNombre)> ObtenerUsuarioActual()
+    private async Task<(int? usuarioId, int? tenantId)> ObtenerUsuarioActual()
     {
         var httpContext = _httpContextAccessor.HttpContext;
         if (httpContext == null) return (null, null);
 
         // Verificar si ya tenemos los datos almacenados en el contexto para esta solicitud
-        if (httpContext.Items.TryGetValue("CurrentUserData", out var cachedData))
-            return ((int? usuarioId, string usuarioNombre))cachedData;
+        if (httpContext.Items.TryGetValue("CurrentUserData", out var cachedData) && cachedData != null)
+            return ((int?, int?))cachedData;
 
         // Obtener Identity ID del usuario autenticado
         var identityId = httpContext.User?.FindFirstValue(ClaimTypes.NameIdentifier);
@@ -189,13 +246,13 @@ public partial class CentralDbContext : IdentityDbContext<IdentityUser>
             // Buscar el usuario en TbUsuarios usando el IdentityId
             var usuario = await _context.Set<TbUsuarioCentral>()
                 .Where(u => u.IdentityId == identityId)
-                .Select(u => new { u.FidUsuario, u.FnombreUsuario })
+                .Select(u => new { u.FidUsuario, u.FkidEmpresa })
                 .FirstOrDefaultAsync();
 
             if (usuario == null) return (null, null);
 
             // Cachear el resultado para esta solicitud
-            var result = ((int?)usuario.FidUsuario, usuario.FnombreUsuario); // Explicitly cast to int?
+            var result = ((int?)usuario.FidUsuario, (int?)usuario.FkidEmpresa);
             httpContext.Items["CurrentUserData"] = result;
 
             return result;  
@@ -252,6 +309,126 @@ public partial class CentralDbContext : IdentityDbContext<IdentityUser>
             _logger.LogError(ex, "Error al obtener ID de registro para auditoría");
             return 0;
         }
+    }
+    
+    private string GenerarDetallesCambios(EntityEntry entrada)
+    {
+        try
+        {
+            var detalles = new System.Text.StringBuilder();
+            var nombreEntidad = entrada.Entity.GetType().Name;
+            
+            switch (entrada.State)
+            {
+                case EntityState.Added:
+                    // Para TbUsuarioCentral, mostrar información del usuario
+                    if (entrada.Entity is TbUsuarioCentral usuario)
+                    {
+                        detalles.Append($"Usuario creado: {usuario.FnombreUsuario} ({usuario.Fnombre})");
+                        if (!string.IsNullOrEmpty(usuario.Femail))
+                        {
+                            detalles.Append($" - Email: {usuario.Femail}");
+                        }
+                    }
+                    // Para IdentityUser, mostrar email
+                    else if (entrada.Entity is IdentityUser identityUser)
+                    {
+                        detalles.Append($"Cuenta de autenticación creada: {identityUser.UserName}");
+                    }
+                    // Para IdentityUserRole, mostrar asignación de rol
+                    else if (nombreEntidad.Contains("IdentityUserRole"))
+                    {
+                        detalles.Append("Rol asignado al usuario");
+                    }
+                    else
+                    {
+                        detalles.Append($"Nuevo registro en {nombreEntidad}");
+                    }
+                    break;
+                    
+                case EntityState.Modified:
+                    // Para TbUsuarioCentral, mostrar qué campos cambiaron
+                    if (entrada.Entity is TbUsuarioCentral usuarioMod)
+                    {
+                        var camposModificados = entrada.Properties
+                            .Where(p => p.IsModified && !p.Metadata.IsPrimaryKey())
+                            .ToList();
+                        
+                        detalles.Append($"Usuario modificado: {usuarioMod.FnombreUsuario}");
+                        
+                        if (camposModificados.Any())
+                        {
+                            detalles.Append(" - Campos: ");
+                            var cambios = new List<string>();
+                            foreach (var prop in camposModificados)
+                            {
+                                var nombreCampo = prop.Metadata.Name switch
+                                {
+                                    "Fnombre" => "Nombre",
+                                    "FnombreUsuario" => "Usuario",
+                                    "Femail" => "Email",
+                                    "Factivo" => "Estado",
+                                    "Fpassword" => "Contraseña",
+                                    _ => prop.Metadata.Name
+                                };
+                                cambios.Add(nombreCampo);
+                            }
+                            detalles.Append(string.Join(", ", cambios));
+                        }
+                    }
+                    else
+                    {
+                        detalles.Append($"Modificado en {nombreEntidad}: ");
+                        var camposModificados = entrada.Properties
+                            .Where(p => p.IsModified && !p.Metadata.IsPrimaryKey())
+                            .Select(p => p.Metadata.Name)
+                            .ToList();
+                        detalles.Append(string.Join(", ", camposModificados));
+                    }
+                    break;
+                    
+                case EntityState.Deleted:
+                    if (entrada.Entity is TbUsuarioCentral usuarioDel)
+                    {
+                        detalles.Append($"Usuario eliminado: {usuarioDel.FnombreUsuario}");
+                    }
+                    else
+                    {
+                        detalles.Append($"Registro eliminado de {nombreEntidad}");
+                    }
+                    break;
+            }
+            
+            return detalles.ToString();
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error generando detalles de cambios");
+            return "Sin detalles";
+        }
+    }
+    
+    private string NormalizarDireccionIp(string ipAddress)
+    {
+        if (string.IsNullOrWhiteSpace(ipAddress) || ipAddress == "Unknown")
+        {
+            return "Unknown";
+        }
+        
+        // Convertir ::1 (IPv6 localhost) a formato legible
+        if (ipAddress == "::1" || ipAddress == "::ffff:127.0.0.1")
+        {
+            return "127.0.0.1 (Localhost)";
+        }
+        
+        // Si es una IP IPv6, mostrarla de forma más limpia
+        if (ipAddress.Contains("::ffff:"))
+        {
+            // Extraer la parte IPv4 de una dirección IPv6 mapeada
+            return ipAddress.Replace("::ffff:", "");
+        }
+        
+        return ipAddress;
     }
 
     partial void OnModelCreatingPartial(ModelBuilder modelBuilder);

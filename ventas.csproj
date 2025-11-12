@@ -8,6 +8,8 @@
     </PropertyGroup>
 
     <ItemGroup>
+        <Folder Include="Controllers\Usuario\"/>
+        <Folder Include="Filters\"/>
         <Folder Include="Interfaces\"/>
         <Folder Include="Models\ModelsBdTenant\"/>
         <Folder Include="ViewModels\"/>
@@ -30,6 +32,11 @@
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
         <PackageReference Include="React.AspNet" Version="5.2.12"/>
+        <PackageReference Include="Serilog.AspNetCore" Version="9.0.0"/>
+        <PackageReference Include="Serilog.Exceptions" Version="8.4.0"/>
+        <PackageReference Include="Serilog.Sinks.Console" Version="6.0.0"/>
+        <PackageReference Include="Serilog.Sinks.File" Version="7.0.0"/>
+        <PackageReference Include="Swashbuckle.AspNetCore" Version="9.0.6"/>
     </ItemGroup>
 
     <ItemGroup>

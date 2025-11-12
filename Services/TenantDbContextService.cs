@@ -8,15 +8,18 @@ public class TenantDbContextService
     private readonly IConfiguration _config;
     private readonly IHttpContextAccessor _httpContextAccessor;
     private readonly ILogger<TenantDbContextService> _logger;
+    private readonly ILoggerFactory _loggerFactory;
 
     public TenantDbContextService(
         IConfiguration config,
         IHttpContextAccessor httpContextAccessor,
-        ILogger<TenantDbContextService> logger)
+        ILogger<TenantDbContextService> logger,
+        ILoggerFactory loggerFactory)
     {
         _config = config;
         _httpContextAccessor = httpContextAccessor;
         _logger = logger;
+        _loggerFactory = loggerFactory;
     }
 
     // Para uso en runtime, toma tenant desde HttpContext
@@ -55,6 +58,8 @@ public class TenantDbContextService
 
         _logger.LogInformation("TenantDbContext creado exitosamente para tenant {TenantDbName}.", tenantDbName);
 
-        return new TenantDbContext(options);
+        // Crear contexto con las dependencias necesarias para auditoría
+        var tenantLogger = _loggerFactory.CreateLogger<TenantDbContext>();
+        return new TenantDbContext(options, _httpContextAccessor, tenantLogger);
     }
 }
