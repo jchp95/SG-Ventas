@@ -7,28 +7,27 @@
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>@ViewData["Title"]Ventas</title>
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css"/>
-    <link rel="stylesheet" href="~/lib/bootstrap-icons/bootstrap-icons.css"/>
-    <link rel="stylesheet" href="~/css/site.css"/>
-    <link rel="stylesheet" href="~/css/Navbar.css"/>
-    <link rel="stylesheet" href="~/css/Sidebar.css"/>
-    <link rel="stylesheet" href="~/css/Register.css"/>
-    <link rel="stylesheet" href="~/css/Home.css"/>
-    <link rel="stylesheet" href="~/css/ActividadesRecientes.css"/>
-    <link rel="stylesheet" href="~/css/OffCanvasActRecientes.css"/>
-    <link rel="stylesheet" href="~/css/UserList.css"/>
-    <link rel="stylesheet" href="~/css/Settings.css"/>
-    <link rel="stylesheet" href="~/css/Auditoria.css"/>
-
-    <link rel="stylesheet" href="~/css/Modal.css"/>
+    <link rel="stylesheet" href="/lib/bootstrap/dist/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="/lib/bootstrap-icons/bootstrap-icons.css"/>
+    <link rel="stylesheet" href="/css/site.css"/>
+    <link rel="stylesheet" href="/css/Navbar.css"/>
+    <link rel="stylesheet" href="/css/Sidebar.css"/>
+    <link rel="stylesheet" href="/css/Register.css"/>
+    <link rel="stylesheet" href="/css/Home.css"/>
+    <link rel="stylesheet" href="/css/ActividadesRecientes.css"/>
+    <link rel="stylesheet" href="/css/OffCanvasActRecientes.css"/>
+    <link rel="stylesheet" href="/css/UserList.css"/>
+    <link rel="stylesheet" href="/css/Settings.css"/>
+    <link rel="stylesheet" href="/css/Auditoria.css"/>
+    <link rel="stylesheet" href="/css/Modal.css"/>
 </head>
 <body>
 
 <div id="root"></div>
 @RenderBody()
 
-<script src="~/lib/jquery/dist/jquery.min.js"></script>
-<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+<script src="/lib/jquery/dist/jquery.min.js"></script>
+<script src="/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
 <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
 
@@ -53,79 +52,79 @@
 <script src="https://cdn.jsdelivr.net/npm/jwt-decode@3.1.2/build/jwt-decode.min.js"></script>
 
 <!-- Components -->
-<script src="~/Scripts/Components/Navbar.js"></script>
-<script src="~/Scripts/Components/Footer.js"></script>
-<script src="~/Scripts/Components/Sidebar.js"></script>
-<script src="~/Scripts/Components/Toasts.js"></script>
-<script src="~/Scripts/Components/ChartHome.js"></script>
-<script src="~/Scripts/Components/ActividadesRecientes.js"></script>
+<script src="/Scripts/Components/Navbar.js"></script>
+<script src="/Scripts/Components/Footer.js"></script>
+<script src="/Scripts/Components/Sidebar.js"></script>
+<script src="/Scripts/Components/Toasts.js"></script>
+<script src="/Scripts/Components/ChartHome.js"></script>
+<script src="/Scripts/Components/ActividadesRecientes.js"></script>
 
-<script src="~/Scripts/Components/OffCanvas/OffCanvas.js"></script>
-<script src="~/Scripts/Components/OffCanvas/OffCanvasActRecientes.js"></script>
-<script src="~/Scripts/Components/OffCanvas/OffCanvasPermissions.js"></script>
-<script src="~/Scripts/Components/Tables/TableUsers.js"></script>
-<script src="~/Scripts/Components/Tables/TableClientes.js"></script>
-<script src="~/Scripts/Components/Tables/TableAuditoria.js"></script>
-<script src="~/Scripts/Components/Modal/Modal.js"></script>
-<script src="~/Scripts/Components/Modal/CreateUserModal.js"></script>
-<script src="~/Scripts/Components/Modal/CreateClienteModal.js"></script>
+<script src="/Scripts/Components/OffCanvas/OffCanvas.js"></script>
+<script src="/Scripts/Components/OffCanvas/OffCanvasActRecientes.js"></script>
+<script src="/Scripts/Components/OffCanvas/OffCanvasPermissions.js"></script>
+<script src="/Scripts/Components/Tables/TableUsers.js"></script>
+<script src="/Scripts/Components/Tables/TableClientes.js"></script>
+<script src="/Scripts/Components/Tables/TableAuditoria.js"></script>
+<script src="/Scripts/Components/Modal/Modal.js"></script>
+<script src="/Scripts/Components/Modal/CreateUserModal.js"></script>
+<script src="/Scripts/Components/Modal/CreateClienteModal.js"></script>
 
 <!-- Redux - Actions -->
-<script src="~/Scripts/Redux/Actions/usuariosActions.js"></script>
-<script src="~/Scripts/Redux/Actions/clientesActions.js"></script>
-<script src="~/Scripts/Redux/Actions/ventasActions.js"></script>
-<script src="~/Scripts/Redux/Actions/appActions.js"></script>
-<script src="~/Scripts/Redux/Actions/authActions.js"></script>
-<script src="~/Scripts/Redux/Actions/auditoriaActions.js"></script>
+<script src="/Scripts/Redux/Actions/usuariosActions.js"></script>
+<script src="/Scripts/Redux/Actions/clientesActions.js"></script>
+<script src="/Scripts/Redux/Actions/ventasActions.js"></script>
+<script src="/Scripts/Redux/Actions/appActions.js"></script>
+<script src="/Scripts/Redux/Actions/authActions.js"></script>
+<script src="/Scripts/Redux/Actions/auditoriaActions.js"></script>
 
 <!-- Redux - Reducers -->
-<script src="~/Scripts/Redux/Reducers/usuariosReducer.js"></script>
-<script src="~/Scripts/Redux/Reducers/clientesReducer.js"></script>
-<script src="~/Scripts/Redux/Reducers/ventasReducer.js"></script>
-<script src="~/Scripts/Redux/Reducers/appReducer.js"></script>
-<script src="~/Scripts/Redux/Reducers/authReducer.js"></script>
-<script src="~/Scripts/Redux/Reducers/auditoriaReducer.js"></script>
+<script src="/Scripts/Redux/Reducers/usuariosReducer.js"></script>
+<script src="/Scripts/Redux/Reducers/clientesReducer.js"></script>
+<script src="/Scripts/Redux/Reducers/ventasReducer.js"></script>
+<script src="/Scripts/Redux/Reducers/appReducer.js"></script>
+<script src="/Scripts/Redux/Reducers/authReducer.js"></script>
+<script src="/Scripts/Redux/Reducers/auditoriaReducer.js"></script>
 
 <!-- Redux - Selectores -->
-<script src="~/Scripts/Redux/Selectors/index.js"></script>
+<script src="/Scripts/Redux/Selectors/index.js"></script>
 
 <!-- Redux - Store y Hooks -->
-<script src="~/Scripts/Redux/Store/index.js"></script>
-<script src="~/Scripts/Redux/Hooks/index.js"></script>
+<script src="/Scripts/Redux/Store/index.js"></script>
+<script src="/Scripts/Redux/Hooks/index.js"></script>
 
 <!-- Utils  -->
-<script src="~/Scripts/Utils/Fecha/formatDate.js"></script>
-<script src="~/Scripts/Utils/Moneda/formatCurrency.js"></script>
-<script src="~/Scripts/Utils/Validacion/HookFormUtils.js"></script>
-<script src="~/Scripts/Utils/Numero/IntegerUtils.js"></script>
-<script src="~/Scripts/Utils/Token/JwtUtils.js"></script>
+<script src="/Scripts/Utils/Fecha/formatDate.js"></script>
+<script src="/Scripts/Utils/Moneda/formatCurrency.js"></script>
+<script src="/Scripts/Utils/Validacion/HookFormUtils.js"></script>
+<script src="/Scripts/Utils/Numero/IntegerUtils.js"></script>
+<script src="/Scripts/Utils/Token/JwtUtils.js"></script>
 
 <!-- Constants  -->
-<script src="~/Scripts/Constantes/RoleConstants.js"></script>
-<script src="~/Scripts/Constantes/Paises/Pais.js"></script>
-<script src="~/Scripts/Constantes/Provincias/Provincia.js"></script>
-<script src="~/Scripts/Constantes/Ciudades/Ciudad.js"></script>
-<script src="~/Scripts/Constantes/Municipios/Municipio.js"></script>
-<script src="~/Scripts/Constantes/Sectores/Sector.js"></script>
-<script src="~/Scripts/Constantes/Nacionalidades/Nacionalidad.js"></script>
-<script src="~/Scripts/Constantes/EstadosCiviles/EstadoCivil.js"></script>
-<script src="~/Scripts/Constantes/TiposClientes/TipoCliente.js"></script>
-<script src="~/Scripts/Constantes/ActividadesComerciales/ActividadComercial.js"></script>
-<script src="~/Scripts/Constantes/Moneda/Moneda.js"></script>
+<script src="/Scripts/Constantes/RoleConstants.js"></script>
+<script src="/Scripts/Constantes/Paises/Pais.js"></script>
+<script src="/Scripts/Constantes/Provincias/Provincia.js"></script>
+<script src="/Scripts/Constantes/Ciudades/Ciudad.js"></script>
+<script src="/Scripts/Constantes/Municipios/Municipio.js"></script>
+<script src="/Scripts/Constantes/Sectores/Sector.js"></script>
+<script src="/Scripts/Constantes/Nacionalidades/Nacionalidad.js"></script>
+<script src="/Scripts/Constantes/EstadosCiviles/EstadoCivil.js"></script>
+<script src="/Scripts/Constantes/TiposClientes/TipoCliente.js"></script>
+<script src="/Scripts/Constantes/ActividadesComerciales/ActividadComercial.js"></script>
+<script src="/Scripts/Constantes/Moneda/Moneda.js"></script>
 
 <!-- Pages  -->
-<script src="~/Scripts/Pages/Auth/Register.js"></script>
-<script src="~/Scripts/Pages/Home/Home.js"></script>
-<script src="~/Scripts/Pages/Home/ComunHome.js"></script>
-<script src="~/Scripts/Pages/Users/UsersList.js"></script>
-<script src="~/Scripts/Pages/Clientes/ClientesList.js"></script>
-<script src="~/Scripts/Pages/Auditoria/AuditoriaList.js"></script>
-<script src="~/Scripts/Pages/Settings/Settings.js"></script>
-<script src="~/Scripts/Pages/Redux/ExampleReduxPage.js"></script>
+<script src="/Scripts/Pages/Auth/Register.js"></script>
+<script src="/Scripts/Pages/Home/Home.js"></script>
+<script src="/Scripts/Pages/Home/ComunHome.js"></script>
+<script src="/Scripts/Pages/Users/UsersList.js"></script>
+<script src="/Scripts/Pages/Clientes/ClientesList.js"></script>
+<script src="/Scripts/Pages/Auditoria/AuditoriaList.js"></script>
+<script src="/Scripts/Pages/Settings/Settings.js"></script>
+<script src="/Scripts/Pages/Redux/ExampleReduxPage.js"></script>
 
 <!-- Main App -->
-<script src="~/Scripts/App.js"></script>
-<script src="~/Scripts/AppRouter.js"></script>
+<script src="/Scripts/App.js"></script>
+<script src="/Scripts/AppRouter.js"></script>
 
 <script>
     // Monta Register como vista inicial
