@@ -1,0 +1,12 @@
+# Ignora archivos y carpetas innecesarios para la imagen Docker
+bin/
+obj/
+*.md
+*.user
+*.sln.DotSettings.user
+*.log
+.git
+.gitignore
+.vscode
+Dockerfile
+*.db
