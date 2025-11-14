@@ -144,10 +144,10 @@ var clientesActions = {
       };
     }();
   },
-  createCliente: function createCliente(clienteData) {
+  createCliente: function createCliente(formData) {
     return /*#__PURE__*/function () {
       var _ref2 = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee2(dispatch) {
-        var token, response, errorData, result, _t2;
+        var _result, token, response, result, backendMessage, _t2, _t3;
         return _regenerator().w(function (_context2) {
           while (1) switch (_context2.p = _context2.n) {
             case 0:
@@ -165,49 +165,55 @@ var clientesActions = {
               return fetch('/api/cliente/crear', {
                 method: 'POST',
                 headers: {
-                  'Authorization': "Bearer ".concat(token),
-                  'Content-Type': 'application/json'
+                  'Authorization': "Bearer ".concat(token)
+                  // OJO: NO pongas 'Content-Type' aquí, fetch lo arma solo para FormData
                 },
-                body: JSON.stringify(clienteData)
+                body: formData
               });
             case 3:
               response = _context2.v;
-              if (response.ok) {
-                _context2.n = 5;
-                break;
-              }
-              _context2.n = 4;
+              result = null;
+              _context2.p = 4;
+              _context2.n = 5;
               return response.json();
-            case 4:
-              errorData = _context2.v;
-              throw new Error(errorData.message || 'Error al crear cliente');
             case 5:
-              _context2.n = 6;
-              return response.json();
-            case 6:
               result = _context2.v;
-              if (!result.success) {
-                _context2.n = 7;
+              _context2.n = 7;
+              break;
+            case 6:
+              _context2.p = 6;
+              _t2 = _context2.v;
+            case 7:
+              if (!(!response.ok || !((_result = result) !== null && _result !== void 0 && _result.success))) {
+                _context2.n = 8;
                 break;
               }
+              console.error('Error backend crear cliente:', result);
+              backendMessage = result && typeof result.data === 'string' && result.data ||
+              // 👈 aquí entra "Formato de imagen no permitido..."
+              result && result.message || "Error al crear cliente (HTTP ".concat(response.status, ")");
+              dispatch(clientesActions.setError(backendMessage));
+              return _context2.a(2, {
+                success: false,
+                error: backendMessage,
+                // si en algún caso data trae ModelState, aquí podrías mapearlo a fieldErrors
+                fieldErrors: null
+              });
+            case 8:
+              // Éxito
               dispatch(clientesActions.agregarCliente(result.data));
               return _context2.a(2, {
                 success: true,
                 data: result.data
               });
-            case 7:
-              throw new Error(result.message || 'Error al crear cliente');
-            case 8:
-              _context2.n = 10;
-              break;
             case 9:
               _context2.p = 9;
-              _t2 = _context2.v;
-              console.error('Error al crear cliente:', _t2);
-              dispatch(clientesActions.setError(_t2.message));
+              _t3 = _context2.v;
+              console.error('Error al crear cliente:', _t3);
+              dispatch(clientesActions.setError(_t3.message));
               return _context2.a(2, {
                 success: false,
-                error: _t2.message
+                error: _t3.message
               });
             case 10:
               _context2.p = 10;
@@ -216,7 +222,7 @@ var clientesActions = {
             case 11:
               return _context2.a(2);
           }
-        }, _callee2, null, [[1, 9, 10, 11]]);
+        }, _callee2, null, [[4, 6], [1, 9, 10, 11]]);
       }));
       return function (_x2) {
         return _ref2.apply(this, arguments);
@@ -226,7 +232,7 @@ var clientesActions = {
   updateCliente: function updateCliente(clienteData) {
     return /*#__PURE__*/function () {
       var _ref3 = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee3(dispatch) {
-        var token, response, errorData, result, _t3;
+        var token, response, errorData, result, _t4;
         return _regenerator().w(function (_context3) {
           while (1) switch (_context3.p = _context3.n) {
             case 0:
@@ -293,12 +299,12 @@ var clientesActions = {
               break;
             case 9:
               _context3.p = 9;
-              _t3 = _context3.v;
-              console.error('Error al actualizar cliente:', _t3);
-              dispatch(clientesActions.setError(_t3.message));
+              _t4 = _context3.v;
+              console.error('Error al actualizar cliente:', _t4);
+              dispatch(clientesActions.setError(_t4.message));
               return _context3.a(2, {
                 success: false,
-                error: _t3.message
+                error: _t4.message
               });
             case 10:
               _context3.p = 10;
@@ -317,7 +323,7 @@ var clientesActions = {
   deleteCliente: function deleteCliente(clienteId) {
     return /*#__PURE__*/function () {
       var _ref4 = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee4(dispatch) {
-        var token, response, errorData, result, _t4;
+        var token, response, errorData, result, _t5;
         return _regenerator().w(function (_context4) {
           while (1) switch (_context4.p = _context4.n) {
             case 0:
@@ -370,12 +376,12 @@ var clientesActions = {
               break;
             case 9:
               _context4.p = 9;
-              _t4 = _context4.v;
-              console.error('Error al eliminar cliente:', _t4);
-              dispatch(clientesActions.setError(_t4.message));
+              _t5 = _context4.v;
+              console.error('Error al eliminar cliente:', _t5);
+              dispatch(clientesActions.setError(_t5.message));
               return _context4.a(2, {
                 success: false,
-                error: _t4.message
+                error: _t5.message
               });
             case 10:
               _context4.p = 10;
@@ -394,7 +400,7 @@ var clientesActions = {
   activateCliente: function activateCliente(clienteId) {
     return /*#__PURE__*/function () {
       var _ref5 = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee5(dispatch) {
-        var token, response, errorData, result, _t5;
+        var token, response, errorData, result, _t6;
         return _regenerator().w(function (_context5) {
           while (1) switch (_context5.p = _context5.n) {
             case 0:
@@ -448,12 +454,12 @@ var clientesActions = {
               break;
             case 9:
               _context5.p = 9;
-              _t5 = _context5.v;
-              console.error('Error al activar cliente:', _t5);
-              dispatch(clientesActions.setError(_t5.message));
+              _t6 = _context5.v;
+              console.error('Error al activar cliente:', _t6);
+              dispatch(clientesActions.setError(_t6.message));
               return _context5.a(2, {
                 success: false,
-                error: _t5.message
+                error: _t6.message
               });
             case 10:
               _context5.p = 10;
@@ -472,7 +478,7 @@ var clientesActions = {
   toggleActivoCliente: function toggleActivoCliente(clienteId) {
     return /*#__PURE__*/function () {
       var _ref6 = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee6(dispatch) {
-        var token, response, errorData, result, _t6;
+        var token, response, errorData, result, _t7;
         return _regenerator().w(function (_context6) {
           while (1) switch (_context6.p = _context6.n) {
             case 0:
@@ -526,12 +532,12 @@ var clientesActions = {
               break;
             case 9:
               _context6.p = 9;
-              _t6 = _context6.v;
-              console.error('Error al cambiar estado del cliente:', _t6);
-              dispatch(clientesActions.setError(_t6.message));
+              _t7 = _context6.v;
+              console.error('Error al cambiar estado del cliente:', _t7);
+              dispatch(clientesActions.setError(_t7.message));
               return _context6.a(2, {
                 success: false,
-                error: _t6.message
+                error: _t7.message
               });
             case 10:
               _context6.p = 10;

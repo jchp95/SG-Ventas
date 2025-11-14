@@ -94,7 +94,7 @@ const clientesActions = {
         }
     },
 
-    createCliente: (clienteData) => async (dispatch) => {
+    createCliente: (formData) => async (dispatch) => {
         dispatch(clientesActions.setCargando(true));
         dispatch(clientesActions.setError(null));
 
@@ -107,25 +107,41 @@ const clientesActions = {
             const response = await fetch('/api/cliente/crear', {
                 method: 'POST',
                 headers: {
-                    'Authorization': `Bearer ${token}`,
-                    'Content-Type': 'application/json'
+                    'Authorization': `Bearer ${token}`
+                    // OJO: NO pongas 'Content-Type' aquí, fetch lo arma solo para FormData
                 },
-                body: JSON.stringify(clienteData)
+                body: formData
             });
 
-            if (!response.ok) {
-                const errorData = await response.json();
-                throw new Error(errorData.message || 'Error al crear cliente');
+            let result = null;
+            try {
+                result = await response.json();
+            } catch {
+                // por si el backend no devuelve JSON en algún error raro
             }
 
-            const result = await response.json();
+            // Si HTTP != 200 o success == false, lo tratamos como error
+            if (!response.ok || !result?.success) {
+                console.error('Error backend crear cliente:', result);
 
-            if (result.success) {
-                dispatch(clientesActions.agregarCliente(result.data));
-                return { success: true, data: result.data };
-            } else {
-                throw new Error(result.message || 'Error al crear cliente');
+                const backendMessage =
+                    (result && typeof result.data === 'string' && result.data) || // 👈 aquí entra "Formato de imagen no permitido..."
+                    (result && result.message) ||
+                    `Error al crear cliente (HTTP ${response.status})`;
+
+                dispatch(clientesActions.setError(backendMessage));
+
+                return {
+                    success: false,
+                    error: backendMessage,
+                    // si en algún caso data trae ModelState, aquí podrías mapearlo a fieldErrors
+                    fieldErrors: null
+                };
             }
+
+            // Éxito
+            dispatch(clientesActions.agregarCliente(result.data));
+            return { success: true, data: result.data };
         } catch (error) {
             console.error('Error al crear cliente:', error);
             dispatch(clientesActions.setError(error.message));
@@ -134,6 +150,9 @@ const clientesActions = {
             dispatch(clientesActions.setCargando(false));
         }
     },
+
+
+
 
     updateCliente: (clienteData) => async (dispatch) => {
         dispatch(clientesActions.setCargando(true));

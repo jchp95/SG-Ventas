@@ -80,12 +80,12 @@ function ClientesList() {
         setModalCliente(null);
     };
 
-    const handleSaveCliente = async (clienteData) => {
+    const handleSaveCliente = async (formData) => {
         let result;
         if (modalCliente) {
             // Editar cliente existente
             result = await dispatch(window.ClientesActions.updateCliente({
-                ...clienteData,
+                ...formData,
                 fidCliente: modalCliente.fidCliente
             }));
             
@@ -97,7 +97,7 @@ function ClientesList() {
             }
         } else {
             // Crear nuevo cliente
-            result = await dispatch(window.ClientesActions.createCliente(clienteData));
+            result = await dispatch(window.ClientesActions.createCliente(formData));
             
             if (result && result.success) {
                 window.ToastUtils?.success('Cliente creado correctamente', 'Éxito');

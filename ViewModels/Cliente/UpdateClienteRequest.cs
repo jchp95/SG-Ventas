@@ -49,4 +49,17 @@ public class UpdateClienteRequest
     public int? IdTipoCliente { get; set; }
     public int? IdActividadComercial { get; set; }
     public int? IdMoneda { get; set; }
+
+    // Nombres de datos relacionados (para crear si no existe o actualizar)
+    public string? Ruta { get; set; }
+    public string? EstadoCivil { get; set; }
+    public string? Sector { get; set; }
+    public string? Municipio { get; set; }
+    public string? Ciudad { get; set; }
+    public string? Provincia { get; set; }
+    public string? Pais { get; set; }
+    public string? Nacionalidad { get; set; }
+    public string? TipoCliente { get; set; }
+    public string? ActividadComercial { get; set; }
+    public string? Moneda { get; set; }
 }

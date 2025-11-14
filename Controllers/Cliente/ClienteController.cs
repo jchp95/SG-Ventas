@@ -26,10 +26,12 @@ public class ClienteController : ControllerBase
     ///     Crea un nuevo cliente para el tenant actual
     /// </summary>
     [HttpPost("crear")]
-    public async Task<IActionResult> CreateCliente([FromBody] CreateClienteRequest request)
+    [Consumes("multipart/form-data")] // 👈 clave para FormData
+    public async Task<IActionResult> CreateCliente([FromForm] CreateClienteRequest request)
     {
         try
         {
+            // Con [ApiController] ya hace 400 automático, pero si quieres mantener esto:
             if (!ModelState.IsValid)
                 return BadRequest(new ApiResponse<object>(false, "Datos inválidos", ModelState));
 
@@ -193,9 +195,11 @@ public class ClienteController : ControllerBase
             _logger.LogInformation("Estado del cliente {ClienteId} cambiado a: {Estado}",
                 id, nuevoEstado ? "Activo" : "Inactivo");
 
-            return Ok(new ApiResponse<bool>(true, 
-                $"Cliente {(nuevoEstado ? "activado" : "desactivado")} exitosamente", 
-                nuevoEstado));
+            return Ok(new ApiResponse<bool>(
+                true,
+                $"Cliente {(nuevoEstado ? "activado" : "desactivado")} exitosamente",
+                nuevoEstado
+            ));
         }
         catch (InvalidOperationException ex)
         {

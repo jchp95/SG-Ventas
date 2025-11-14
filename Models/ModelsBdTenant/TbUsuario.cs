@@ -39,13 +39,5 @@ public class TbUsuario
     [Unicode(false)]
     public string FestadoSync { get; set; } = null!;
 
-    [InverseProperty("FkidUsuarioNavigation")]
-    public virtual ICollection<TbUsuario> InverseFkidUsuarioNavigation { get; set; } = new List<TbUsuario>();
-
-    [ForeignKey("FkidUsuario")]
-    [InverseProperty("InverseFkidUsuarioNavigation")]
-    public virtual TbUsuario FkidUsuarioNavigation { get; set; } = null!;
-
-    [InverseProperty("FkidUsuarioNavigation")]
-    public virtual ICollection<TbRuta> TbRuta { get; set; } = new List<TbRuta>();
+    
 }
