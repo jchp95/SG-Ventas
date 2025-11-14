@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Http;
 
 namespace ventas.ViewModels.Cliente;
 
@@ -24,7 +25,7 @@ public class CreateClienteRequest
 
     [Required(ErrorMessage = "El tipo de entidad es requerido")]
     [StringLength(1)]
-    public string TipoEntidad { get; set; } = "F"; // F = Física, J = Jurídica
+    public string? TipoEntidad { get; set; }
 
     [StringLength(50, ErrorMessage = "La calle no puede exceder 50 caracteres")]
     public string? Calle { get; set; }
@@ -34,7 +35,7 @@ public class CreateClienteRequest
     [StringLength(60, ErrorMessage = "La ubicación GPS no puede exceder 60 caracteres")]
     public string? UbicacionGps { get; set; }
 
-    // Foreign Keys (opcionales)
+    // Foreign Keys (opcionales, si ya existen)
     public int? IdRuta { get; set; }
     public int? IdEstadoCivil { get; set; }
     public int? IdSector { get; set; }
@@ -46,4 +47,20 @@ public class CreateClienteRequest
     public int? IdTipoCliente { get; set; }
     public int? IdActividadComercial { get; set; }
     public int? IdMoneda { get; set; }
+
+    // Nombres de datos relacionados (para crear si no existe)
+    public string? Ruta { get; set; }
+    public string? EstadoCivil { get; set; }
+    public string? Sector { get; set; }
+    public string? Municipio { get; set; }
+    public string? Ciudad { get; set; }
+    public string? Provincia { get; set; }
+    public string? Pais { get; set; }
+    public string? Nacionalidad { get; set; }
+    public string? TipoCliente { get; set; }
+    public string? ActividadComercial { get; set; }
+    public string? Moneda { get; set; }
+
+    // Imagen opcional recibida vía multipart/form-data
+    public IFormFile? Imagen { get; set; }
 }

@@ -1,46 +1,63 @@
 function CreateClienteModal({show, onClose, onSave, cliente}) {
     const isEdit = !!cliente;
 
-    const [form, setForm] = React.useState({
-        nombre: cliente?.fnombre || '',
-        cedulaRnc: cliente?.fcedulaRnc || '',
-        telefono: cliente?.ftelefono || '',
-        celular: cliente?.fcelular || '',
-        direccion: cliente?.fdireccion || '',
-        fechaNacimiento: cliente?.ffechaNacimiento || '',
-        tipoEntidad: cliente?.ftipoEntidad || 'F', // F = Física, J = Jurídica
-        calle: cliente?.fcalle || '',
-        limiteCredito: cliente?.flimiteCredito || 0,
-        ubicacionGps: cliente?.fubicaciongps || '',
-        idRuta: cliente?.fkidRuta || null,
-        idEstadoCivil: cliente?.fkidEstadoCivil || null,
-        idSector: cliente?.fkidSector || null,
-        idMunicipio: cliente?.fkidMunicipio || null,
-        idCiudad: cliente?.fkidCiudad || null,
-        idProvincia: cliente?.fkidProvincia || null,
-        idPais: cliente?.fkidPais || 1,
-        idNacionalidad: cliente?.fkidNacionalidad || 1,
-        idTipoCliente: cliente?.fkidTipoCliente || null,
-        idActividadComercial: cliente?.fkidActividadComercial || null,
-        idMoneda: cliente?.fkidMoneda || null
-        // Nota: El campo 'imagen' se maneja por separado en 'imagePreview' y 'handleImageChange'
+    // React Hook Form configurado con util global
+    const {
+        register,
+        handleSubmit,
+        formState: { errors },
+        trigger,
+        watch,
+        setValue
+    } = window.HookFormUtils.useForm({
+        mode: 'onChange',
+        reValidateMode: 'onChange',
+        defaultValues: {
+            nombre: cliente?.fnombre || '',
+            cedulaRnc: cliente?.fcedulaRnc || '',
+            telefono: cliente?.ftelefono || '',
+            celular: cliente?.fcelular || '',
+            direccion: cliente?.fdireccion || '',
+            fechaNacimiento: cliente?.ffechaNacimiento || '',
+            tipoEntidad: cliente?.ftipoEntidad || 'F',
+            calle: cliente?.fcalle || '',
+            limiteCredito: cliente?.flimiteCredito || 0,
+            ubicacionGps: cliente?.fubicaciongps || '',
+            idRuta: cliente?.fkidRuta || '',
+            idEstadoCivil: cliente?.fkidEstadoCivil || '',
+            idSector: cliente?.fkidSector || '',
+            idMunicipio: cliente?.fkidMunicipio || '',
+            idCiudad: cliente?.fkidCiudad || '',
+            idProvincia: cliente?.fkidProvincia || '',
+            idPais: cliente?.fkidPais || 1,
+            idNacionalidad: cliente?.fkidNacionalidad || 1,
+            idTipoCliente: cliente?.fkidTipoCliente || '',
+            idActividadComercial: cliente?.fkidActividadComercial || '',
+            idMoneda: cliente?.fkidMoneda || '',
+            imagen: null
+        }
     });
 
+    const form = watch();
     const [loading, setLoading] = React.useState(false);
-    const [errors, setErrors] = React.useState({});
+    const [serverErrors, setServerErrors] = React.useState({});
     const [imagePreview, setImagePreview] = React.useState(cliente?.imagen || null);
     const fileInputRef = React.useRef(null);
-    
-    // === NUEVO ESTADO PARA LOS PASOS ===
+
     const [step, setStep] = React.useState(1);
 
-    // Redux hooks para tema
     const {tema} = window.ReduxProvider.useApp();
 
-    // Estados para selects dependientes
     const [provinciasFiltradas, setProvinciasFiltradas] = React.useState([]);
     const [municipiosFiltrados, setMunicipiosFiltrados] = React.useState([]);
     const [ciudadesFiltradas, setCiudadesFiltradas] = React.useState([]);
+
+    // Helper para obtener error combinando RHF + servidor
+    const getError = (field) => {
+        if (errors[field]?.message) return errors[field].message;
+        if (serverErrors[field]) return serverErrors[field];
+        return null;
+    };
 
     React.useEffect(() => {
         if (form.idPais) {
@@ -66,17 +83,6 @@ function CreateClienteModal({show, onClose, onSave, cliente}) {
         }
     }, [form.idMunicipio]);
 
-    const handleChange = (e) => {
-        const {name, value, type, checked} = e.target;
-        setForm(prev => ({
-            ...prev,
-            [name]: type === 'checkbox' ? checked : value
-        }));
-        if (errors[name]) {
-            setErrors(prev => ({ ...prev, [name]: null }));
-        }
-    };
-
     const handleImageChange = (e) => {
         const file = e.target.files[0];
         if (file) {
@@ -91,7 +97,7 @@ function CreateClienteModal({show, onClose, onSave, cliente}) {
             const reader = new FileReader();
             reader.onloadend = () => {
                 setImagePreview(reader.result);
-                setForm(prev => ({...prev, imagen: file})); // Guardar el archivo para el submit
+                setValue('imagen', file);
             };
             reader.readAsDataURL(file);
         }
@@ -101,94 +107,178 @@ function CreateClienteModal({show, onClose, onSave, cliente}) {
         fileInputRef.current?.click();
     };
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        setLoading(true);
-        setErrors({}); 
+    // Campos por paso para validación al avanzar
+    const stepFieldGroups = {
+        1: ['nombre', 'cedulaRnc', 'telefono', 'celular', 'tipoEntidad', 'fechaNacimiento'],
+        2: ['direccion', 'calle', 'idSector', 'idPais', 'idProvincia', 'idMunicipio', 'idCiudad', 'ubicacionGps'],
+        3: ['limiteCredito', 'idTipoCliente', 'idMoneda', 'idActividadComercial', 'idRuta']
+    };
 
-        // Validaciones (Tu lógica de validación existente)
-        const newErrors = {};
-        if (!form.nombre.trim()) newErrors.nombre = 'El nombre es requerido';
-        if (form.nombre.length > 50) newErrors.nombre = 'El nombre no puede exceder 50 caracteres';
-        if (form.cedulaRnc && form.cedulaRnc.length > 20) newErrors.cedulaRnc = 'La cédula/RNC no puede exceder 20 caracteres';
-        if (form.telefono && form.telefono.length > 14) newErrors.telefono = 'El teléfono no puede exceder 14 caracteres';
-        if (form.celular && form.celular.length > 14) newErrors.celular = 'El celular no puede exceder 14 caracteres';
-        if (form.direccion && form.direccion.length > 400) newErrors.direccion = 'La dirección no puede exceder 400 caracteres';
+    const validateCurrentStep = async () => {
+        const fields = stepFieldGroups[step] || [];
+        if (fields.length === 0) return true;
+        const isValid = await trigger(fields);
+        if (!isValid) {
+            window.ToastUtils?.warning('Por favor, corrija los errores antes de continuar');
+        }
+        return isValid;
+    };
 
-        if (Object.keys(newErrors).length > 0) {
-            setErrors(newErrors);
-            // Si hay errores en campos de otros pasos, llevar al usuario a ese paso
-            if (newErrors.nombre || newErrors.cedulaRnc || newErrors.telefono || newErrors.celular) {
-                setStep(1);
-            } else if (newErrors.direccion) {
-                setStep(2);
-            }
-            window.ToastUtils?.warning('Por favor, corrija los errores en el formulario');
-            setLoading(false);
+    const handleNextStep = async () => {
+        const ok = await validateCurrentStep();
+        if (ok) {
+            setStep(prev => Math.min(prev + 1, 3));
+        }
+    };
+
+    const prevStep = () => setStep(prev => Math.max(prev - 1, 1));
+
+    const handleGoToStep = async (targetStep) => {
+        if (targetStep === step) return;
+
+        // Siempre permitir ir hacia atrás
+        if (targetStep < step) {
+            setStep(targetStep);
             return;
         }
 
-        // Preparar datos para enviar (Tu lógica existente)
-        const clienteData = {
-            nombre: form.nombre,
-            cedulaRnc: form.cedulaRnc || null,
-            telefono: form.telefono || null,
-            celular: form.celular || null,
-            direccion: form.direccion || null,
-            fechaNacimiento: form.fechaNacimiento || null,
-            tipoEntidad: form.tipoEntidad,
-            calle: form.calle || null,
-            limiteCredito: parseFloat(form.limiteCredito) || 0,
-            ubicacionGps: form.ubicacionGps || null,
-            idRuta: form.idRuta ? parseInt(form.idRuta) : null,
-            idEstadoCivil: form.idEstadoCivil ? parseInt(form.idEstadoCivil) : null,
-            idSector: form.idSector ? parseInt(form.idSector) : null,
-            idMunicipio: form.idMunicipio ? parseInt(form.idMunicipio) : null,
-            idCiudad: form.idCiudad ? parseInt(form.idCiudad) : null,
-            idProvincia: form.idProvincia ? parseInt(form.idProvincia) : null,
-            idPais: form.idPais ? parseInt(form.idPais) : null,
-            idNacionalidad: form.idNacionalidad ? parseInt(form.idNacionalidad) : null,
-            idTipoCliente: form.idTipoCliente ? parseInt(form.idTipoCliente) : null,
-            idActividadComercial: form.idActividadComercial ? parseInt(form.idActividadComercial) : null,
-            idMoneda: form.idMoneda ? parseInt(form.idMoneda) : null
-        };
-        
-        // Aquí también deberías manejar el 'form.imagen' si se subió una nueva
-        // y enviarla como FormData o como base64, según espere tu backend.
-        // Este ejemplo se enfoca en la lógica de 'onSave' que ya tenías.
-
-        console.log('Datos enviados al backend:', clienteData);
-
-        if (onSave) {
-            const result = await onSave(clienteData, form.imagen); // Pasamos la imagen si existe
-            
-            if (result && !result.success && result.fieldErrors) {
-                setErrors(result.fieldErrors);
-                // Detectar en qué paso está el error del servidor
-                const fieldErrorKeys = Object.keys(result.fieldErrors);
-                if (fieldErrorKeys.some(key => ['nombre', 'cedulaRnc', 'telefono', 'celular'].includes(key))) {
-                    setStep(1);
-                } else if (fieldErrorKeys.some(key => ['direccion', 'calle', 'idPais', 'idProvincia'].includes(key))) {
-                    setStep(2);
-                } else {
-                    setStep(3);
+        // Ir hacia adelante: validar pasos intermedios
+        let tmpStep = step;
+        while (tmpStep < targetStep) {
+            const fields = stepFieldGroups[tmpStep] || [];
+            if (fields.length > 0) {
+                const ok = await trigger(fields);
+                if (!ok) {
+                    setStep(tmpStep);
+                    window.ToastUtils?.warning('Por favor, corrija los errores antes de continuar');
+                    return;
                 }
-                setLoading(false);
-                return;
             }
+            tmpStep++;
         }
-        setLoading(false);
-        // Si todo salió bien, cerramos el modal (onClose ya lo hace el 'onSave' wrapper)
+        setStep(targetStep);
     };
-    
-    // === FUNCIONES DE NAVEGACIÓN ===
-    const nextStep = () => setStep(prev => Math.min(prev + 1, 3));
-    const prevStep = () => setStep(prev => Math.max(prev - 1, 1));
-    const goToStep = (stepNum) => setStep(stepNum);
 
-    // =================================================================
-    // === RENDERIZADO DEL COMPONENTE (MODIFICADO) =====================
-    // =================================================================
+    // Envío del formulario (solo se dispara si TODO es válido según RHF)
+    const onSubmitForm = async (data) => {
+        try {
+            setLoading(true);
+            setServerErrors({});
+
+            const formData = new FormData();
+            // Campos simples
+            formData.append('Nombre', data.nombre);
+            formData.append('CedulaRnc', data.cedulaRnc || '');
+            formData.append('Telefono', data.telefono || '');
+            formData.append('Celular', data.celular || '');
+            formData.append('Direccion', data.direccion || '');
+            formData.append('FechaNacimiento', data.fechaNacimiento || '');
+            formData.append('TipoEntidad', data.tipoEntidad);
+            formData.append('Calle', data.calle || '');
+            formData.append('LimiteCredito', parseFloat(data.limiteCredito || 0) || 0);
+            formData.append('UbicacionGps', data.ubicacionGps || '');
+
+            // Nombres relacionados (para crear si no existe)
+            const rutaSeleccionada = window.RUTAS?.find(r => r.id == data.idRuta);
+            formData.append('Ruta', rutaSeleccionada?.nombre || '');
+
+            const estadoCivilSel = window.ESTADOS_CIVILES?.find(e => e.id == data.idEstadoCivil);
+            formData.append('EstadoCivil', estadoCivilSel?.nombre || '');
+
+            const sectorSel = window.SECTORES?.find(s => s.id == data.idSector);
+            formData.append('Sector', sectorSel?.nombre || '');
+
+            const municipioSel = window.MUNICIPIOS?.find(m => m.id == data.idMunicipio);
+            formData.append('Municipio', municipioSel?.nombre || '');
+
+            const ciudadSel = window.CIUDADES?.find(c => c.id == data.idCiudad);
+            formData.append('Ciudad', ciudadSel?.nombre || '');
+
+            const provinciaSel = window.PROVINCIAS?.find(p => p.id == data.idProvincia);
+            formData.append('Provincia', provinciaSel?.nombre || '');
+
+            const paisSel = window.PAISES?.find(p => p.id == data.idPais);
+            formData.append('Pais', paisSel?.nombre || '');
+
+            const nacionalidadSel = window.NACIONALIDADES?.find(n => n.id == data.idNacionalidad);
+            formData.append('Nacionalidad', nacionalidadSel?.nombre || '');
+
+            const tipoClienteSel = window.TIPOS_CLIENTE?.find(t => t.id == data.idTipoCliente);
+            formData.append('TipoCliente', tipoClienteSel?.nombre || '');
+
+            const actividadSel = window.ACTIVIDADES_COMERCIALES?.find(a => a.id == data.idActividadComercial);
+            formData.append('ActividadComercial', actividadSel?.nombre || '');
+
+            const monedaSel = window.MONEDAS?.find(m => m.id == data.idMoneda);
+            formData.append('Moneda', monedaSel?.nombre || '');
+
+            // IDs relacionados (el backend los acepta y prioriza)
+            formData.append('IdRuta', data.idRuta ? parseInt(data.idRuta) : 0);
+            formData.append('IdEstadoCivil', data.idEstadoCivil ? parseInt(data.idEstadoCivil) : 0);
+            formData.append('IdSector', data.idSector ? parseInt(data.idSector) : 0);
+            formData.append('IdMunicipio', data.idMunicipio ? parseInt(data.idMunicipio) : 0);
+            formData.append('IdCiudad', data.idCiudad ? parseInt(data.idCiudad) : 0);
+            formData.append('IdProvincia', data.idProvincia ? parseInt(data.idProvincia) : 0);
+            formData.append('IdPais', data.idPais ? parseInt(data.idPais) : 0);
+            formData.append('IdNacionalidad', data.idNacionalidad ? parseInt(data.idNacionalidad) : 0);
+            formData.append('IdTipoCliente', data.idTipoCliente ? parseInt(data.idTipoCliente) : 0);
+            formData.append('IdActividadComercial', data.idActividadComercial ? parseInt(data.idActividadComercial) : 0);
+            formData.append('IdMoneda', data.idMoneda ? parseInt(data.idMoneda) : 0);
+
+            // Imagen
+            if (data.imagen) {
+                formData.append('Imagen', data.imagen);
+            }
+
+            console.log('Datos enviados al backend (FormData):', formData);
+
+            if (onSave) {
+                const result = await onSave(formData);
+                if (result && !result.success && result.fieldErrors) {
+                    setServerErrors(result.fieldErrors);
+
+                    const fieldErrorKeys = Object.keys(result.fieldErrors);
+                    if (fieldErrorKeys.some(key => ['nombre', 'cedulaRnc', 'telefono', 'celular'].includes(key))) {
+                        setStep(1);
+                    } else if (fieldErrorKeys.some(key => ['direccion', 'calle', 'idPais', 'idProvincia'].includes(key))) {
+                        setStep(2);
+                    } else {
+                        setStep(3);
+                    }
+
+                    setLoading(false);
+                    return;
+                }
+            }
+
+            setLoading(false);
+            // El cierre del modal lo maneja quien llama (onSave wrapper)
+        } catch (error) {
+            console.error(error);
+            setLoading(false);
+        }
+    };
+
+    // Manejo cuando hay errores de validación de RHF al enviar
+    const onInvalid = (formErrors) => {
+        const fieldErrorKeys = Object.keys(formErrors);
+        if (fieldErrorKeys.length === 0) return;
+
+        if (fieldErrorKeys.some(key =>
+            ['nombre', 'cedulaRnc', 'telefono', 'celular', 'tipoEntidad', 'fechaNacimiento', 'idEstadoCivil', 'idNacionalidad'].includes(key)
+        )) {
+            setStep(1);
+        } else if (fieldErrorKeys.some(key =>
+            ['direccion', 'calle', 'idSector', 'idPais', 'idProvincia', 'idMunicipio', 'idCiudad', 'ubicacionGps'].includes(key)
+        )) {
+            setStep(2);
+        } else {
+            setStep(3);
+        }
+
+        window.ToastUtils?.warning('Por favor, corrija los errores en el formulario');
+    };
+
     if (!show) return null;
 
     return (
@@ -202,7 +292,10 @@ function CreateClienteModal({show, onClose, onSave, cliente}) {
                 >
                     ×
                 </button>
-                <form onSubmit={handleSubmit} className={`create-user-form ${tema === 'dark' ? 'create-user-form-dark' : ''}`}>
+                <form
+                    onSubmit={handleSubmit(onSubmitForm, onInvalid)}
+                    className={`create-user-form ${tema === 'dark' ? 'create-user-form-dark' : ''}`}
+                >
                     <h4>
                         <i className={`bi ${isEdit ? 'bi-pencil-square' : 'bi-person-plus'} me-2`}></i>
                         {isEdit ? 'Editar Cliente' : 'Crear Nuevo Cliente'}
@@ -210,17 +303,26 @@ function CreateClienteModal({show, onClose, onSave, cliente}) {
 
                     {/* === BARRA DE PROGRESO DE PASOS === */}
                     <div className="step-progress-bar mb-4">
-                        <div className={`step ${step >= 1 ? 'active' : ''}`} onClick={() => goToStep(1)}>
+                        <div
+                            className={`step ${step >= 1 ? 'active' : ''}`}
+                            onClick={() => handleGoToStep(1)}
+                        >
                             <span className="step-number">1</span>
                             Datos Personales
                         </div>
                         <div className={`step-line ${step > 1 ? 'active' : ''}`}></div>
-                        <div className={`step ${step >= 2 ? 'active' : ''}`} onClick={() => goToStep(2)}>
+                        <div
+                            className={`step ${step >= 2 ? 'active' : ''}`}
+                            onClick={() => handleGoToStep(2)}
+                        >
                             <span className="step-number">2</span>
                             Ubicación
                         </div>
                         <div className={`step-line ${step > 2 ? 'active' : ''}`}></div>
-                        <div className={`step ${step >= 3 ? 'active' : ''}`} onClick={() => goToStep(3)}>
+                        <div
+                            className={`step ${step >= 3 ? 'active' : ''}`}
+                            onClick={() => handleGoToStep(3)}
+                        >
                             <span className="step-number">3</span>
                             Info Adicional
                         </div>
@@ -229,16 +331,15 @@ function CreateClienteModal({show, onClose, onSave, cliente}) {
                     <div className="row">
                         {/* === COLUMNA IZQUIERDA: FORMULARIO (PASOS) === */}
                         <div className="col-md-8">
-                            
-                            {/* === PASO 1: DATOS PERSONALES Y DE CONTACTO === */}
+                            {/* === PASO 1 === */}
                             {step === 1 && (
                                 <div className="form-step-content">
                                     <h5>
                                         <i className="bi bi-person-vcard me-2"></i>
                                         Información Básica
                                     </h5>
-                                    
-                                    {/* Nombre Completo */}
+
+                                    {/* Nombre */}
                                     <div className="mb-3">
                                         <label className="form-label">
                                             <i className="bi bi-person me-1"></i>
@@ -246,19 +347,22 @@ function CreateClienteModal({show, onClose, onSave, cliente}) {
                                         </label>
                                         <input
                                             type="text"
-                                            name="nombre"
-                                            className={`form-control ${errors.nombre ? 'is-invalid' : ''}`}
-                                            value={form.nombre}
-                                            onChange={handleChange}
-                                            required
+                                            className={`form-control ${getError('nombre') ? 'is-invalid' : ''}`}
                                             placeholder="Ej: Juan Pérez"
                                             disabled={loading}
                                             maxLength={50}
+                                            {...register('nombre', {
+                                                required: 'El nombre es requerido',
+                                                maxLength: {
+                                                    value: 50,
+                                                    message: 'El nombre no puede exceder 50 caracteres'
+                                                }
+                                            })}
                                         />
-                                        {errors.nombre && (
+                                        {getError('nombre') && (
                                             <div className="invalid-feedback d-block">
                                                 <i className="bi bi-exclamation-circle me-1"></i>
-                                                {errors.nombre}
+                                                {getError('nombre')}
                                             </div>
                                         )}
                                     </div>
@@ -271,22 +375,25 @@ function CreateClienteModal({show, onClose, onSave, cliente}) {
                                         </label>
                                         <input
                                             type="text"
-                                            name="cedulaRnc"
-                                            className={`form-control ${errors.cedulaRnc ? 'is-invalid' : ''}`}
-                                            value={form.cedulaRnc}
-                                            onChange={handleChange}
+                                            className={`form-control ${getError('cedulaRnc') ? 'is-invalid' : ''}`}
                                             placeholder="001-1234567-8"
                                             disabled={loading}
                                             maxLength={20}
+                                            {...register('cedulaRnc', {
+                                                maxLength: {
+                                                    value: 20,
+                                                    message: 'La cédula/RNC no puede exceder 20 caracteres'
+                                                }
+                                            })}
                                         />
-                                        {errors.cedulaRnc && (
+                                        {getError('cedulaRnc') && (
                                             <div className="invalid-feedback d-block">
                                                 <i className="bi bi-exclamation-circle me-1"></i>
-                                                {errors.cedulaRnc}
+                                                {getError('cedulaRnc')}
                                             </div>
                                         )}
                                     </div>
-                                    
+
                                     {/* Tipo Entidad y Fecha Nacimiento */}
                                     <div className="row">
                                         <div className="col-md-6 mb-3">
@@ -295,16 +402,21 @@ function CreateClienteModal({show, onClose, onSave, cliente}) {
                                                 Tipo de Entidad *
                                             </label>
                                             <select
-                                                name="tipoEntidad"
                                                 className="form-control"
-                                                value={form.tipoEntidad}
-                                                onChange={handleChange}
                                                 disabled={loading}
-                                                required
+                                                {...register('tipoEntidad', {
+                                                    required: 'El tipo de entidad es requerido'
+                                                })}
                                             >
                                                 <option value="F">Física</option>
                                                 <option value="J">Jurídica</option>
                                             </select>
+                                            {getError('tipoEntidad') && (
+                                                <div className="invalid-feedback d-block">
+                                                    <i className="bi bi-exclamation-circle me-1"></i>
+                                                    {getError('tipoEntidad')}
+                                                </div>
+                                            )}
                                         </div>
                                         <div className="col-md-6 mb-3">
                                             <label className="form-label">
@@ -313,11 +425,9 @@ function CreateClienteModal({show, onClose, onSave, cliente}) {
                                             </label>
                                             <input
                                                 type="date"
-                                                name="fechaNacimiento"
                                                 className="form-control"
-                                                value={form.fechaNacimiento}
-                                                onChange={handleChange}
                                                 disabled={loading}
+                                                {...register('fechaNacimiento')}
                                             />
                                         </div>
                                     </div>
@@ -331,18 +441,21 @@ function CreateClienteModal({show, onClose, onSave, cliente}) {
                                             </label>
                                             <input
                                                 type="text"
-                                                name="telefono"
-                                                className={`form-control ${errors.telefono ? 'is-invalid' : ''}`}
-                                                value={form.telefono}
-                                                onChange={handleChange}
+                                                className={`form-control ${getError('telefono') ? 'is-invalid' : ''}`}
                                                 placeholder="809-555-1234"
                                                 disabled={loading}
                                                 maxLength={14}
+                                                {...register('telefono', {
+                                                    maxLength: {
+                                                        value: 14,
+                                                        message: 'El teléfono no puede exceder 14 caracteres'
+                                                    }
+                                                })}
                                             />
-                                            {errors.telefono && (
+                                            {getError('telefono') && (
                                                 <div className="invalid-feedback d-block">
                                                     <i className="bi bi-exclamation-circle me-1"></i>
-                                                    {errors.telefono}
+                                                    {getError('telefono')}
                                                 </div>
                                             )}
                                         </div>
@@ -353,24 +466,27 @@ function CreateClienteModal({show, onClose, onSave, cliente}) {
                                             </label>
                                             <input
                                                 type="text"
-                                                name="celular"
-                                                className={`form-control ${errors.celular ? 'is-invalid' : ''}`}
-                                                value={form.celular}
-                                                onChange={handleChange}
+                                                className={`form-control ${getError('celular') ? 'is-invalid' : ''}`}
                                                 placeholder="829-555-5678"
                                                 disabled={loading}
                                                 maxLength={14}
+                                                {...register('celular', {
+                                                    maxLength: {
+                                                        value: 14,
+                                                        message: 'El celular no puede exceder 14 caracteres'
+                                                    }
+                                                })}
                                             />
-                                            {errors.celular && (
+                                            {getError('celular') && (
                                                 <div className="invalid-feedback d-block">
                                                     <i className="bi bi-exclamation-circle me-1"></i>
-                                                    {errors.celular}
+                                                    {getError('celular')}
                                                 </div>
                                             )}
                                         </div>
                                     </div>
 
-                                    {/* Estado Civil y Nacionalidad (Movidos al Paso 1) */}
+                                    {/* Estado Civil y Nacionalidad */}
                                     <div className="row">
                                         <div className="col-md-6 mb-3">
                                             <label className="form-label">
@@ -378,11 +494,9 @@ function CreateClienteModal({show, onClose, onSave, cliente}) {
                                                 Estado Civil
                                             </label>
                                             <select
-                                                name="idEstadoCivil"
                                                 className="form-control"
-                                                value={form.idEstadoCivil || ''}
-                                                onChange={handleChange}
                                                 disabled={loading}
+                                                {...register('idEstadoCivil')}
                                             >
                                                 <option value="">Seleccione</option>
                                                 {window.ESTADOS_CIVILES && window.ESTADOS_CIVILES.map(estado => (
@@ -398,11 +512,9 @@ function CreateClienteModal({show, onClose, onSave, cliente}) {
                                                 Nacionalidad
                                             </label>
                                             <select
-                                                name="idNacionalidad"
                                                 className="form-control"
-                                                value={form.idNacionalidad || ''}
-                                                onChange={handleChange}
                                                 disabled={loading}
+                                                {...register('idNacionalidad')}
                                             >
                                                 <option value="">Seleccione</option>
                                                 {window.NACIONALIDADES && window.NACIONALIDADES.map(nacionalidad => (
@@ -416,7 +528,7 @@ function CreateClienteModal({show, onClose, onSave, cliente}) {
                                 </div>
                             )}
 
-                            {/* === PASO 2: DIRECCIÓN Y UBICACIÓN GEOGRÁFICA === */}
+                            {/* === PASO 2 === */}
                             {step === 2 && (
                                 <div className="form-step-content">
                                     <h5>
@@ -424,26 +536,29 @@ function CreateClienteModal({show, onClose, onSave, cliente}) {
                                         Dirección y Ubicación
                                     </h5>
 
-                                    {/* Dirección Completa */}
+                                    {/* Dirección */}
                                     <div className="mb-3">
                                         <label className="form-label">
                                             <i className="bi bi-house me-1"></i>
                                             Dirección Completa
                                         </label>
                                         <textarea
-                                            name="direccion"
-                                            className={`form-control ${errors.direccion ? 'is-invalid' : ''}`}
-                                            value={form.direccion}
-                                            onChange={handleChange}
+                                            className={`form-control ${getError('direccion') ? 'is-invalid' : ''}`}
                                             placeholder="Ej: Calle Principal #123"
                                             disabled={loading}
                                             rows={2}
                                             maxLength={400}
+                                            {...register('direccion', {
+                                                maxLength: {
+                                                    value: 400,
+                                                    message: 'La dirección no puede exceder 400 caracteres'
+                                                }
+                                            })}
                                         />
-                                        {errors.direccion && (
+                                        {getError('direccion') && (
                                             <div className="invalid-feedback d-block">
                                                 <i className="bi bi-exclamation-circle me-1"></i>
-                                                {errors.direccion}
+                                                {getError('direccion')}
                                             </div>
                                         )}
                                     </div>
@@ -457,13 +572,11 @@ function CreateClienteModal({show, onClose, onSave, cliente}) {
                                             </label>
                                             <input
                                                 type="text"
-                                                name="calle"
                                                 className="form-control"
-                                                value={form.calle}
-                                                onChange={handleChange}
                                                 placeholder="Ej: Calle 5"
                                                 disabled={loading}
                                                 maxLength={50}
+                                                {...register('calle')}
                                             />
                                         </div>
                                         <div className="col-md-6 mb-3">
@@ -472,11 +585,9 @@ function CreateClienteModal({show, onClose, onSave, cliente}) {
                                                 Sector
                                             </label>
                                             <select
-                                                name="idSector"
                                                 className="form-control"
-                                                value={form.idSector || ''}
-                                                onChange={handleChange}
                                                 disabled={loading}
+                                                {...register('idSector')}
                                             >
                                                 <option value="">Seleccione</option>
                                                 {window.SECTORES && window.SECTORES.map(sector => (
@@ -487,7 +598,7 @@ function CreateClienteModal({show, onClose, onSave, cliente}) {
                                             </select>
                                         </div>
                                     </div>
-                                    
+
                                     {/* Ubicación GPS */}
                                     <div className="mb-3">
                                         <label className="form-label">
@@ -496,13 +607,11 @@ function CreateClienteModal({show, onClose, onSave, cliente}) {
                                         </label>
                                         <input
                                             type="text"
-                                            name="ubicacionGps"
                                             className="form-control"
-                                            value={form.ubicacionGps}
-                                            onChange={handleChange}
                                             placeholder="Ej: 18.4861,-69.9312"
                                             disabled={loading}
                                             maxLength={60}
+                                            {...register('ubicacionGps')}
                                         />
                                     </div>
 
@@ -510,7 +619,7 @@ function CreateClienteModal({show, onClose, onSave, cliente}) {
                                         <i className="bi bi-geo me-2"></i>
                                         Ubicación Geográfica
                                     </h5>
-                                    
+
                                     {/* País y Provincia */}
                                     <div className="row">
                                         <div className="col-md-6 mb-3">
@@ -519,11 +628,9 @@ function CreateClienteModal({show, onClose, onSave, cliente}) {
                                                 País
                                             </label>
                                             <select
-                                                name="idPais"
                                                 className="form-control"
-                                                value={form.idPais || ''}
-                                                onChange={handleChange}
                                                 disabled={loading}
+                                                {...register('idPais')}
                                             >
                                                 <option value="">Seleccione</option>
                                                 {window.PAISES && window.PAISES.map(pais => (
@@ -539,11 +646,9 @@ function CreateClienteModal({show, onClose, onSave, cliente}) {
                                                 Provincia
                                             </label>
                                             <select
-                                                name="idProvincia"
                                                 className="form-control"
-                                                value={form.idProvincia || ''}
-                                                onChange={handleChange}
                                                 disabled={loading || provinciasFiltradas.length === 0}
+                                                {...register('idProvincia')}
                                             >
                                                 <option value="">Seleccione</option>
                                                 {provinciasFiltradas.map(provincia => (
@@ -563,11 +668,9 @@ function CreateClienteModal({show, onClose, onSave, cliente}) {
                                                 Municipio
                                             </label>
                                             <select
-                                                name="idMunicipio"
                                                 className="form-control"
-                                                value={form.idMunicipio || ''}
-                                                onChange={handleChange}
                                                 disabled={loading || municipiosFiltrados.length === 0}
+                                                {...register('idMunicipio')}
                                             >
                                                 <option value="">Seleccione</option>
                                                 {municipiosFiltrados.map(municipio => (
@@ -583,11 +686,9 @@ function CreateClienteModal({show, onClose, onSave, cliente}) {
                                                 Ciudad
                                             </label>
                                             <select
-                                                name="idCiudad"
                                                 className="form-control"
-                                                value={form.idCiudad || ''}
-                                                onChange={handleChange}
                                                 disabled={loading || ciudadesFiltradas.length === 0}
+                                                {...register('idCiudad')}
                                             >
                                                 <option value="">Seleccione</option>
                                                 {ciudadesFiltradas.map(ciudad => (
@@ -600,15 +701,15 @@ function CreateClienteModal({show, onClose, onSave, cliente}) {
                                     </div>
                                 </div>
                             )}
-                            
-                            {/* === PASO 3: INFORMACIÓN ADICIONAL === */}
+
+                            {/* === PASO 3 === */}
                             {step === 3 && (
                                 <div className="form-step-content">
                                     <h5>
                                         <i className="bi bi-info-circle me-2"></i>
                                         Información Adicional
                                     </h5>
-                                    
+
                                     {/* Límite de Crédito */}
                                     <div className="mb-3">
                                         <label className="form-label">
@@ -617,18 +718,16 @@ function CreateClienteModal({show, onClose, onSave, cliente}) {
                                         </label>
                                         <input
                                             type="number"
-                                            name="limiteCredito"
                                             className="form-control"
-                                            value={form.limiteCredito}
-                                            onChange={handleChange}
                                             placeholder="0.00"
                                             disabled={loading}
                                             step="0.01"
                                             min="0"
+                                            {...register('limiteCredito')}
                                         />
                                     </div>
-                                    
-                                    {/* Tipo de Cliente y Moneda */}
+
+                                    {/* Tipo Cliente y Moneda */}
                                     <div className="row">
                                         <div className="col-md-6 mb-3">
                                             <label className="form-label">
@@ -636,11 +735,9 @@ function CreateClienteModal({show, onClose, onSave, cliente}) {
                                                 Tipo de Cliente
                                             </label>
                                             <select
-                                                name="idTipoCliente"
                                                 className="form-control"
-                                                value={form.idTipoCliente || ''}
-                                                onChange={handleChange}
                                                 disabled={loading}
+                                                {...register('idTipoCliente')}
                                             >
                                                 <option value="">Seleccione</option>
                                                 {window.TIPOS_CLIENTE && window.TIPOS_CLIENTE.map(tipo => (
@@ -656,11 +753,9 @@ function CreateClienteModal({show, onClose, onSave, cliente}) {
                                                 Moneda
                                             </label>
                                             <select
-                                                name="idMoneda"
                                                 className="form-control"
-                                                value={form.idMoneda || ''}
-                                                onChange={handleChange}
                                                 disabled={loading}
+                                                {...register('idMoneda')}
                                             >
                                                 <option value="">Seleccione</option>
                                                 {window.MONEDAS && window.MONEDAS.map(moneda => (
@@ -671,7 +766,7 @@ function CreateClienteModal({show, onClose, onSave, cliente}) {
                                             </select>
                                         </div>
                                     </div>
-                                    
+
                                     {/* Actividad Comercial */}
                                     <div className="mb-3">
                                         <label className="form-label">
@@ -679,11 +774,9 @@ function CreateClienteModal({show, onClose, onSave, cliente}) {
                                             Actividad Comercial
                                         </label>
                                         <select
-                                            name="idActividadComercial"
                                             className="form-control"
-                                            value={form.idActividadComercial || ''}
-                                            onChange={handleChange}
                                             disabled={loading}
+                                            {...register('idActividadComercial')}
                                         >
                                             <option value="">Seleccione</option>
                                             {window.ACTIVIDADES_COMERCIALES && window.ACTIVIDADES_COMERCIALES.map(actividad => (
@@ -694,21 +787,18 @@ function CreateClienteModal({show, onClose, onSave, cliente}) {
                                         </select>
                                     </div>
 
-                                    {/* Ruta (Campo que estaba en el form pero no en el sketch) */}
+                                    {/* Ruta */}
                                     <div className="mb-3">
                                         <label className="form-label">
                                             <i className="bi bi-truck me-1"></i>
                                             Ruta
                                         </label>
                                         <select
-                                            name="idRuta"
                                             className="form-control"
-                                            value={form.idRuta || ''}
-                                            onChange={handleChange}
                                             disabled={loading}
+                                            {...register('idRuta')}
                                         >
                                             <option value="">Seleccione una ruta</option>
-                                            {/* Asumiendo que tienes 'window.RUTAS' */}
                                             {window.RUTAS && window.RUTAS.map(ruta => (
                                                 <option key={ruta.id} value={ruta.id}>
                                                     {ruta.nombre}
@@ -722,18 +812,17 @@ function CreateClienteModal({show, onClose, onSave, cliente}) {
 
                         {/* === COLUMNA DERECHA: IMAGEN Y RESUMEN === */}
                         <div className="col-md-4">
-                            
-                            {/* Cargador de Imagen (Movido aquí) */}
+                            {/* Imagen */}
                             <label className="form-label d-block text-center mb-2">Foto del Cliente</label>
-                            <div 
+                            <div
                                 className={`image-upload-container ${tema === 'dark' ? 'image-upload-dark' : ''}`}
                                 onClick={handleImageClick}
                                 style={{cursor: 'pointer', height: '180px', width: '180px', margin: '0 auto 1.5rem auto'}}
                             >
                                 {imagePreview ? (
-                                    <img 
-                                        src={imagePreview} 
-                                        alt="Preview" 
+                                    <img
+                                        src={imagePreview}
+                                        alt="Preview"
                                         className="image-preview"
                                     />
                                 ) : (
@@ -751,8 +840,8 @@ function CreateClienteModal({show, onClose, onSave, cliente}) {
                                 style={{display: 'none'}}
                                 disabled={loading}
                             />
-                            
-                            {/* Resumen en Vivo */}
+
+                            {/* Resumen */}
                             <div className={`form-summary-sidebar ${tema === 'dark' ? 'form-summary-sidebar-dark' : ''}`}>
                                 <h6 className="text-center">Resumen del Cliente</h6>
                                 <div className="summary-item">
@@ -776,13 +865,11 @@ function CreateClienteModal({show, onClose, onSave, cliente}) {
                                     <span>Límite Crédito: {form.limiteCredito || '0.00'}</span>
                                 </div>
                             </div>
-
                         </div>
                     </div>
 
-                    {/* === BOTONES DE NAVEGACIÓN Y ACCIÓN === */}
+                    {/* === BOTONES === */}
                     <div className="d-flex justify-content-between align-items-center gap-2 mt-4">
-                        {/* Botón de Cancelar (siempre a la izquierda) */}
                         <button
                             type="button"
                             className="btn atras-button"
@@ -792,10 +879,8 @@ function CreateClienteModal({show, onClose, onSave, cliente}) {
                             <i className="bi bi-x-circle me-1"></i>
                             Cancelar
                         </button>
-                        
-                        {/* Botones de Navegación (a la derecha) */}
+
                         <div className="d-flex justify-content-end gap-2">
-                            {/* Botón "Atrás" (no se muestra en el paso 1) */}
                             {step > 1 && (
                                 <button
                                     type="button"
@@ -808,20 +893,18 @@ function CreateClienteModal({show, onClose, onSave, cliente}) {
                                 </button>
                             )}
 
-                            {/* Botón "Siguiente" (no se muestra en el paso 3) */}
                             {step < 3 && (
                                 <button
                                     type="button"
                                     className="btn register-button"
-                                    onClick={nextStep}
+                                    onClick={handleNextStep}
                                     disabled={loading}
                                 >
                                     Siguiente
                                     <i className="bi bi-arrow-right-circle ms-1"></i>
                                 </button>
                             )}
-                            
-                            {/* Botón "Guardar" (solo se muestra en el paso 3) */}
+
                             {step === 3 && (
                                 <button
                                     type="submit"

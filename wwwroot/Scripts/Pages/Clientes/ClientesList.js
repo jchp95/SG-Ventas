@@ -111,7 +111,7 @@ function ClientesList() {
     setModalCliente(null);
   };
   var handleSaveCliente = /*#__PURE__*/function () {
-    var _ref = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee(clienteData) {
+    var _ref = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee(formData) {
       var result, _window$ToastUtils, _window$ToastUtils2, _result, _window$ToastUtils3, _window$ToastUtils4, _result2;
       return _regenerator().w(function (_context) {
         while (1) switch (_context.n) {
@@ -121,7 +121,7 @@ function ClientesList() {
               break;
             }
             _context.n = 1;
-            return dispatch(window.ClientesActions.updateCliente(_objectSpread(_objectSpread({}, clienteData), {}, {
+            return dispatch(window.ClientesActions.updateCliente(_objectSpread(_objectSpread({}, formData), {}, {
               fidCliente: modalCliente.fidCliente
             })));
           case 1:
@@ -136,7 +136,7 @@ function ClientesList() {
             break;
           case 2:
             _context.n = 3;
-            return dispatch(window.ClientesActions.createCliente(clienteData));
+            return dispatch(window.ClientesActions.createCliente(formData));
           case 3:
             result = _context.v;
             if (result && result.success) {

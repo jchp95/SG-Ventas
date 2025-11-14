@@ -41,7 +41,8 @@ public class TbCliente
 
     [Column("ffecha_nacimiento")] public DateOnly FfechaNacimiento { get; set; }
 
-    [Column("fkid_ruta")] public int FkidRuta { get; set; }
+    [Column("fkid_ruta")]
+    public int FkidRuta { get; set; }
 
     [Column("ftipo_entidad")]
     [StringLength(1)]
@@ -61,7 +62,7 @@ public class TbCliente
     public string FdirFoto { get; set; } = null!;
 
     [Column("fubicaciongps")]
-    [StringLength(60)]
+    [StringLength(255)]
     [Unicode(false)]
     public string Fubicaciongps { get; set; } = null!;
 
@@ -85,7 +86,7 @@ public class TbCliente
 
     [Column("fkid_moneda")] public int FkidMoneda { get; set; }
 
-    [Column("fkid_empresa")] public int FkidEmpresa { get; set; }
+    [Column("fkid_empresa")] public int FkidEmpresa { get; set; } // Ahora BD CENTRAL
 
     [Column("fkid_usuario")] public int FkidUsuario { get; set; }
 

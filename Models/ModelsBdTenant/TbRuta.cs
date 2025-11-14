@@ -18,7 +18,4 @@ public class TbRuta
 
     [Column("factivo")] public bool Factivo { get; set; }
 
-    [ForeignKey("FkidUsuario")]
-    [InverseProperty("TbRuta")]
-    public virtual TbUsuario FkidUsuarioNavigation { get; set; } = null!;
 }

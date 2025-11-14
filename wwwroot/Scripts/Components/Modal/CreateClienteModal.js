@@ -1,15 +1,10 @@
 "use strict";
 
-function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, _typeof(o); }
+function _extends() { return _extends = Object.assign ? Object.assign.bind() : function (n) { for (var e = 1; e < arguments.length; e++) { var t = arguments[e]; for (var r in t) ({}).hasOwnProperty.call(t, r) && (n[r] = t[r]); } return n; }, _extends.apply(null, arguments); }
 function _regenerator() { /*! regenerator-runtime -- Copyright (c) 2014-present, Facebook, Inc. -- license (MIT): https://github.com/babel/babel/blob/main/packages/babel-helpers/LICENSE */ var e, t, r = "function" == typeof Symbol ? Symbol : {}, n = r.iterator || "@@iterator", o = r.toStringTag || "@@toStringTag"; function i(r, n, o, i) { var c = n && n.prototype instanceof Generator ? n : Generator, u = Object.create(c.prototype); return _regeneratorDefine2(u, "_invoke", function (r, n, o) { var i, c, u, f = 0, p = o || [], y = !1, G = { p: 0, n: 0, v: e, a: d, f: d.bind(e, 4), d: function d(t, r) { return i = t, c = 0, u = e, G.n = r, a; } }; function d(r, n) { for (c = r, u = n, t = 0; !y && f && !o && t < p.length; t++) { var o, i = p[t], d = G.p, l = i[2]; r > 3 ? (o = l === n) && (u = i[(c = i[4]) ? 5 : (c = 3, 3)], i[4] = i[5] = e) : i[0] <= d && ((o = r < 2 && d < i[1]) ? (c = 0, G.v = n, G.n = i[1]) : d < l && (o = r < 3 || i[0] > n || n > l) && (i[4] = r, i[5] = n, G.n = l, c = 0)); } if (o || r > 1) return a; throw y = !0, n; } return function (o, p, l) { if (f > 1) throw TypeError("Generator is already running"); for (y && 1 === p && d(p, l), c = p, u = l; (t = c < 2 ? e : u) || !y;) { i || (c ? c < 3 ? (c > 1 && (G.n = -1), d(c, u)) : G.n = u : G.v = u); try { if (f = 2, i) { if (c || (o = "next"), t = i[o]) { if (!(t = t.call(i, u))) throw TypeError("iterator result is not an object"); if (!t.done) return t; u = t.value, c < 2 && (c = 0); } else 1 === c && (t = i["return"]) && t.call(i), c < 2 && (u = TypeError("The iterator does not provide a '" + o + "' method"), c = 1); i = e; } else if ((t = (y = G.n < 0) ? u : r.call(n, G)) !== a) break; } catch (t) { i = e, c = 1, u = t; } finally { f = 1; } } return { value: t, done: y }; }; }(r, o, i), !0), u; } var a = {}; function Generator() {} function GeneratorFunction() {} function GeneratorFunctionPrototype() {} t = Object.getPrototypeOf; var c = [][n] ? t(t([][n]())) : (_regeneratorDefine2(t = {}, n, function () { return this; }), t), u = GeneratorFunctionPrototype.prototype = Generator.prototype = Object.create(c); function f(e) { return Object.setPrototypeOf ? Object.setPrototypeOf(e, GeneratorFunctionPrototype) : (e.__proto__ = GeneratorFunctionPrototype, _regeneratorDefine2(e, o, "GeneratorFunction")), e.prototype = Object.create(u), e; } return GeneratorFunction.prototype = GeneratorFunctionPrototype, _regeneratorDefine2(u, "constructor", GeneratorFunctionPrototype), _regeneratorDefine2(GeneratorFunctionPrototype, "constructor", GeneratorFunction), GeneratorFunction.displayName = "GeneratorFunction", _regeneratorDefine2(GeneratorFunctionPrototype, o, "GeneratorFunction"), _regeneratorDefine2(u), _regeneratorDefine2(u, o, "Generator"), _regeneratorDefine2(u, n, function () { return this; }), _regeneratorDefine2(u, "toString", function () { return "[object Generator]"; }), (_regenerator = function _regenerator() { return { w: i, m: f }; })(); }
 function _regeneratorDefine2(e, r, n, t) { var i = Object.defineProperty; try { i({}, "", {}); } catch (e) { i = 0; } _regeneratorDefine2 = function _regeneratorDefine(e, r, n, t) { function o(r, n) { _regeneratorDefine2(e, r, function (e) { return this._invoke(r, n, e); }); } r ? i ? i(e, r, { value: n, enumerable: !t, configurable: !t, writable: !t }) : e[r] = n : (o("next", 0), o("throw", 1), o("return", 2)); }, _regeneratorDefine2(e, r, n, t); }
 function asyncGeneratorStep(n, t, e, r, o, a, c) { try { var i = n[a](c), u = i.value; } catch (n) { return void e(n); } i.done ? t(u) : Promise.resolve(u).then(r, o); }
 function _asyncToGenerator(n) { return function () { var t = this, e = arguments; return new Promise(function (r, o) { var a = n.apply(t, e); function _next(n) { asyncGeneratorStep(a, r, o, _next, _throw, "next", n); } function _throw(n) { asyncGeneratorStep(a, r, o, _next, _throw, "throw", n); } _next(void 0); }); }; }
-function ownKeys(e, r) { var t = Object.keys(e); if (Object.getOwnPropertySymbols) { var o = Object.getOwnPropertySymbols(e); r && (o = o.filter(function (r) { return Object.getOwnPropertyDescriptor(e, r).enumerable; })), t.push.apply(t, o); } return t; }
-function _objectSpread(e) { for (var r = 1; r < arguments.length; r++) { var t = null != arguments[r] ? arguments[r] : {}; r % 2 ? ownKeys(Object(t), !0).forEach(function (r) { _defineProperty(e, r, t[r]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys(Object(t)).forEach(function (r) { Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r)); }); } return e; }
-function _defineProperty(e, r, t) { return (r = _toPropertyKey(r)) in e ? Object.defineProperty(e, r, { value: t, enumerable: !0, configurable: !0, writable: !0 }) : e[r] = t, e; }
-function _toPropertyKey(t) { var i = _toPrimitive(t, "string"); return "symbol" == _typeof(i) ? i : i + ""; }
-function _toPrimitive(t, r) { if ("object" != _typeof(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != _typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
 function _slicedToArray(r, e) { return _arrayWithHoles(r) || _iterableToArrayLimit(r, e) || _unsupportedIterableToArray(r, e) || _nonIterableRest(); }
 function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
 function _unsupportedIterableToArray(r, a) { if (r) { if ("string" == typeof r) return _arrayLikeToArray(r, a); var t = {}.toString.call(r).slice(8, -1); return "Object" === t && r.constructor && (t = r.constructor.name), "Map" === t || "Set" === t ? Array.from(r) : "Arguments" === t || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(t) ? _arrayLikeToArray(r, a) : void 0; } }
@@ -22,71 +17,82 @@ function CreateClienteModal(_ref) {
     onSave = _ref.onSave,
     cliente = _ref.cliente;
   var isEdit = !!cliente;
-  var _React$useState = React.useState({
-      nombre: (cliente === null || cliente === void 0 ? void 0 : cliente.fnombre) || '',
-      cedulaRnc: (cliente === null || cliente === void 0 ? void 0 : cliente.fcedulaRnc) || '',
-      telefono: (cliente === null || cliente === void 0 ? void 0 : cliente.ftelefono) || '',
-      celular: (cliente === null || cliente === void 0 ? void 0 : cliente.fcelular) || '',
-      direccion: (cliente === null || cliente === void 0 ? void 0 : cliente.fdireccion) || '',
-      fechaNacimiento: (cliente === null || cliente === void 0 ? void 0 : cliente.ffechaNacimiento) || '',
-      tipoEntidad: (cliente === null || cliente === void 0 ? void 0 : cliente.ftipoEntidad) || 'F',
-      // F = Física, J = Jurídica
-      calle: (cliente === null || cliente === void 0 ? void 0 : cliente.fcalle) || '',
-      limiteCredito: (cliente === null || cliente === void 0 ? void 0 : cliente.flimiteCredito) || 0,
-      ubicacionGps: (cliente === null || cliente === void 0 ? void 0 : cliente.fubicaciongps) || '',
-      idRuta: (cliente === null || cliente === void 0 ? void 0 : cliente.fkidRuta) || null,
-      idEstadoCivil: (cliente === null || cliente === void 0 ? void 0 : cliente.fkidEstadoCivil) || null,
-      idSector: (cliente === null || cliente === void 0 ? void 0 : cliente.fkidSector) || null,
-      idMunicipio: (cliente === null || cliente === void 0 ? void 0 : cliente.fkidMunicipio) || null,
-      idCiudad: (cliente === null || cliente === void 0 ? void 0 : cliente.fkidCiudad) || null,
-      idProvincia: (cliente === null || cliente === void 0 ? void 0 : cliente.fkidProvincia) || null,
-      idPais: (cliente === null || cliente === void 0 ? void 0 : cliente.fkidPais) || 1,
-      idNacionalidad: (cliente === null || cliente === void 0 ? void 0 : cliente.fkidNacionalidad) || 1,
-      idTipoCliente: (cliente === null || cliente === void 0 ? void 0 : cliente.fkidTipoCliente) || null,
-      idActividadComercial: (cliente === null || cliente === void 0 ? void 0 : cliente.fkidActividadComercial) || null,
-      idMoneda: (cliente === null || cliente === void 0 ? void 0 : cliente.fkidMoneda) || null
-      // Nota: El campo 'imagen' se maneja por separado en 'imagePreview' y 'handleImageChange'
+
+  // React Hook Form configurado con util global
+  var _window$HookFormUtils = window.HookFormUtils.useForm({
+      mode: 'onChange',
+      reValidateMode: 'onChange',
+      defaultValues: {
+        nombre: (cliente === null || cliente === void 0 ? void 0 : cliente.fnombre) || '',
+        cedulaRnc: (cliente === null || cliente === void 0 ? void 0 : cliente.fcedulaRnc) || '',
+        telefono: (cliente === null || cliente === void 0 ? void 0 : cliente.ftelefono) || '',
+        celular: (cliente === null || cliente === void 0 ? void 0 : cliente.fcelular) || '',
+        direccion: (cliente === null || cliente === void 0 ? void 0 : cliente.fdireccion) || '',
+        fechaNacimiento: (cliente === null || cliente === void 0 ? void 0 : cliente.ffechaNacimiento) || '',
+        tipoEntidad: (cliente === null || cliente === void 0 ? void 0 : cliente.ftipoEntidad) || 'F',
+        calle: (cliente === null || cliente === void 0 ? void 0 : cliente.fcalle) || '',
+        limiteCredito: (cliente === null || cliente === void 0 ? void 0 : cliente.flimiteCredito) || 0,
+        ubicacionGps: (cliente === null || cliente === void 0 ? void 0 : cliente.fubicaciongps) || '',
+        idRuta: (cliente === null || cliente === void 0 ? void 0 : cliente.fkidRuta) || '',
+        idEstadoCivil: (cliente === null || cliente === void 0 ? void 0 : cliente.fkidEstadoCivil) || '',
+        idSector: (cliente === null || cliente === void 0 ? void 0 : cliente.fkidSector) || '',
+        idMunicipio: (cliente === null || cliente === void 0 ? void 0 : cliente.fkidMunicipio) || '',
+        idCiudad: (cliente === null || cliente === void 0 ? void 0 : cliente.fkidCiudad) || '',
+        idProvincia: (cliente === null || cliente === void 0 ? void 0 : cliente.fkidProvincia) || '',
+        idPais: (cliente === null || cliente === void 0 ? void 0 : cliente.fkidPais) || 1,
+        idNacionalidad: (cliente === null || cliente === void 0 ? void 0 : cliente.fkidNacionalidad) || 1,
+        idTipoCliente: (cliente === null || cliente === void 0 ? void 0 : cliente.fkidTipoCliente) || '',
+        idActividadComercial: (cliente === null || cliente === void 0 ? void 0 : cliente.fkidActividadComercial) || '',
+        idMoneda: (cliente === null || cliente === void 0 ? void 0 : cliente.fkidMoneda) || '',
+        imagen: null
+      }
     }),
+    register = _window$HookFormUtils.register,
+    handleSubmit = _window$HookFormUtils.handleSubmit,
+    errors = _window$HookFormUtils.formState.errors,
+    trigger = _window$HookFormUtils.trigger,
+    watch = _window$HookFormUtils.watch,
+    setValue = _window$HookFormUtils.setValue;
+  var form = watch();
+  var _React$useState = React.useState(false),
     _React$useState2 = _slicedToArray(_React$useState, 2),
-    form = _React$useState2[0],
-    setForm = _React$useState2[1];
-  var _React$useState3 = React.useState(false),
+    loading = _React$useState2[0],
+    setLoading = _React$useState2[1];
+  var _React$useState3 = React.useState({}),
     _React$useState4 = _slicedToArray(_React$useState3, 2),
-    loading = _React$useState4[0],
-    setLoading = _React$useState4[1];
-  var _React$useState5 = React.useState({}),
+    serverErrors = _React$useState4[0],
+    setServerErrors = _React$useState4[1];
+  var _React$useState5 = React.useState((cliente === null || cliente === void 0 ? void 0 : cliente.imagen) || null),
     _React$useState6 = _slicedToArray(_React$useState5, 2),
-    errors = _React$useState6[0],
-    setErrors = _React$useState6[1];
-  var _React$useState7 = React.useState((cliente === null || cliente === void 0 ? void 0 : cliente.imagen) || null),
-    _React$useState8 = _slicedToArray(_React$useState7, 2),
-    imagePreview = _React$useState8[0],
-    setImagePreview = _React$useState8[1];
+    imagePreview = _React$useState6[0],
+    setImagePreview = _React$useState6[1];
   var fileInputRef = React.useRef(null);
-
-  // === NUEVO ESTADO PARA LOS PASOS ===
-  var _React$useState9 = React.useState(1),
-    _React$useState0 = _slicedToArray(_React$useState9, 2),
-    step = _React$useState0[0],
-    setStep = _React$useState0[1];
-
-  // Redux hooks para tema
+  var _React$useState7 = React.useState(1),
+    _React$useState8 = _slicedToArray(_React$useState7, 2),
+    step = _React$useState8[0],
+    setStep = _React$useState8[1];
   var _window$ReduxProvider = window.ReduxProvider.useApp(),
     tema = _window$ReduxProvider.tema;
-
-  // Estados para selects dependientes
+  var _React$useState9 = React.useState([]),
+    _React$useState0 = _slicedToArray(_React$useState9, 2),
+    provinciasFiltradas = _React$useState0[0],
+    setProvinciasFiltradas = _React$useState0[1];
   var _React$useState1 = React.useState([]),
     _React$useState10 = _slicedToArray(_React$useState1, 2),
-    provinciasFiltradas = _React$useState10[0],
-    setProvinciasFiltradas = _React$useState10[1];
+    municipiosFiltrados = _React$useState10[0],
+    setMunicipiosFiltrados = _React$useState10[1];
   var _React$useState11 = React.useState([]),
     _React$useState12 = _slicedToArray(_React$useState11, 2),
-    municipiosFiltrados = _React$useState12[0],
-    setMunicipiosFiltrados = _React$useState12[1];
-  var _React$useState13 = React.useState([]),
-    _React$useState14 = _slicedToArray(_React$useState13, 2),
-    ciudadesFiltradas = _React$useState14[0],
-    setCiudadesFiltradas = _React$useState14[1];
+    ciudadesFiltradas = _React$useState12[0],
+    setCiudadesFiltradas = _React$useState12[1];
+
+  // Helper para obtener error combinando RHF + servidor
+  var getError = function getError(field) {
+    var _errors$field;
+    if ((_errors$field = errors[field]) !== null && _errors$field !== void 0 && _errors$field.message) return errors[field].message;
+    if (serverErrors[field]) return serverErrors[field];
+    return null;
+  };
   React.useEffect(function () {
     if (form.idPais) {
       var _window$PROVINCIAS;
@@ -117,21 +123,6 @@ function CreateClienteModal(_ref) {
       setCiudadesFiltradas([]);
     }
   }, [form.idMunicipio]);
-  var handleChange = function handleChange(e) {
-    var _e$target = e.target,
-      name = _e$target.name,
-      value = _e$target.value,
-      type = _e$target.type,
-      checked = _e$target.checked;
-    setForm(function (prev) {
-      return _objectSpread(_objectSpread({}, prev), {}, _defineProperty({}, name, type === 'checkbox' ? checked : value));
-    });
-    if (errors[name]) {
-      setErrors(function (prev) {
-        return _objectSpread(_objectSpread({}, prev), {}, _defineProperty({}, name, null));
-      });
-    }
-  };
   var handleImageChange = function handleImageChange(e) {
     var file = e.target.files[0];
     if (file) {
@@ -149,11 +140,7 @@ function CreateClienteModal(_ref) {
       var reader = new FileReader();
       reader.onloadend = function () {
         setImagePreview(reader.result);
-        setForm(function (prev) {
-          return _objectSpread(_objectSpread({}, prev), {}, {
-            imagen: file
-          });
-        }); // Guardar el archivo para el submit
+        setValue('imagen', file);
       };
       reader.readAsDataURL(file);
     }
@@ -162,80 +149,227 @@ function CreateClienteModal(_ref) {
     var _fileInputRef$current;
     (_fileInputRef$current = fileInputRef.current) === null || _fileInputRef$current === void 0 || _fileInputRef$current.click();
   };
-  var handleSubmit = /*#__PURE__*/function () {
-    var _ref2 = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee(e) {
-      var newErrors, _window$ToastUtils3, clienteData, result, fieldErrorKeys;
+
+  // Campos por paso para validación al avanzar
+  var stepFieldGroups = {
+    1: ['nombre', 'cedulaRnc', 'telefono', 'celular', 'tipoEntidad', 'fechaNacimiento'],
+    2: ['direccion', 'calle', 'idSector', 'idPais', 'idProvincia', 'idMunicipio', 'idCiudad', 'ubicacionGps'],
+    3: ['limiteCredito', 'idTipoCliente', 'idMoneda', 'idActividadComercial', 'idRuta']
+  };
+  var validateCurrentStep = /*#__PURE__*/function () {
+    var _ref2 = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee() {
+      var fields, isValid, _window$ToastUtils3;
       return _regenerator().w(function (_context) {
         while (1) switch (_context.n) {
           case 0:
-            e.preventDefault();
-            setLoading(true);
-            setErrors({});
-
-            // Validaciones (Tu lógica de validación existente)
-            newErrors = {};
-            if (!form.nombre.trim()) newErrors.nombre = 'El nombre es requerido';
-            if (form.nombre.length > 50) newErrors.nombre = 'El nombre no puede exceder 50 caracteres';
-            if (form.cedulaRnc && form.cedulaRnc.length > 20) newErrors.cedulaRnc = 'La cédula/RNC no puede exceder 20 caracteres';
-            if (form.telefono && form.telefono.length > 14) newErrors.telefono = 'El teléfono no puede exceder 14 caracteres';
-            if (form.celular && form.celular.length > 14) newErrors.celular = 'El celular no puede exceder 14 caracteres';
-            if (form.direccion && form.direccion.length > 400) newErrors.direccion = 'La dirección no puede exceder 400 caracteres';
-            if (!(Object.keys(newErrors).length > 0)) {
+            fields = stepFieldGroups[step] || [];
+            if (!(fields.length === 0)) {
               _context.n = 1;
               break;
             }
-            setErrors(newErrors);
-            // Si hay errores en campos de otros pasos, llevar al usuario a ese paso
-            if (newErrors.nombre || newErrors.cedulaRnc || newErrors.telefono || newErrors.celular) {
-              setStep(1);
-            } else if (newErrors.direccion) {
-              setStep(2);
-            }
-            (_window$ToastUtils3 = window.ToastUtils) === null || _window$ToastUtils3 === void 0 || _window$ToastUtils3.warning('Por favor, corrija los errores en el formulario');
-            setLoading(false);
-            return _context.a(2);
+            return _context.a(2, true);
           case 1:
-            // Preparar datos para enviar (Tu lógica existente)
-            clienteData = {
-              nombre: form.nombre,
-              cedulaRnc: form.cedulaRnc || null,
-              telefono: form.telefono || null,
-              celular: form.celular || null,
-              direccion: form.direccion || null,
-              fechaNacimiento: form.fechaNacimiento || null,
-              tipoEntidad: form.tipoEntidad,
-              calle: form.calle || null,
-              limiteCredito: parseFloat(form.limiteCredito) || 0,
-              ubicacionGps: form.ubicacionGps || null,
-              idRuta: form.idRuta ? parseInt(form.idRuta) : null,
-              idEstadoCivil: form.idEstadoCivil ? parseInt(form.idEstadoCivil) : null,
-              idSector: form.idSector ? parseInt(form.idSector) : null,
-              idMunicipio: form.idMunicipio ? parseInt(form.idMunicipio) : null,
-              idCiudad: form.idCiudad ? parseInt(form.idCiudad) : null,
-              idProvincia: form.idProvincia ? parseInt(form.idProvincia) : null,
-              idPais: form.idPais ? parseInt(form.idPais) : null,
-              idNacionalidad: form.idNacionalidad ? parseInt(form.idNacionalidad) : null,
-              idTipoCliente: form.idTipoCliente ? parseInt(form.idTipoCliente) : null,
-              idActividadComercial: form.idActividadComercial ? parseInt(form.idActividadComercial) : null,
-              idMoneda: form.idMoneda ? parseInt(form.idMoneda) : null
-            }; // Aquí también deberías manejar el 'form.imagen' si se subió una nueva
-            // y enviarla como FormData o como base64, según espere tu backend.
-            // Este ejemplo se enfoca en la lógica de 'onSave' que ya tenías.
-            console.log('Datos enviados al backend:', clienteData);
-            if (!onSave) {
-              _context.n = 3;
-              break;
-            }
             _context.n = 2;
-            return onSave(clienteData, form.imagen);
+            return trigger(fields);
           case 2:
-            result = _context.v;
-            if (!(result && !result.success && result.fieldErrors)) {
-              _context.n = 3;
+            isValid = _context.v;
+            if (!isValid) {
+              (_window$ToastUtils3 = window.ToastUtils) === null || _window$ToastUtils3 === void 0 || _window$ToastUtils3.warning('Por favor, corrija los errores antes de continuar');
+            }
+            return _context.a(2, isValid);
+        }
+      }, _callee);
+    }));
+    return function validateCurrentStep() {
+      return _ref2.apply(this, arguments);
+    };
+  }();
+  var handleNextStep = /*#__PURE__*/function () {
+    var _ref3 = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee2() {
+      var ok;
+      return _regenerator().w(function (_context2) {
+        while (1) switch (_context2.n) {
+          case 0:
+            _context2.n = 1;
+            return validateCurrentStep();
+          case 1:
+            ok = _context2.v;
+            if (ok) {
+              setStep(function (prev) {
+                return Math.min(prev + 1, 3);
+              });
+            }
+          case 2:
+            return _context2.a(2);
+        }
+      }, _callee2);
+    }));
+    return function handleNextStep() {
+      return _ref3.apply(this, arguments);
+    };
+  }();
+  var prevStep = function prevStep() {
+    return setStep(function (prev) {
+      return Math.max(prev - 1, 1);
+    });
+  };
+  var handleGoToStep = /*#__PURE__*/function () {
+    var _ref4 = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee3(targetStep) {
+      var tmpStep, fields, ok, _window$ToastUtils4;
+      return _regenerator().w(function (_context3) {
+        while (1) switch (_context3.n) {
+          case 0:
+            if (!(targetStep === step)) {
+              _context3.n = 1;
               break;
             }
-            setErrors(result.fieldErrors);
-            // Detectar en qué paso está el error del servidor
+            return _context3.a(2);
+          case 1:
+            if (!(targetStep < step)) {
+              _context3.n = 2;
+              break;
+            }
+            setStep(targetStep);
+            return _context3.a(2);
+          case 2:
+            // Ir hacia adelante: validar pasos intermedios
+            tmpStep = step;
+          case 3:
+            if (!(tmpStep < targetStep)) {
+              _context3.n = 6;
+              break;
+            }
+            fields = stepFieldGroups[tmpStep] || [];
+            if (!(fields.length > 0)) {
+              _context3.n = 5;
+              break;
+            }
+            _context3.n = 4;
+            return trigger(fields);
+          case 4:
+            ok = _context3.v;
+            if (ok) {
+              _context3.n = 5;
+              break;
+            }
+            setStep(tmpStep);
+            (_window$ToastUtils4 = window.ToastUtils) === null || _window$ToastUtils4 === void 0 || _window$ToastUtils4.warning('Por favor, corrija los errores antes de continuar');
+            return _context3.a(2);
+          case 5:
+            tmpStep++;
+            _context3.n = 3;
+            break;
+          case 6:
+            setStep(targetStep);
+          case 7:
+            return _context3.a(2);
+        }
+      }, _callee3);
+    }));
+    return function handleGoToStep(_x) {
+      return _ref4.apply(this, arguments);
+    };
+  }();
+
+  // Envío del formulario (solo se dispara si TODO es válido según RHF)
+  var onSubmitForm = /*#__PURE__*/function () {
+    var _ref5 = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee4(data) {
+      var _window$RUTAS, _window$ESTADOS_CIVIL, _window$SECTORES, _window$MUNICIPIOS2, _window$CIUDADES2, _window$PROVINCIAS2, _window$PAISES, _window$NACIONALIDADE, _window$TIPOS_CLIENTE, _window$ACTIVIDADES_C, _window$MONEDAS, formData, rutaSeleccionada, estadoCivilSel, sectorSel, municipioSel, ciudadSel, provinciaSel, paisSel, nacionalidadSel, tipoClienteSel, actividadSel, monedaSel, result, fieldErrorKeys, _t;
+      return _regenerator().w(function (_context4) {
+        while (1) switch (_context4.p = _context4.n) {
+          case 0:
+            _context4.p = 0;
+            setLoading(true);
+            setServerErrors({});
+            formData = new FormData(); // Campos simples
+            formData.append('Nombre', data.nombre);
+            formData.append('CedulaRnc', data.cedulaRnc || '');
+            formData.append('Telefono', data.telefono || '');
+            formData.append('Celular', data.celular || '');
+            formData.append('Direccion', data.direccion || '');
+            formData.append('FechaNacimiento', data.fechaNacimiento || '');
+            formData.append('TipoEntidad', data.tipoEntidad);
+            formData.append('Calle', data.calle || '');
+            formData.append('LimiteCredito', parseFloat(data.limiteCredito || 0) || 0);
+            formData.append('UbicacionGps', data.ubicacionGps || '');
+
+            // Nombres relacionados (para crear si no existe)
+            rutaSeleccionada = (_window$RUTAS = window.RUTAS) === null || _window$RUTAS === void 0 ? void 0 : _window$RUTAS.find(function (r) {
+              return r.id == data.idRuta;
+            });
+            formData.append('Ruta', (rutaSeleccionada === null || rutaSeleccionada === void 0 ? void 0 : rutaSeleccionada.nombre) || '');
+            estadoCivilSel = (_window$ESTADOS_CIVIL = window.ESTADOS_CIVILES) === null || _window$ESTADOS_CIVIL === void 0 ? void 0 : _window$ESTADOS_CIVIL.find(function (e) {
+              return e.id == data.idEstadoCivil;
+            });
+            formData.append('EstadoCivil', (estadoCivilSel === null || estadoCivilSel === void 0 ? void 0 : estadoCivilSel.nombre) || '');
+            sectorSel = (_window$SECTORES = window.SECTORES) === null || _window$SECTORES === void 0 ? void 0 : _window$SECTORES.find(function (s) {
+              return s.id == data.idSector;
+            });
+            formData.append('Sector', (sectorSel === null || sectorSel === void 0 ? void 0 : sectorSel.nombre) || '');
+            municipioSel = (_window$MUNICIPIOS2 = window.MUNICIPIOS) === null || _window$MUNICIPIOS2 === void 0 ? void 0 : _window$MUNICIPIOS2.find(function (m) {
+              return m.id == data.idMunicipio;
+            });
+            formData.append('Municipio', (municipioSel === null || municipioSel === void 0 ? void 0 : municipioSel.nombre) || '');
+            ciudadSel = (_window$CIUDADES2 = window.CIUDADES) === null || _window$CIUDADES2 === void 0 ? void 0 : _window$CIUDADES2.find(function (c) {
+              return c.id == data.idCiudad;
+            });
+            formData.append('Ciudad', (ciudadSel === null || ciudadSel === void 0 ? void 0 : ciudadSel.nombre) || '');
+            provinciaSel = (_window$PROVINCIAS2 = window.PROVINCIAS) === null || _window$PROVINCIAS2 === void 0 ? void 0 : _window$PROVINCIAS2.find(function (p) {
+              return p.id == data.idProvincia;
+            });
+            formData.append('Provincia', (provinciaSel === null || provinciaSel === void 0 ? void 0 : provinciaSel.nombre) || '');
+            paisSel = (_window$PAISES = window.PAISES) === null || _window$PAISES === void 0 ? void 0 : _window$PAISES.find(function (p) {
+              return p.id == data.idPais;
+            });
+            formData.append('Pais', (paisSel === null || paisSel === void 0 ? void 0 : paisSel.nombre) || '');
+            nacionalidadSel = (_window$NACIONALIDADE = window.NACIONALIDADES) === null || _window$NACIONALIDADE === void 0 ? void 0 : _window$NACIONALIDADE.find(function (n) {
+              return n.id == data.idNacionalidad;
+            });
+            formData.append('Nacionalidad', (nacionalidadSel === null || nacionalidadSel === void 0 ? void 0 : nacionalidadSel.nombre) || '');
+            tipoClienteSel = (_window$TIPOS_CLIENTE = window.TIPOS_CLIENTE) === null || _window$TIPOS_CLIENTE === void 0 ? void 0 : _window$TIPOS_CLIENTE.find(function (t) {
+              return t.id == data.idTipoCliente;
+            });
+            formData.append('TipoCliente', (tipoClienteSel === null || tipoClienteSel === void 0 ? void 0 : tipoClienteSel.nombre) || '');
+            actividadSel = (_window$ACTIVIDADES_C = window.ACTIVIDADES_COMERCIALES) === null || _window$ACTIVIDADES_C === void 0 ? void 0 : _window$ACTIVIDADES_C.find(function (a) {
+              return a.id == data.idActividadComercial;
+            });
+            formData.append('ActividadComercial', (actividadSel === null || actividadSel === void 0 ? void 0 : actividadSel.nombre) || '');
+            monedaSel = (_window$MONEDAS = window.MONEDAS) === null || _window$MONEDAS === void 0 ? void 0 : _window$MONEDAS.find(function (m) {
+              return m.id == data.idMoneda;
+            });
+            formData.append('Moneda', (monedaSel === null || monedaSel === void 0 ? void 0 : monedaSel.nombre) || '');
+
+            // IDs relacionados (el backend los acepta y prioriza)
+            formData.append('IdRuta', data.idRuta ? parseInt(data.idRuta) : 0);
+            formData.append('IdEstadoCivil', data.idEstadoCivil ? parseInt(data.idEstadoCivil) : 0);
+            formData.append('IdSector', data.idSector ? parseInt(data.idSector) : 0);
+            formData.append('IdMunicipio', data.idMunicipio ? parseInt(data.idMunicipio) : 0);
+            formData.append('IdCiudad', data.idCiudad ? parseInt(data.idCiudad) : 0);
+            formData.append('IdProvincia', data.idProvincia ? parseInt(data.idProvincia) : 0);
+            formData.append('IdPais', data.idPais ? parseInt(data.idPais) : 0);
+            formData.append('IdNacionalidad', data.idNacionalidad ? parseInt(data.idNacionalidad) : 0);
+            formData.append('IdTipoCliente', data.idTipoCliente ? parseInt(data.idTipoCliente) : 0);
+            formData.append('IdActividadComercial', data.idActividadComercial ? parseInt(data.idActividadComercial) : 0);
+            formData.append('IdMoneda', data.idMoneda ? parseInt(data.idMoneda) : 0);
+
+            // Imagen
+            if (data.imagen) {
+              formData.append('Imagen', data.imagen);
+            }
+            console.log('Datos enviados al backend (FormData):', formData);
+            if (!onSave) {
+              _context4.n = 2;
+              break;
+            }
+            _context4.n = 1;
+            return onSave(formData);
+          case 1:
+            result = _context4.v;
+            if (!(result && !result.success && result.fieldErrors)) {
+              _context4.n = 2;
+              break;
+            }
+            setServerErrors(result.fieldErrors);
             fieldErrorKeys = Object.keys(result.fieldErrors);
             if (fieldErrorKeys.some(function (key) {
               return ['nombre', 'cedulaRnc', 'telefono', 'celular'].includes(key);
@@ -249,38 +383,45 @@ function CreateClienteModal(_ref) {
               setStep(3);
             }
             setLoading(false);
-            return _context.a(2);
-          case 3:
+            return _context4.a(2);
+          case 2:
             setLoading(false);
-            // Si todo salió bien, cerramos el modal (onClose ya lo hace el 'onSave' wrapper)
+            // El cierre del modal lo maneja quien llama (onSave wrapper)
+            _context4.n = 4;
+            break;
+          case 3:
+            _context4.p = 3;
+            _t = _context4.v;
+            console.error(_t);
+            setLoading(false);
           case 4:
-            return _context.a(2);
+            return _context4.a(2);
         }
-      }, _callee);
+      }, _callee4, null, [[0, 3]]);
     }));
-    return function handleSubmit(_x) {
-      return _ref2.apply(this, arguments);
+    return function onSubmitForm(_x2) {
+      return _ref5.apply(this, arguments);
     };
   }();
 
-  // === FUNCIONES DE NAVEGACIÓN ===
-  var nextStep = function nextStep() {
-    return setStep(function (prev) {
-      return Math.min(prev + 1, 3);
-    });
+  // Manejo cuando hay errores de validación de RHF al enviar
+  var onInvalid = function onInvalid(formErrors) {
+    var _window$ToastUtils5;
+    var fieldErrorKeys = Object.keys(formErrors);
+    if (fieldErrorKeys.length === 0) return;
+    if (fieldErrorKeys.some(function (key) {
+      return ['nombre', 'cedulaRnc', 'telefono', 'celular', 'tipoEntidad', 'fechaNacimiento', 'idEstadoCivil', 'idNacionalidad'].includes(key);
+    })) {
+      setStep(1);
+    } else if (fieldErrorKeys.some(function (key) {
+      return ['direccion', 'calle', 'idSector', 'idPais', 'idProvincia', 'idMunicipio', 'idCiudad', 'ubicacionGps'].includes(key);
+    })) {
+      setStep(2);
+    } else {
+      setStep(3);
+    }
+    (_window$ToastUtils5 = window.ToastUtils) === null || _window$ToastUtils5 === void 0 || _window$ToastUtils5.warning('Por favor, corrija los errores en el formulario');
   };
-  var prevStep = function prevStep() {
-    return setStep(function (prev) {
-      return Math.max(prev - 1, 1);
-    });
-  };
-  var goToStep = function goToStep(stepNum) {
-    return setStep(stepNum);
-  };
-
-  // =================================================================
-  // === RENDERIZADO DEL COMPONENTE (MODIFICADO) =====================
-  // =================================================================
   if (!show) return null;
   return /*#__PURE__*/React.createElement("div", {
     className: "modal-backdrop-custom ".concat(tema === 'dark' ? 'modal-backdrop-dark' : '')
@@ -292,7 +433,7 @@ function CreateClienteModal(_ref) {
     onClick: onClose,
     disabled: loading
   }, "\xD7"), /*#__PURE__*/React.createElement("form", {
-    onSubmit: handleSubmit,
+    onSubmit: handleSubmit(onSubmitForm, onInvalid),
     className: "create-user-form ".concat(tema === 'dark' ? 'create-user-form-dark' : '')
   }, /*#__PURE__*/React.createElement("h4", null, /*#__PURE__*/React.createElement("i", {
     className: "bi ".concat(isEdit ? 'bi-pencil-square' : 'bi-person-plus', " me-2")
@@ -301,7 +442,7 @@ function CreateClienteModal(_ref) {
   }, /*#__PURE__*/React.createElement("div", {
     className: "step ".concat(step >= 1 ? 'active' : ''),
     onClick: function onClick() {
-      return goToStep(1);
+      return handleGoToStep(1);
     }
   }, /*#__PURE__*/React.createElement("span", {
     className: "step-number"
@@ -310,7 +451,7 @@ function CreateClienteModal(_ref) {
   }), /*#__PURE__*/React.createElement("div", {
     className: "step ".concat(step >= 2 ? 'active' : ''),
     onClick: function onClick() {
-      return goToStep(2);
+      return handleGoToStep(2);
     }
   }, /*#__PURE__*/React.createElement("span", {
     className: "step-number"
@@ -319,7 +460,7 @@ function CreateClienteModal(_ref) {
   }), /*#__PURE__*/React.createElement("div", {
     className: "step ".concat(step >= 3 ? 'active' : ''),
     onClick: function onClick() {
-      return goToStep(3);
+      return handleGoToStep(3);
     }
   }, /*#__PURE__*/React.createElement("span", {
     className: "step-number"
@@ -337,40 +478,44 @@ function CreateClienteModal(_ref) {
     className: "form-label"
   }, /*#__PURE__*/React.createElement("i", {
     className: "bi bi-person me-1"
-  }), "Nombre Completo *"), /*#__PURE__*/React.createElement("input", {
+  }), "Nombre Completo *"), /*#__PURE__*/React.createElement("input", _extends({
     type: "text",
-    name: "nombre",
-    className: "form-control ".concat(errors.nombre ? 'is-invalid' : ''),
-    value: form.nombre,
-    onChange: handleChange,
-    required: true,
+    className: "form-control ".concat(getError('nombre') ? 'is-invalid' : ''),
     placeholder: "Ej: Juan P\xE9rez",
     disabled: loading,
     maxLength: 50
-  }), errors.nombre && /*#__PURE__*/React.createElement("div", {
+  }, register('nombre', {
+    required: 'El nombre es requerido',
+    maxLength: {
+      value: 50,
+      message: 'El nombre no puede exceder 50 caracteres'
+    }
+  }))), getError('nombre') && /*#__PURE__*/React.createElement("div", {
     className: "invalid-feedback d-block"
   }, /*#__PURE__*/React.createElement("i", {
     className: "bi bi-exclamation-circle me-1"
-  }), errors.nombre)), /*#__PURE__*/React.createElement("div", {
+  }), getError('nombre'))), /*#__PURE__*/React.createElement("div", {
     className: "mb-3"
   }, /*#__PURE__*/React.createElement("label", {
     className: "form-label"
   }, /*#__PURE__*/React.createElement("i", {
     className: "bi bi-card-text me-1"
-  }), "C\xE9dula/RNC"), /*#__PURE__*/React.createElement("input", {
+  }), "C\xE9dula/RNC"), /*#__PURE__*/React.createElement("input", _extends({
     type: "text",
-    name: "cedulaRnc",
-    className: "form-control ".concat(errors.cedulaRnc ? 'is-invalid' : ''),
-    value: form.cedulaRnc,
-    onChange: handleChange,
+    className: "form-control ".concat(getError('cedulaRnc') ? 'is-invalid' : ''),
     placeholder: "001-1234567-8",
     disabled: loading,
     maxLength: 20
-  }), errors.cedulaRnc && /*#__PURE__*/React.createElement("div", {
+  }, register('cedulaRnc', {
+    maxLength: {
+      value: 20,
+      message: 'La cédula/RNC no puede exceder 20 caracteres'
+    }
+  }))), getError('cedulaRnc') && /*#__PURE__*/React.createElement("div", {
     className: "invalid-feedback d-block"
   }, /*#__PURE__*/React.createElement("i", {
     className: "bi bi-exclamation-circle me-1"
-  }), errors.cedulaRnc)), /*#__PURE__*/React.createElement("div", {
+  }), getError('cedulaRnc'))), /*#__PURE__*/React.createElement("div", {
     className: "row"
   }, /*#__PURE__*/React.createElement("div", {
     className: "col-md-6 mb-3"
@@ -378,31 +523,30 @@ function CreateClienteModal(_ref) {
     className: "form-label"
   }, /*#__PURE__*/React.createElement("i", {
     className: "bi bi-people me-1"
-  }), "Tipo de Entidad *"), /*#__PURE__*/React.createElement("select", {
-    name: "tipoEntidad",
+  }), "Tipo de Entidad *"), /*#__PURE__*/React.createElement("select", _extends({
     className: "form-control",
-    value: form.tipoEntidad,
-    onChange: handleChange,
-    disabled: loading,
-    required: true
-  }, /*#__PURE__*/React.createElement("option", {
+    disabled: loading
+  }, register('tipoEntidad', {
+    required: 'El tipo de entidad es requerido'
+  })), /*#__PURE__*/React.createElement("option", {
     value: "F"
   }, "F\xEDsica"), /*#__PURE__*/React.createElement("option", {
     value: "J"
-  }, "Jur\xEDdica"))), /*#__PURE__*/React.createElement("div", {
+  }, "Jur\xEDdica")), getError('tipoEntidad') && /*#__PURE__*/React.createElement("div", {
+    className: "invalid-feedback d-block"
+  }, /*#__PURE__*/React.createElement("i", {
+    className: "bi bi-exclamation-circle me-1"
+  }), getError('tipoEntidad'))), /*#__PURE__*/React.createElement("div", {
     className: "col-md-6 mb-3"
   }, /*#__PURE__*/React.createElement("label", {
     className: "form-label"
   }, /*#__PURE__*/React.createElement("i", {
     className: "bi bi-calendar me-1"
-  }), "Fecha Nacimiento"), /*#__PURE__*/React.createElement("input", {
+  }), "Fecha Nacimiento"), /*#__PURE__*/React.createElement("input", _extends({
     type: "date",
-    name: "fechaNacimiento",
     className: "form-control",
-    value: form.fechaNacimiento,
-    onChange: handleChange,
     disabled: loading
-  }))), /*#__PURE__*/React.createElement("div", {
+  }, register('fechaNacimiento'))))), /*#__PURE__*/React.createElement("div", {
     className: "row"
   }, /*#__PURE__*/React.createElement("div", {
     className: "col-md-6 mb-3"
@@ -410,39 +554,43 @@ function CreateClienteModal(_ref) {
     className: "form-label"
   }, /*#__PURE__*/React.createElement("i", {
     className: "bi bi-telephone me-1"
-  }), "Tel\xE9fono"), /*#__PURE__*/React.createElement("input", {
+  }), "Tel\xE9fono"), /*#__PURE__*/React.createElement("input", _extends({
     type: "text",
-    name: "telefono",
-    className: "form-control ".concat(errors.telefono ? 'is-invalid' : ''),
-    value: form.telefono,
-    onChange: handleChange,
+    className: "form-control ".concat(getError('telefono') ? 'is-invalid' : ''),
     placeholder: "809-555-1234",
     disabled: loading,
     maxLength: 14
-  }), errors.telefono && /*#__PURE__*/React.createElement("div", {
+  }, register('telefono', {
+    maxLength: {
+      value: 14,
+      message: 'El teléfono no puede exceder 14 caracteres'
+    }
+  }))), getError('telefono') && /*#__PURE__*/React.createElement("div", {
     className: "invalid-feedback d-block"
   }, /*#__PURE__*/React.createElement("i", {
     className: "bi bi-exclamation-circle me-1"
-  }), errors.telefono)), /*#__PURE__*/React.createElement("div", {
+  }), getError('telefono'))), /*#__PURE__*/React.createElement("div", {
     className: "col-md-6 mb-3"
   }, /*#__PURE__*/React.createElement("label", {
     className: "form-label"
   }, /*#__PURE__*/React.createElement("i", {
     className: "bi bi-phone me-1"
-  }), "Celular"), /*#__PURE__*/React.createElement("input", {
+  }), "Celular"), /*#__PURE__*/React.createElement("input", _extends({
     type: "text",
-    name: "celular",
-    className: "form-control ".concat(errors.celular ? 'is-invalid' : ''),
-    value: form.celular,
-    onChange: handleChange,
+    className: "form-control ".concat(getError('celular') ? 'is-invalid' : ''),
     placeholder: "829-555-5678",
     disabled: loading,
     maxLength: 14
-  }), errors.celular && /*#__PURE__*/React.createElement("div", {
+  }, register('celular', {
+    maxLength: {
+      value: 14,
+      message: 'El celular no puede exceder 14 caracteres'
+    }
+  }))), getError('celular') && /*#__PURE__*/React.createElement("div", {
     className: "invalid-feedback d-block"
   }, /*#__PURE__*/React.createElement("i", {
     className: "bi bi-exclamation-circle me-1"
-  }), errors.celular))), /*#__PURE__*/React.createElement("div", {
+  }), getError('celular')))), /*#__PURE__*/React.createElement("div", {
     className: "row"
   }, /*#__PURE__*/React.createElement("div", {
     className: "col-md-6 mb-3"
@@ -450,13 +598,10 @@ function CreateClienteModal(_ref) {
     className: "form-label"
   }, /*#__PURE__*/React.createElement("i", {
     className: "bi bi-heart me-1"
-  }), "Estado Civil"), /*#__PURE__*/React.createElement("select", {
-    name: "idEstadoCivil",
+  }), "Estado Civil"), /*#__PURE__*/React.createElement("select", _extends({
     className: "form-control",
-    value: form.idEstadoCivil || '',
-    onChange: handleChange,
     disabled: loading
-  }, /*#__PURE__*/React.createElement("option", {
+  }, register('idEstadoCivil')), /*#__PURE__*/React.createElement("option", {
     value: ""
   }, "Seleccione"), window.ESTADOS_CIVILES && window.ESTADOS_CIVILES.map(function (estado) {
     return /*#__PURE__*/React.createElement("option", {
@@ -469,13 +614,10 @@ function CreateClienteModal(_ref) {
     className: "form-label"
   }, /*#__PURE__*/React.createElement("i", {
     className: "bi bi-passport me-1"
-  }), "Nacionalidad"), /*#__PURE__*/React.createElement("select", {
-    name: "idNacionalidad",
+  }), "Nacionalidad"), /*#__PURE__*/React.createElement("select", _extends({
     className: "form-control",
-    value: form.idNacionalidad || '',
-    onChange: handleChange,
     disabled: loading
-  }, /*#__PURE__*/React.createElement("option", {
+  }, register('idNacionalidad')), /*#__PURE__*/React.createElement("option", {
     value: ""
   }, "Seleccione"), window.NACIONALIDADES && window.NACIONALIDADES.map(function (nacionalidad) {
     return /*#__PURE__*/React.createElement("option", {
@@ -492,20 +634,22 @@ function CreateClienteModal(_ref) {
     className: "form-label"
   }, /*#__PURE__*/React.createElement("i", {
     className: "bi bi-house me-1"
-  }), "Direcci\xF3n Completa"), /*#__PURE__*/React.createElement("textarea", {
-    name: "direccion",
-    className: "form-control ".concat(errors.direccion ? 'is-invalid' : ''),
-    value: form.direccion,
-    onChange: handleChange,
+  }), "Direcci\xF3n Completa"), /*#__PURE__*/React.createElement("textarea", _extends({
+    className: "form-control ".concat(getError('direccion') ? 'is-invalid' : ''),
     placeholder: "Ej: Calle Principal #123",
     disabled: loading,
     rows: 2,
     maxLength: 400
-  }), errors.direccion && /*#__PURE__*/React.createElement("div", {
+  }, register('direccion', {
+    maxLength: {
+      value: 400,
+      message: 'La dirección no puede exceder 400 caracteres'
+    }
+  }))), getError('direccion') && /*#__PURE__*/React.createElement("div", {
     className: "invalid-feedback d-block"
   }, /*#__PURE__*/React.createElement("i", {
     className: "bi bi-exclamation-circle me-1"
-  }), errors.direccion)), /*#__PURE__*/React.createElement("div", {
+  }), getError('direccion'))), /*#__PURE__*/React.createElement("div", {
     className: "row"
   }, /*#__PURE__*/React.createElement("div", {
     className: "col-md-6 mb-3"
@@ -513,28 +657,22 @@ function CreateClienteModal(_ref) {
     className: "form-label"
   }, /*#__PURE__*/React.createElement("i", {
     className: "bi bi-signpost me-1"
-  }), "Calle"), /*#__PURE__*/React.createElement("input", {
+  }), "Calle"), /*#__PURE__*/React.createElement("input", _extends({
     type: "text",
-    name: "calle",
     className: "form-control",
-    value: form.calle,
-    onChange: handleChange,
     placeholder: "Ej: Calle 5",
     disabled: loading,
     maxLength: 50
-  })), /*#__PURE__*/React.createElement("div", {
+  }, register('calle')))), /*#__PURE__*/React.createElement("div", {
     className: "col-md-6 mb-3"
   }, /*#__PURE__*/React.createElement("label", {
     className: "form-label"
   }, /*#__PURE__*/React.createElement("i", {
     className: "bi bi-houses me-1"
-  }), "Sector"), /*#__PURE__*/React.createElement("select", {
-    name: "idSector",
+  }), "Sector"), /*#__PURE__*/React.createElement("select", _extends({
     className: "form-control",
-    value: form.idSector || '',
-    onChange: handleChange,
     disabled: loading
-  }, /*#__PURE__*/React.createElement("option", {
+  }, register('idSector')), /*#__PURE__*/React.createElement("option", {
     value: ""
   }, "Seleccione"), window.SECTORES && window.SECTORES.map(function (sector) {
     return /*#__PURE__*/React.createElement("option", {
@@ -547,16 +685,13 @@ function CreateClienteModal(_ref) {
     className: "form-label"
   }, /*#__PURE__*/React.createElement("i", {
     className: "bi bi-pin-map me-1"
-  }), "Ubicaci\xF3n GPS"), /*#__PURE__*/React.createElement("input", {
+  }), "Ubicaci\xF3n GPS"), /*#__PURE__*/React.createElement("input", _extends({
     type: "text",
-    name: "ubicacionGps",
     className: "form-control",
-    value: form.ubicacionGps,
-    onChange: handleChange,
     placeholder: "Ej: 18.4861,-69.9312",
     disabled: loading,
     maxLength: 60
-  })), /*#__PURE__*/React.createElement("h5", {
+  }, register('ubicacionGps')))), /*#__PURE__*/React.createElement("h5", {
     className: "mt-4"
   }, /*#__PURE__*/React.createElement("i", {
     className: "bi bi-geo me-2"
@@ -568,13 +703,10 @@ function CreateClienteModal(_ref) {
     className: "form-label"
   }, /*#__PURE__*/React.createElement("i", {
     className: "bi bi-globe me-1"
-  }), "Pa\xEDs"), /*#__PURE__*/React.createElement("select", {
-    name: "idPais",
+  }), "Pa\xEDs"), /*#__PURE__*/React.createElement("select", _extends({
     className: "form-control",
-    value: form.idPais || '',
-    onChange: handleChange,
     disabled: loading
-  }, /*#__PURE__*/React.createElement("option", {
+  }, register('idPais')), /*#__PURE__*/React.createElement("option", {
     value: ""
   }, "Seleccione"), window.PAISES && window.PAISES.map(function (pais) {
     return /*#__PURE__*/React.createElement("option", {
@@ -587,13 +719,10 @@ function CreateClienteModal(_ref) {
     className: "form-label"
   }, /*#__PURE__*/React.createElement("i", {
     className: "bi bi-flag me-1"
-  }), "Provincia"), /*#__PURE__*/React.createElement("select", {
-    name: "idProvincia",
+  }), "Provincia"), /*#__PURE__*/React.createElement("select", _extends({
     className: "form-control",
-    value: form.idProvincia || '',
-    onChange: handleChange,
     disabled: loading || provinciasFiltradas.length === 0
-  }, /*#__PURE__*/React.createElement("option", {
+  }, register('idProvincia')), /*#__PURE__*/React.createElement("option", {
     value: ""
   }, "Seleccione"), provinciasFiltradas.map(function (provincia) {
     return /*#__PURE__*/React.createElement("option", {
@@ -608,13 +737,10 @@ function CreateClienteModal(_ref) {
     className: "form-label"
   }, /*#__PURE__*/React.createElement("i", {
     className: "bi bi-map me-1"
-  }), "Municipio"), /*#__PURE__*/React.createElement("select", {
-    name: "idMunicipio",
+  }), "Municipio"), /*#__PURE__*/React.createElement("select", _extends({
     className: "form-control",
-    value: form.idMunicipio || '',
-    onChange: handleChange,
     disabled: loading || municipiosFiltrados.length === 0
-  }, /*#__PURE__*/React.createElement("option", {
+  }, register('idMunicipio')), /*#__PURE__*/React.createElement("option", {
     value: ""
   }, "Seleccione"), municipiosFiltrados.map(function (municipio) {
     return /*#__PURE__*/React.createElement("option", {
@@ -627,13 +753,10 @@ function CreateClienteModal(_ref) {
     className: "form-label"
   }, /*#__PURE__*/React.createElement("i", {
     className: "bi bi-building me-1"
-  }), "Ciudad"), /*#__PURE__*/React.createElement("select", {
-    name: "idCiudad",
+  }), "Ciudad"), /*#__PURE__*/React.createElement("select", _extends({
     className: "form-control",
-    value: form.idCiudad || '',
-    onChange: handleChange,
     disabled: loading || ciudadesFiltradas.length === 0
-  }, /*#__PURE__*/React.createElement("option", {
+  }, register('idCiudad')), /*#__PURE__*/React.createElement("option", {
     value: ""
   }, "Seleccione"), ciudadesFiltradas.map(function (ciudad) {
     return /*#__PURE__*/React.createElement("option", {
@@ -650,17 +773,14 @@ function CreateClienteModal(_ref) {
     className: "form-label"
   }, /*#__PURE__*/React.createElement("i", {
     className: "bi bi-cash-coin me-1"
-  }), "L\xEDmite de Cr\xE9dito"), /*#__PURE__*/React.createElement("input", {
+  }), "L\xEDmite de Cr\xE9dito"), /*#__PURE__*/React.createElement("input", _extends({
     type: "number",
-    name: "limiteCredito",
     className: "form-control",
-    value: form.limiteCredito,
-    onChange: handleChange,
     placeholder: "0.00",
     disabled: loading,
     step: "0.01",
     min: "0"
-  })), /*#__PURE__*/React.createElement("div", {
+  }, register('limiteCredito')))), /*#__PURE__*/React.createElement("div", {
     className: "row"
   }, /*#__PURE__*/React.createElement("div", {
     className: "col-md-6 mb-3"
@@ -668,13 +788,10 @@ function CreateClienteModal(_ref) {
     className: "form-label"
   }, /*#__PURE__*/React.createElement("i", {
     className: "bi bi-person-badge me-1"
-  }), "Tipo de Cliente"), /*#__PURE__*/React.createElement("select", {
-    name: "idTipoCliente",
+  }), "Tipo de Cliente"), /*#__PURE__*/React.createElement("select", _extends({
     className: "form-control",
-    value: form.idTipoCliente || '',
-    onChange: handleChange,
     disabled: loading
-  }, /*#__PURE__*/React.createElement("option", {
+  }, register('idTipoCliente')), /*#__PURE__*/React.createElement("option", {
     value: ""
   }, "Seleccione"), window.TIPOS_CLIENTE && window.TIPOS_CLIENTE.map(function (tipo) {
     return /*#__PURE__*/React.createElement("option", {
@@ -687,13 +804,10 @@ function CreateClienteModal(_ref) {
     className: "form-label"
   }, /*#__PURE__*/React.createElement("i", {
     className: "bi bi-currency-exchange me-1"
-  }), "Moneda"), /*#__PURE__*/React.createElement("select", {
-    name: "idMoneda",
+  }), "Moneda"), /*#__PURE__*/React.createElement("select", _extends({
     className: "form-control",
-    value: form.idMoneda || '',
-    onChange: handleChange,
     disabled: loading
-  }, /*#__PURE__*/React.createElement("option", {
+  }, register('idMoneda')), /*#__PURE__*/React.createElement("option", {
     value: ""
   }, "Seleccione"), window.MONEDAS && window.MONEDAS.map(function (moneda) {
     return /*#__PURE__*/React.createElement("option", {
@@ -706,13 +820,10 @@ function CreateClienteModal(_ref) {
     className: "form-label"
   }, /*#__PURE__*/React.createElement("i", {
     className: "bi bi-briefcase me-1"
-  }), "Actividad Comercial"), /*#__PURE__*/React.createElement("select", {
-    name: "idActividadComercial",
+  }), "Actividad Comercial"), /*#__PURE__*/React.createElement("select", _extends({
     className: "form-control",
-    value: form.idActividadComercial || '',
-    onChange: handleChange,
     disabled: loading
-  }, /*#__PURE__*/React.createElement("option", {
+  }, register('idActividadComercial')), /*#__PURE__*/React.createElement("option", {
     value: ""
   }, "Seleccione"), window.ACTIVIDADES_COMERCIALES && window.ACTIVIDADES_COMERCIALES.map(function (actividad) {
     return /*#__PURE__*/React.createElement("option", {
@@ -725,13 +836,10 @@ function CreateClienteModal(_ref) {
     className: "form-label"
   }, /*#__PURE__*/React.createElement("i", {
     className: "bi bi-truck me-1"
-  }), "Ruta"), /*#__PURE__*/React.createElement("select", {
-    name: "idRuta",
+  }), "Ruta"), /*#__PURE__*/React.createElement("select", _extends({
     className: "form-control",
-    value: form.idRuta || '',
-    onChange: handleChange,
     disabled: loading
-  }, /*#__PURE__*/React.createElement("option", {
+  }, register('idRuta')), /*#__PURE__*/React.createElement("option", {
     value: ""
   }, "Seleccione una ruta"), window.RUTAS && window.RUTAS.map(function (ruta) {
     return /*#__PURE__*/React.createElement("option", {
@@ -813,7 +921,7 @@ function CreateClienteModal(_ref) {
   }), "Atr\xE1s"), step < 3 && /*#__PURE__*/React.createElement("button", {
     type: "button",
     className: "btn register-button",
-    onClick: nextStep,
+    onClick: handleNextStep,
     disabled: loading
   }, "Siguiente", /*#__PURE__*/React.createElement("i", {
     className: "bi bi-arrow-right-circle ms-1"
